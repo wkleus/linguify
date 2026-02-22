@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden; /* prevents the page-level scrollbar – inner containers scroll independently */
+}
+
+.lingo {
+  @apply text-xl cursor-pointer font-bold mx-auto hover:bg-white/10 duration-100 p-2 rounded-lg;
+}
+
+.text-box {
+  @apply min-h-[30vh] sm:mx-0 sm:min-h-[30vh]  md:min-w-[36vw] md:min-h-[40vh] xl:min-w-[28vw] xl:min-h-[35vh] 2xl:min-w-[25vw] p-2 pt-6 font-mono rounded-2xl bg-[#333]/90 text-white backdrop-blur-xl border border-white resize-none focus:outline-none focus:ring-2 focus:ring-amber-300 flex-1;
+}
+
+.close {
+  @apply absolute top-2 right-2 border-[3px] border-white/30 p-2 rounded-tr-2xl hover:scale-110 hover:text-white/100 hover:border-white/50 transition duration-400 cursor-pointer text-white/80;
+}
+
+/* Rounded Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.6) transparent;
+}
+
+@keyframes fadeSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeSlideDown {
+  animation: fadeSlideDown 0.25s ease-out forwards;
+}
+
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fadeSlideUp {
+  animation: fadeSlideUp 0.25s ease-in forwards;
+}
+
+/* Lightning */
+.lightning-zigzag {
+  position: fixed;
+  top: -10%;
+  left: 10%;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-35deg);
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+  filter: drop-shadow(0 0 18px rgba(255, 0, 0, 0.9))
+    drop-shadow(0 0 28px rgba(255, 80, 80, 0.7));
+  opacity: 0.2;
+}
