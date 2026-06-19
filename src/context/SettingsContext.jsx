@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 // 1. Create context
 const SettingsContext = createContext(null);
@@ -17,12 +17,20 @@ export function SettingsProvider({ children }) {
     () => localStorage.getItem("autoCopy") === "true",
   );
 
-  // Persists all settings to localStorage at once
-  const saveSettings = () => {
+  // Auto-save: persists to localStorage whenever a setting changes.
+  // The empty-array mount run is intentionally skipped via the initializer
+  // above – localStorage is only written when the user actually toggles something.
+  useEffect(() => {
     localStorage.setItem("autoClearInstant", autoClearInstant);
+  }, [autoClearInstant]);
+
+  useEffect(() => {
     localStorage.setItem("autoClearDelay", autoClearDelay);
+  }, [autoClearDelay]);
+
+  useEffect(() => {
     localStorage.setItem("autoCopy", autoCopy);
-  };
+  }, [autoCopy]);
 
   // Setters with mutual exclusion for autoClear options
   const handleSetAutoClearInstant = (value) => {
@@ -44,7 +52,6 @@ export function SettingsProvider({ children }) {
         setAutoClearInstant: handleSetAutoClearInstant,
         setAutoClearDelay: handleSetAutoClearDelay,
         setAutoCopy,
-        saveSettings,
       }}
     >
       {children}
@@ -53,8 +60,7 @@ export function SettingsProvider({ children }) {
 }
 
 // 3. Custom hook for clean access
-// Throws an error if the Provider was forgotten –
-// a helpful dev error instead of a silent undefined
+// Throws an error if the Provider was forgotten
 export function useSettingsContext() {
   const context = useContext(SettingsContext);
   if (!context) {
