@@ -8,6 +8,7 @@ import AboutAppPage from "./pages/AboutAppPage";
 import SettingsPage from "./pages/SettingsPage";
 import ContactPage from "./pages/ContactPage";
 import SynonymFinderPage from "./pages/SynonymFinder";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const App = () => {
   return (
@@ -33,7 +34,7 @@ const App = () => {
       {/* Help Page */}
       <Route path="/help" element={<HelpPage />} />
 
-      {/* Abot App Page */}
+      {/* About App Page */}
       <Route path="/about-app" element={<AboutAppPage />} />
 
       {/* Settings Page */}
@@ -44,6 +45,9 @@ const App = () => {
 
       {/* Synonym Finder Page */}
       <Route path="/synonym-finder" element={<SynonymFinderPage />} />
+
+      {/* 404 – catches every unknown path */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };
