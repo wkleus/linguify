@@ -64,6 +64,7 @@ The application is built with React, TailwindCSS and Vite, and communicates with
 - Language switching
 - Optional automatic clearing or copying of results
 - Suitable for short and medium text segments
+- Keyboard shortcuts: Cmd/Ctrl + Enter to translate, Esc to clear input
 
 ### Synonym Finder
 
@@ -76,11 +77,17 @@ The application is built with React, TailwindCSS and Vite, and communicates with
 - Auto‑clear (immediate or delayed)
 - Auto‑copy
 - Settings stored locally via `localStorage`
+- Changes are persisted automatically (no save button required)
 
 ### Help & Contact
 
 - Usage explanations
 - Contact form for feedback or issue reporting
+
+### Routing
+
+- Client-side routing via React Router
+- Dedicated 404 page for unmatched routes
 
 ## Technical Overview
 
@@ -92,7 +99,7 @@ The application is built with React, TailwindCSS and Vite, and communicates with
 - **Persistence:** Browser `localStorage`
 - **APIs:** External REST APIs (no backend required)
 - **Testing:** Jest + React Testing Library
-- **Deployment:** Fully static build; can be hosted on any static hosting provider (e.g., GitHub Pages, Vercel, Netlify)
+- **Deployment:** Hosted on GitHub Pages and Vercel
 
 ## Architecture
 
@@ -100,13 +107,13 @@ Linguify follows a modular, component‑based architecture:
 
 - **UI Components:** Reusable elements (buttons, selectors, inputs)
 - **Layouts:** Page wrappers for consistent structure
-- **Pages:** High‑level views (Entry/Home, Menu, Translator, SynonymFinder, Help, About, Settings, Contact)
+- **Pages:** High‑level views (Entry/Home, Menu, Translator, Synonym Finder, Help, About, Settings, Contact, Not Found)
 - **Custom Hooks:**
   - `useTranslator()` – translation logic, API communication, input validation
   - `useLanguageSwitcher()` – language selection and switching
   - `useSettings()` – re-export of the SettingsContext hook
 - **Context:**
-  - `SettingsContext` – global settings state, reactive across all components without prop drilling
+  - `SettingsContext` – global settings state, reactive across all components without prop drilling; changes are auto‑persisted to localStorage via useEffect
 - **External APIs:** Called directly from hooks
 - **No backend:** All logic runs client‑side
 
