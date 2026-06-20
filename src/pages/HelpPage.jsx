@@ -46,6 +46,17 @@ export default function HelpPage() {
             <li>Start the translation using the central button.</li>
             <li>The result appears in the lower or right field.</li>
             <li>Languages can be switched at any time.</li>
+            <li>
+              Keyboard shortcuts:{" "}
+              <kbd className="px-1.5 py-0.5 rounded bg-black/10 text-sm">
+                Cmd/Ctrl + Enter
+              </kbd>{" "}
+              to translate,{" "}
+              <kbd className="px-1.5 py-0.5 rounded bg-black/10 text-sm">
+                Esc
+              </kbd>{" "}
+              to clear the input field.
+            </li>
           </ul>
         </section>
 
