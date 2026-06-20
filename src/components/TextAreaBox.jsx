@@ -1,3 +1,5 @@
+import { useState, useEffect, useRef } from "react";
+
 export default function TextAreaBox({
   value,
   onChange,
@@ -7,6 +9,19 @@ export default function TextAreaBox({
   onClear,
   onKeyDown,
 }) {
+  const [justArrived, setJustArrived] = useState(false);
+  const previousValue = useRef(value);
+
+  useEffect(() => {
+    if (readOnly && value && value !== previousValue.current) {
+      setJustArrived(true);
+      const timeout = setTimeout(() => setJustArrived(false), 400);
+      previousValue.current = value;
+      return () => clearTimeout(timeout);
+    }
+    previousValue.current = value;
+  }, [value, readOnly]);
+
   return (
     <div className="relative flex justify-center">
       {/* Main textarea */}
@@ -14,7 +29,7 @@ export default function TextAreaBox({
         maxLength={maxLength}
         className={`text-box ${
           value.length === maxLength ? "!border-red-500 !border-3" : ""
-        }`}
+        } ${justArrived ? "text-box-arrive" : ""}`}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         onKeyDown={onKeyDown}

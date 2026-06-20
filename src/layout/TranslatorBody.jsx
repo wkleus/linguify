@@ -11,8 +11,7 @@ export default function TranslatorBody({
   chosenSecondLanguage,
 }) {
   // Keyboard shortcuts on the source textarea:
-  // - Cmd/Ctrl + Enter → trigger translation (mirrors common "submit" convention,
-  //   plain Enter is intentionally left alone so users can still write multi-line text)
+  // - Cmd/Ctrl + Enter → trigger translation
   // - Esc → clear the input
   const handleKeyDown = (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {

@@ -17,6 +17,21 @@ body {
   @apply min-h-[30vh] sm:mx-0 sm:min-h-[30vh]  md:min-w-[36vw] md:min-h-[40vh] xl:min-w-[28vw] xl:min-h-[35vh] 2xl:min-w-[25vw] p-2 pt-6 font-mono rounded-2xl bg-[#333]/90 text-white backdrop-blur-xl border border-white resize-none focus:outline-none focus:ring-2 focus:ring-amber-300 flex-1;
 }
 
+@keyframes text-box-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.text-box-arrive {
+  animation: text-box-arrive 0.4s ease-out;
+}
+
 .close {
   @apply absolute top-2 right-2 border-[3px] border-white/30 p-2 rounded-tr-2xl hover:scale-110 hover:text-white/100 hover:border-white/50 transition duration-400 cursor-pointer text-white/80;
 }
