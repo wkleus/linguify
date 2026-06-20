@@ -5,6 +5,7 @@ export default function TextAreaBox({
   maxLength = 250,
   showClearButton = false,
   onClear,
+  onKeyDown,
 }) {
   return (
     <div className="relative flex justify-center">
@@ -16,6 +17,7 @@ export default function TextAreaBox({
         }`}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
+        onKeyDown={onKeyDown}
         readOnly={readOnly}
         placeholder={readOnly ? "Translated text..." : "Enter your text..."}
       />

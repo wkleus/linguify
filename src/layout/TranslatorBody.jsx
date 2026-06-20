@@ -10,11 +10,28 @@ export default function TranslatorBody({
   chosenFirstLanguage,
   chosenSecondLanguage,
 }) {
+  // Keyboard shortcuts on the source textarea:
+  // - Cmd/Ctrl + Enter → trigger translation (mirrors common "submit" convention,
+  //   plain Enter is intentionally left alone so users can still write multi-line text)
+  // - Esc → clear the input
+  const handleKeyDown = (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      e.preventDefault();
+      translate(chosenFirstLanguage, chosenSecondLanguage);
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setSourceText("");
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center md:flex-row w-full lg:gap-4 gap-2 mt-3 sm:px-15 ">
       <TextAreaBox
         value={sourceText}
         onChange={setSourceText}
+        onKeyDown={handleKeyDown}
         showClearButton={true}
         onClear={() => setSourceText("")}
       />
