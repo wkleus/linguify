@@ -1,9 +1,10 @@
 export default function CopyNotification({ visible }) {
-  // Only show notification when visible
-  if (!visible) return null;
-
   return (
-    <div className="mt-3 text-green-200 text-md font-bold">
+    <div
+      className={`absolute bottom-4 left-1/2 -translate-x-1/2 text-green-200 text-md font-bold transition-opacity duration-200 pointer-events-none ${
+        visible ? "opacity-100" : "opacity-0"
+      }`}
+    >
       Copied to clipboard!
     </div>
   );
