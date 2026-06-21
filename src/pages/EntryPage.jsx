@@ -7,30 +7,10 @@ export default function LinguifyEntry() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-10 text-center">
       {/* Headline */}
-      <h1 className="font-semibold text-6xl mb-4 drop-shadow-[0_0_18px_rgba(0,0,0,0.45)]">
+      <h1 className="font-semibold text-7xl mb-4 drop-shadow-[0_0_18px_rgba(0,0,0,0.45)]">
         Welcome to{" "}
-        <span className="relative inline-block">
-          <span
-            className="absolute inset-0 text-transparent"
-            style={{
-              WebkitTextStroke: "2px rgba(0,0,0,0.55)",
-              transform: "translate(3px, 3px)",
-              opacity: 0.7,
-            }}
-          >
-            Linguify
-          </span>
-
-          <span
-            className="absolute inset-0 text-transparent"
-            style={{ WebkitTextStroke: "2px white" }}
-          >
-            Linguify
-          </span>
-
-          <span className="relative bg-gradient-to-r from-pink-300 via-fuchsia-400 to-purple-500 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]">
-            Linguify
-          </span>
+        <span className="font-playful bg-gradient-to-r from-pink-300 via-fuchsia-200 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]">
+          Linguify
         </span>
       </h1>
 
@@ -50,7 +30,7 @@ export default function LinguifyEntry() {
       </svg>
 
       {/* Claim */}
-      <p className="font-semibold text-xl text-white max-w-xl mb-8 drop-shadow-[0_0_10px_rgba(0,0,0,0.6)]">
+      <p className="font-handwritten text-3xl text-white max-w-xl mb-8 drop-shadow-[0_0_10px_rgba(0,0,0,0.9)]">
         Discover languages in a new, creative, and intuitive way. Learning has
         never felt this alive.
       </p>

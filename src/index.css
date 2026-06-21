@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* Font roles – each imported Google Font gets one clear job instead of
+   sitting unused. See README for the full rationale per font. */
+:root {
+  --font-body: "Montserrat", sans-serif; /* default UI text */
+  --font-handwritten: "Caveat", cursive; /* personal-feeling accents */
+  --font-cjk: "Noto Sans JP", sans-serif; /* CJK translation output */
+  --font-playful:
+    "Playpen Sans", cursive; /* tooltips, small hints, logo accent */
+}
+
 html,
 body {
   margin: 0;
@@ -7,6 +17,19 @@ body {
   box-sizing: border-box;
   height: 100%;
   overflow: hidden; /* prevents the page-level scrollbar – inner containers scroll independently */
+  font-family: var(--font-body);
+}
+
+.font-handwritten {
+  font-family: var(--font-handwritten);
+}
+
+.font-cjk {
+  font-family: var(--font-cjk);
+}
+
+.font-playful {
+  font-family: var(--font-playful);
 }
 
 .lingo {
@@ -14,9 +37,10 @@ body {
 }
 
 .text-box {
-  @apply min-h-[30vh] sm:mx-0 sm:min-h-[30vh]  md:min-w-[36vw] md:min-h-[40vh] xl:min-w-[28vw] xl:min-h-[35vh] 2xl:min-w-[25vw] p-2 pt-6 font-mono rounded-2xl bg-[#333]/90 text-white backdrop-blur-xl border border-white resize-none focus:outline-none focus:ring-2 focus:ring-amber-300 flex-1;
+  @apply min-h-[30vh] sm:mx-0 sm:min-h-[30vh]  md:min-w-[36vw] md:min-h-[40vh] xl:min-w-[28vw] xl:min-h-[35vh] 2xl:min-w-[25vw] p-2 pt-9 font-mono rounded-2xl bg-[#333]/90 text-white backdrop-blur-xl border border-white resize-none focus:outline-none focus:ring-2 focus:ring-amber-300 flex-1;
 }
 
+/* Plays once when a new translation lands (JS toggles the class, see TextAreaBox.jsx) */
 @keyframes text-box-arrive {
   from {
     opacity: 0;

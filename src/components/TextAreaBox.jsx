@@ -30,12 +30,15 @@ export default function TextAreaBox({
     previousValue.current = value;
   }, [value, readOnly]);
 
+  // CJK languages render better in Noto Sans JP than in the default Latin font
+  const isCjk = ["ja", "zh", "ko"].includes(langCode);
+
   return (
-    <div className="relative flex justify-center ">
+    <div className="relative flex justify-center">
       {/* Main textarea */}
       <textarea
         maxLength={maxLength}
-        className={`text-box ${
+        className={`text-box ${isCjk ? "font-cjk" : ""} ${
           value.length === maxLength ? "!border-red-500 !border-3" : ""
         } ${justArrived ? "text-box-arrive" : ""}`}
         value={value}

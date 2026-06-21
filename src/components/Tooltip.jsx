@@ -7,7 +7,7 @@ export default function Tooltip({ children, text, position = "top" }) {
       {/* Tooltip box with dynamic positioning */}
       <div
         className={`
-          absolute w-max max-w-60 bg-black/80 text-orange-400 text-xs 
+          absolute w-max max-w-60 bg-black/80 text-orange-400 text-xs font-playful
           px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 
           transition-opacity duration-500 pointer-events-none z-50
           ${
