@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi2";
+import { motion } from "framer-motion";
 
 // Multilingual background characters with organic scatter
 const BACKGROUND_CHARACTERS = [
@@ -90,7 +91,13 @@ export default function LinguifyEntry() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full h-full p-10 text-center overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 2, ease: "easeOut" }}
+      className="relative flex flex-col items-center justify-center w-full h-full p-10 text-center overflow-hidden"
+    >
       {/* Drifting multilingual decorative letters */}
       {BACKGROUND_CHARACTERS.map((item, index) => (
         <span
@@ -110,7 +117,7 @@ export default function LinguifyEntry() {
       ))}
 
       {/* Headline */}
-      <h1 className="font-semibold text-7xl mb-4 drop-shadow-[0_0_18px_rgba(0,0,0,0.45)]">
+      <h1 className="font-semibold text-7xl mb-1 drop-shadow-[0_0_18px_rgba(0,0,0,0.45)]">
         Welcome to{" "}
         <span className="animate-logo-glow font-playful bg-gradient-to-r from-pink-500  via-cyan-500 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]">
           Linguify
@@ -134,8 +141,7 @@ export default function LinguifyEntry() {
 
       {/* Claim */}
       <p className="font-handwritten text-3xl text-white max-w-xl mb-8 drop-shadow-[0_0_10px_rgba(0,0,0,0.9)]">
-        Discover languages in a new, creative, and intuitive way. Learning has
-        never felt this alive.
+        Discover languages in a new, creative, and intuitive way.
       </p>
 
       {/* CTA Button */}
@@ -148,6 +154,6 @@ export default function LinguifyEntry() {
           <HiArrowRight className="w-0 opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-300" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

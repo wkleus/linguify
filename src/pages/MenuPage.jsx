@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function MenuPage() {
   const navigate = useNavigate();
@@ -40,7 +41,13 @@ export default function MenuPage() {
   ];
 
   return (
-    <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4"
+    >
       <div className="relative w-[90%] max-w-5xl h-[70vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-10 overflow-hidden">
         {menuItems.map((item) => (
           <button
@@ -68,6 +75,6 @@ export default function MenuPage() {
           />
         </svg>
       </div>
-    </div>
+    </motion.div>
   );
 }
