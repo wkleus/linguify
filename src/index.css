@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
-/* Font roles – each imported Google Font gets one clear job instead of
-   sitting unused. See README for the full rationale per font. */
+/* Font roles */
 :root {
   --font-body: "Montserrat", sans-serif; /* default UI text */
   --font-handwritten: "Caveat", cursive; /* personal-feeling accents */
@@ -40,7 +39,50 @@ body {
   @apply min-h-[30vh] sm:mx-0 sm:min-h-[30vh]  md:min-w-[36vw] md:min-h-[40vh] xl:min-w-[28vw] xl:min-h-[35vh] 2xl:min-w-[25vw] p-2 pt-9 font-mono rounded-2xl bg-[#333]/90 text-white backdrop-blur-xl border border-white resize-none focus:outline-none focus:ring-2 focus:ring-amber-300 flex-1;
 }
 
-/* Plays once when a new translation lands (JS toggles the class, see TextAreaBox.jsx) */
+@keyframes logo-glow {
+  0%,
+  100% {
+    filter: brightness(1.4) drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+  }
+  50% {
+    filter: brightness(1.8) drop-shadow(0 0 18px rgba(255, 255, 255, 0.7));
+  }
+}
+
+.animate-logo-glow {
+  animation: logo-glow 4s ease-in-out infinite;
+}
+
+@keyframes char-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, -14px);
+  }
+}
+
+.animate-char-drift {
+  animation: char-drift ease-in-out infinite;
+}
+
+/* Letter-spacing  breathes in and out */
+@keyframes letter-breathe {
+  0%,
+  100% {
+    letter-spacing: normal;
+  }
+  50% {
+    letter-spacing: 0.05em;
+  }
+}
+
+.animate-letter-breathe {
+  animation: letter-breathe 4s ease-in-out infinite;
+}
+
+/* Plays once when a new translation lands */
 @keyframes text-box-arrive {
   from {
     opacity: 0;
