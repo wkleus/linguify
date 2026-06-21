@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import SpeakButton from "./SpeakButton";
+import useSpeech from "../hooks/useSpeech";
 
 export default function TextAreaBox({
   value,
@@ -8,7 +10,13 @@ export default function TextAreaBox({
   showClearButton = false,
   onClear,
   onKeyDown,
+  langCode,
 }) {
+  // Separate speech instance per box so input/output can be controlled independently
+  const { speak, stop, isSpeaking, isSupported } = useSpeech();
+
+  // Briefly animates the read-only box when a new translation arrives
+  // (textarea content can't be CSS-transitioned directly)
   const [justArrived, setJustArrived] = useState(false);
   const previousValue = useRef(value);
 
@@ -23,7 +31,7 @@ export default function TextAreaBox({
   }, [value, readOnly]);
 
   return (
-    <div className="relative flex justify-center">
+    <div className="relative flex justify-center ">
       {/* Main textarea */}
       <textarea
         maxLength={maxLength}
@@ -36,6 +44,18 @@ export default function TextAreaBox({
         readOnly={readOnly}
         placeholder={readOnly ? "Translated text..." : "Enter your text..."}
       />
+
+      {/* Text-to-speech button */}
+      {langCode && (
+        <SpeakButton
+          text={value}
+          langCode={langCode}
+          speak={speak}
+          stop={stop}
+          isSpeaking={isSpeaking}
+          isSupported={isSupported}
+        />
+      )}
 
       {/* Optional clear button */}
       {showClearButton && (
