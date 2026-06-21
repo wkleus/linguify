@@ -24,4 +24,11 @@ const languagesList = {
   ],
 };
 
+// Shared helper – both translation and speech use this,
+// so new languages only need to be added once, above.
+export function getLanguageCodeByName(name) {
+  const lang = languagesList.languages.find((l) => l.name === name);
+  return lang ? lang.code : "en";
+}
+
 export default languagesList;
