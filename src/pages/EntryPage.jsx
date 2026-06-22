@@ -95,7 +95,7 @@ export default function LinguifyEntry() {
       initial={{ opacity: 0, y: 0 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 2, ease: "easeOut" }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
       className="relative flex flex-col items-center justify-center w-full h-full p-10 text-center overflow-hidden"
     >
       {/* Drifting multilingual decorative letters */}
