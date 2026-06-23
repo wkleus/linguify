@@ -5,88 +5,189 @@ import { useState } from "react";
 
 export default function ContactPage() {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e) => {
+  // State for form data
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  // State for form submission status
+  const [status, setStatus] = useState({
+    loading: false, // Indicates if form is being submitted
+    sent: false, // Indicates if message was sent successfully
+    error: null, // Stores error message if any
+  });
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Backend integration (Resend) coming soon
-    setSent(true);
-    setTimeout(() => setSent(false), 1500);
+    setStatus({ loading: true, sent: false, error: null }); // Reset status
+
+    try {
+      // CAll backend API / Send form data to backend API
+      // IMPORTANT: With Vite, environment variables must start with VITE_ to be available in the frontend!
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
+      const response = await fetch(`${apiUrl}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      // Check if request was successful
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      // Update status on success
+      setStatus({ loading: false, sent: true, error: null });
+      setFormData({ name: "", email: "", message: "" }); // Clear form
+
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setStatus((prev) => ({ ...prev, sent: false }));
+      }, 3000);
+    } catch (error) {
+      // Update status on error
+      setStatus({
+        loading: false,
+        sent: false,
+        error:
+          error.message || "Failed to send message. Please try again later.",
+      });
+    }
   };
 
   return (
-    <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+    <div className="w-full min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+      {/* Animated card container */}
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-10 flex flex-col gap-8"
+        className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 sm:p-10 flex flex-col gap-6 sm:gap-8"
       >
-        <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide text-center">
-          Contact
-        </h1>
+        {/* Header with title and close button */}
+        <div className="flex items-center justify-between">
+          <h1 className="uppercase font-bold text-2xl sm:text-3xl text-amber-400 tracking-wide">
+            Contact
+          </h1>
+          <button
+            onClick={() => navigate("/menu")}
+            className="text-white/80 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
+            aria-label="Close"
+          >
+            <MdClose size={30} />
+          </button>
+        </div>
 
-        <button className="close" onClick={() => navigate("/menu")}>
-          <MdClose size={30} />
-        </button>
-
+        {/* Animated form */}
         <motion.form
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           onSubmit={handleSubmit}
-          className="flex flex-col gap-6 text-white"
+          className="flex flex-col gap-5 text-white"
         >
           <div className="flex flex-col">
-            <label className="mb-1 text-sm opacity-80">Name</label>
+            <label
+              htmlFor="name"
+              className="mb-1.5 text-sm opacity-80 font-medium"
+            >
+              Name
+            </label>
             <input
+              id="name"
+              name="name"
               type="text"
-              className="p-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.name}
+              onChange={handleChange}
+              className="p-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition"
+              placeholder="Your name"
               required
+              disabled={status.loading} // Disable input while loading
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="mb-1 text-sm opacity-80">Email</label>
+            <label
+              htmlFor="email"
+              className="mb-1.5 text-sm opacity-80 font-medium"
+            >
+              Email
+            </label>
             <input
+              id="email"
+              name="email"
               type="email"
-              className="p-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
+              className="p-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition"
+              placeholder="your@email.com"
               required
+              disabled={status.loading} // Disable input while loading
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="mb-1 text-sm opacity-80">Message</label>
+            <label
+              htmlFor="message"
+              className="mb-1.5 text-sm opacity-80 font-medium"
+            >
+              Message
+            </label>
             <textarea
-              className="p-3 rounded-xl bg-white/10 border border-white/20 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-amber-300"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              className="p-3 rounded-xl bg-white/10 border border-white/20 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition resize-y"
+              placeholder="Your message..."
               required
+              disabled={status.loading} // Disable textarea while loading
             />
           </div>
 
-          <button
+          <motion.button
             type="submit"
-            className="bg-amber-600 text-lg text-white font-bold py-3 rounded-xl hover:scale-105 transition cursor-pointer"
-            style={{ WebkitTextStroke: "0.2px rgba(0,0,0,0.1)" }}
+            className="bg-amber-600 text-lg text-white font-bold py-3.5 rounded-xl hover:scale-[1.02] hover:bg-amber-500 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            disabled={status.loading} // Disable button while loading
           >
-            Send Message
-          </button>
+            {status.loading ? "Sending..." : "Send Message"}
+          </motion.button>
 
-          {sent && (
+          {/* Success message */}
+          {status.sent && (
             <motion.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center text-green-300 font-semibold text-lg"
+              className="text-center text-green-300 font-semibold text-lg bg-green-900/30 py-2 rounded-lg"
             >
-              Message sent!
+              ✓ Message sent successfully!
+            </motion.div>
+          )}
+
+          {/* Error message */}
+          {status.error && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center text-red-300 font-semibold text-sm bg-red-900/30 py-2 rounded-lg"
+            >
+              ⚠ {status.error}
             </motion.div>
           )}
         </motion.form>
