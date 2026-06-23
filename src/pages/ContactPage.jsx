@@ -37,17 +37,26 @@ export default function ContactPage() {
     try {
       // CAll backend API / Send form data to backend API
       // IMPORTANT: With Vite, environment variables must start with VITE_ to be available in the frontend!
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+      // Determine the API URL based on the environment
+      // If we are on Vercel (production/preview), use the relative URL
+      // If we are local, use localhost:3000
+      const isProduction = import.meta.env.PROD;
+      const apiUrl = isProduction
+        ? "/api/contact" // on Vercel full path: /api/contact
+        : import.meta.env.VITE_API_URL || "http://localhost:3000"; // local
 
-      const response = await fetch(`${apiUrl}/api/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        isProduction ? apiUrl : `${apiUrl}/api/contact`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        },
+      );
 
-      // Check if request was successful
       if (!response.ok) {
-        throw new Error("Failed to send message");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to send message");
       }
 
       // Update status on success
