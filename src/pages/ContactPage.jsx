@@ -1,10 +1,10 @@
+import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function ContactPage() {
   const navigate = useNavigate();
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -12,30 +12,31 @@ export default function ContactPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Fake send – später kannst du hier API einbauen
+    // Backend integration (Resend) coming soon
     setSent(true);
-
-    setTimeout(() => {
-      setSent(false);
-    }, 1500);
+    setTimeout(() => setSent(false), 1500);
   };
 
   return (
     <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
-      <div className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-10 flex flex-col gap-8">
-        {/* TITLE */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-10 flex flex-col gap-8"
+      >
         <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide text-center">
           Contact
         </h1>
 
-        {/* CLOSE BUTTON */}
         <button className="close" onClick={() => navigate("/menu")}>
           <MdClose size={30} />
         </button>
 
-        {/* FORM */}
-        <form
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           onSubmit={handleSubmit}
           className="flex flex-col gap-6 text-white"
         >
@@ -80,12 +81,16 @@ export default function ContactPage() {
           </button>
 
           {sent && (
-            <div className="text-center text-green-300 font-semibold text-lg ">
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center text-green-300 font-semibold text-lg"
+            >
               Message sent!
-            </div>
+            </motion.div>
           )}
-        </form>
-      </div>
+        </motion.form>
+      </motion.div>
     </div>
   );
 }

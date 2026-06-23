@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { MdClose, MdInfo } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,6 @@ import Tooltip from "../components/Tooltip";
 
 export default function SynonymFinderPage() {
   const navigate = useNavigate();
-
   const [word, setWord] = useState("");
   const [synonyms, setSynonyms] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -22,31 +22,27 @@ export default function SynonymFinderPage() {
 
     try {
       setLoading(true);
-
       const res = await fetch(
         `https://api.datamuse.com/words?rel_syn=${encodeURIComponent(word)}`,
       );
-
       const data = await res.json();
 
-      // Filter: nur „saubere“ Synonyme behalten
+      // Keep only clean single words (no phrases, no special characters)
       const filtered = data
         .map((item) => item.word)
         .filter(
           (w) =>
-            /^[a-zA-ZäöüÄÖÜß]+$/.test(w) && // nur Buchstaben
-            !w.includes(" ") && // keine Phrasen
-            w.length <= 15, // keine extrem langen Wörter
+            /^[a-zA-ZäöüÄÖÜß]+$/.test(w) && !w.includes(" ") && w.length <= 15,
         );
 
       if (!filtered.length) {
-        setError("No clean synonyms found.");
+        setError("No synonyms found.");
         return;
       }
 
       setSynonyms(filtered);
     } catch (err) {
-      setError("Error fetching synonyms. Error: " + err.message);
+      setError("Error fetching synonyms: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -54,8 +50,12 @@ export default function SynonymFinderPage() {
 
   return (
     <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
-      <div className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-xl p-10 flex flex-col items-center gap-6">
-        {/* HEADER */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-xl p-10 flex flex-col items-center gap-6"
+      >
         <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide">
           Synonym Finder
         </h1>
@@ -64,58 +64,79 @@ export default function SynonymFinderPage() {
           <MdClose size={30} />
         </button>
 
-        {/* INPUT */}
-        <input
-          type="text"
-          value={word}
-          onChange={(e) => setWord(e.target.value)}
-          placeholder="Enter a word..."
-          className="w-full p-3 rounded-xl bg-white/20 text-white placeholder-white/60 border border-white/30"
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full flex flex-col gap-4 items-center"
+        >
+          <input
+            type="text"
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && findSynonyms()}
+            placeholder="Enter a word..."
+            className="w-full p-3 rounded-xl bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-amber-300"
+          />
 
-        <div className="relative group flex items-center text-white/70 text-xs -mt-3 italic cursor-default">
-          {/* Tooltip */}
-          <Tooltip text="This tool works best with common English words. Phrases, rare terms, or non-English words may produce inaccurate results. It is recommended to enter a single word at a time.">
-            <p className="flex text-white/70 text-xs italic items-center">
-              <MdInfo size={16} className="mr-1" />
-              English only • Single words recommended
+          <Tooltip text="This tool works best with common English words. Phrases, rare terms, or non-English words may produce inaccurate results. Enter a single word at a time.">
+            <p className="flex text-white/70 text-xs italic items-center gap-1 -mt-2 cursor-default">
+              <MdInfo size={16} />
+              English only · Single words recommended
             </p>
           </Tooltip>
-        </div>
 
-        {/* BUTTON */}
-        <button
-          onClick={findSynonyms}
-          disabled={loading}
-          className="bg-amber-600 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition disabled:opacity-50 mt-2"
-        >
-          {loading ? "Searching..." : "Find Synonyms"}
-        </button>
+          <button
+            onClick={findSynonyms}
+            disabled={loading}
+            className="bg-amber-600 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition disabled:opacity-50"
+          >
+            {loading ? "Searching..." : "Find Synonyms"}
+          </button>
+        </motion.div>
 
-        {/* ERROR */}
-        {error && (
-          <div className="text-red-200 bg-red-900/40 px-4 py-2 rounded-lg">
-            {error}
-          </div>
-        )}
+        {/* Error */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="text-red-200 bg-red-900/40 px-4 py-2 rounded-lg"
+            >
+              {error}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* RESULTS */}
-        {synonyms.length > 0 && (
-          <div className="w-full bg-white/10 p-4 rounded-xl border border-white/20 text-white">
-            <h2 className="font-bold mb-2">Synonyms:</h2>
-            <div className="flex flex-wrap gap-2">
-              {synonyms.map((syn, i) => (
-                <span
-                  key={i}
-                  className="bg-white/20 px-3 py-1 rounded-lg border border-white/30"
-                >
-                  {syn}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+        {/* Results */}
+        <AnimatePresence>
+          {synonyms.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="w-full bg-white/10 p-4 rounded-xl border border-white/20 text-white"
+            >
+              <h2 className="font-bold mb-3">Synonyms:</h2>
+              <div className="flex flex-wrap gap-2">
+                {synonyms.map((syn, i) => (
+                  <motion.span
+                    key={syn}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.03 }}
+                    className="bg-white/20 px-3 py-1 rounded-lg border border-white/30"
+                  >
+                    {syn}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }
