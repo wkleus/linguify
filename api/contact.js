@@ -1,5 +1,5 @@
 // api/contact.js - Vercel Serverless Function
-const { Resend } = require("resend");
+import { Resend } from "resend";
 
 // Initialize Resend with API key from environment variables
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -8,7 +8,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  * Vercel Serverless Function handler
  * Handles POST requests to /api/contact
  */
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // Only allow POST requests
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -56,4 +56,4 @@ module.exports = async (req, res) => {
       error: "Sending email failed.",
     });
   }
-};
+}
