@@ -10,6 +10,9 @@ const sanitize = (str) =>
     .replace(/<[^>]*>/g, "")
     .trim();
 
+// Basic email format check – keeps obviously invalid addresses out
+const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
 /**
  * Vercel Serverless Function handler
  * Handles POST requests to /api/contact
@@ -35,19 +38,31 @@ export default async function handler(req, res) {
     const cleanEmail = sanitize(email);
     const cleanMessage = sanitize(message);
 
-    // Send email using Resend
+    // Check if fields are empty after sanitization
+    if (!cleanName || !cleanEmail || !cleanMessage) {
+      return res.status(400).json({
+        error: "Fields cannot be empty or contain only HTML tags.",
+      });
+    }
+
+    // Email format check
+    if (!isValidEmail(cleanEmail)) {
+      return res.status(400).json({ error: "Invalid email address." });
+    }
+
+    // send email with sanitized values
     const { data, error } = await resend.emails.send({
       from: process.env.SENDER_EMAIL || "onboarding@resend.dev",
       to: [process.env.RECIPIENT_EMAIL],
-      replyTo: email,
-      subject: `LINGUIFY - New contact request from ${name}`,
+      replyTo: cleanEmail, // Sanitized
+      subject: `LINGUIFY - New contact request from ${cleanName}`, // Sanitized
       html: `
         <h1>LINGUIFY</h1>    
         <h2>New Contact Request</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Name:</strong> ${cleanName}</p>
+        <p><strong>Email:</strong> ${cleanEmail}</p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${cleanMessage}</p>
       `,
     });
 
