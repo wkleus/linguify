@@ -1,8 +1,23 @@
-// api/contact.js - Vercel Serverless Function
+// api/contact.js
 import { Resend } from "resend";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 // Initialize Resend with API key from environment variables
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Initialize Redis for rate limiting
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
+
+// Rate Limiter: 2 requests per 5 minutes
+const ratelimit = new RateLimiter({
+  redis: redis,
+  limiter: RateLimiter.slidingWindow(2, "5 m"),
+  analytics: true,
+});
 
 // Strips HTML tags and trims whitespace to prevent HTML injection.
 const sanitize = (str) =>
@@ -24,16 +39,34 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Rate limit check
+    const ip =
+      req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+      req.socket?.remoteAddress ||
+      "unknown";
+
+    const { success, limit, reset, remaining } = await ratelimit.limit(ip);
+
+    if (!success) {
+      return res.status(429).json({
+        error:
+          "Too many requests – please wait a few minutes before trying again.",
+        limit,
+        remaining,
+        reset: new Date(reset).toISOString(),
+      });
+    }
+
     const { name, email, message } = req.body;
 
-    // Validate required fields - check presence
+    // Validate required fields
     if (!name || !email || !message) {
       return res.status(400).json({
         error: "All fields are required.",
       });
     }
 
-    // Sanitize first, then validate the cleaned values
+    // Sanitize
     const cleanName = sanitize(name);
     const cleanEmail = sanitize(email);
     const cleanMessage = sanitize(message);

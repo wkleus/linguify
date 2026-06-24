@@ -13,6 +13,8 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/vite": "^4.1.18",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.38.0",
     "framer-motion": "^12.40.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
