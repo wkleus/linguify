@@ -57,7 +57,7 @@ export default async function handler(req, res) {
       replyTo: cleanEmail, // Sanitized
       subject: `LINGUIFY - New contact request from ${cleanName}`, // Sanitized
       html: `
-        <h1>LINGUIFY</h1>    
+        <h1>LINGUIFY</h1>   
         <h2>New Contact Request</h2>
         <p><strong>Name:</strong> ${cleanName}</p>
         <p><strong>Email:</strong> ${cleanEmail}</p>
