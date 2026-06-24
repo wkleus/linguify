@@ -138,6 +138,12 @@ export default function AboutAppPage() {
             clean separation of logic and UI. Translation and synonym data come
             from external APIs (MyMemory, Datamuse). Text‑to‑speech uses the
             browser's native Web Speech API — no backend required.
+            <br />
+            <br />
+            The contact form uses{" "}
+            <strong className="text-amber-400">Resend</strong> for email
+            delivery, with an Express backend for local development and Vercel
+            serverless functions for production deployment.
           </p>
         </motion.div>
 
@@ -156,9 +162,9 @@ export default function AboutAppPage() {
             </h2>
           </div>
           <p className="text-white/90 leading-6">
-            Upcoming updates may include a contact form backend (Resend),
-            extended language support, and further accessibility improvements.
-            Priorities are based on practical use cases and user feedback.
+            Upcoming updates may include extended language support, user
+            accounts, translation history, and further accessibility
+            improvements.
           </p>
         </motion.div>
 
