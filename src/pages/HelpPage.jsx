@@ -163,8 +163,17 @@ export default function HelpPage() {
             </h2>
           </div>
           <p className="text-white/90 leading-6">
-            If something behaves unexpectedly, use the contact page to send
-            feedback. This helps identify issues and guides future development.
+            If something behaves unexpectedly or you have suggestions for
+            improvement, use the{" "}
+            <button
+              onClick={() => navigate("/contact")}
+              className="text-amber-400 hover:text-amber-300 underline transition-colors font-medium cursor-pointer"
+            >
+              contact page
+            </button>{" "}
+            to send feedback. Messages are delivered via{" "}
+            <strong className="text-amber-400">Resend</strong> email API. This
+            helps identify issues and guides future development.
           </p>
         </motion.section>
 
