@@ -13,9 +13,9 @@ const redis = new Redis({
 });
 
 // Rate Limiter: 2 requests per 5 minutes
-const ratelimit = new RateLimiter({
+const ratelimit = new Ratelimit({
   redis: redis,
-  limiter: RateLimiter.slidingWindow(2, "5 m"),
+  limiter: Ratelimit.slidingWindow(2, "5 m"),
   analytics: true,
 });
 
