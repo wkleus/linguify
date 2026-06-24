@@ -4,6 +4,12 @@ import { Resend } from "resend";
 // Initialize Resend with API key from environment variables
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Strips HTML tags and trims whitespace to prevent HTML injection.
+const sanitize = (str) =>
+  String(str)
+    .replace(/<[^>]*>/g, "")
+    .trim();
+
 /**
  * Vercel Serverless Function handler
  * Handles POST requests to /api/contact
@@ -17,12 +23,17 @@ export default async function handler(req, res) {
   try {
     const { name, email, message } = req.body;
 
-    // Validate required fields
+    // Validate required fields - check presence
     if (!name || !email || !message) {
       return res.status(400).json({
         error: "All fields are required.",
       });
     }
+
+    // Sanitize first, then validate the cleaned values
+    const cleanName = sanitize(name);
+    const cleanEmail = sanitize(email);
+    const cleanMessage = sanitize(message);
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
