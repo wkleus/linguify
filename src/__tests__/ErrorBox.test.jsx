@@ -5,28 +5,24 @@ import ErrorBox from "../layout/ErrorBox";
 // screen    – queries what's visible, the same way a user would see it
 
 describe("ErrorBox", () => {
-  test("renders nothing when error is null", () => {
-    // The component returns null early when there's no error,
-    // so the DOM should be completely empty.
+  test("is invisible (opacity-0) when error is null", () => {
+    // the box stays in the DOM to avoid layout shift – visibility is
+    // controlled via opacity, not by mounting/unmounting
     const { container } = render(<ErrorBox error={null} />);
 
-    // container.firstChild is the root DOM node – null means nothing rendered
-    expect(container.firstChild).toBeNull();
+    expect(container.firstChild).toHaveClass("opacity-0");
   });
 
-  test("renders nothing when error is an empty string", () => {
-    // An empty string is falsy in JavaScript, so it should behave
-    // the same as null – no box, no empty placeholder visible to the user.
+  test("is invisible (opacity-0) when error is an empty string", () => {
     const { container } = render(<ErrorBox error="" />);
 
-    expect(container.firstChild).toBeNull();
+    expect(container.firstChild).toHaveClass("opacity-0");
   });
 
-  test("renders the error message when error is provided", () => {
-    render(<ErrorBox error="Something went wrong" />);
+  test("is visible (opacity-100) and shows the error message", () => {
+    const { container } = render(<ErrorBox error="Something went wrong" />);
 
-    // getByText throws if the element isn't found – that's what we want here,
-    // because the absence of the error message would be a real bug.
+    expect(container.firstChild).toHaveClass("opacity-100");
     expect(screen.getByText("Something went wrong")).toBeInTheDocument();
   });
 

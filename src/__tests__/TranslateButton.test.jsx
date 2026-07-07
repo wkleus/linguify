@@ -8,29 +8,40 @@ import TranslateButton from "../components/TranslateButton";
 describe("TranslateButton", () => {
   test("is enabled and shows no loading indicator when not translating", () => {
     // isTranslating={false} is the default idle state
-    render(<TranslateButton isTranslating={false} onClick={() => {}} />);
+    const { container } = render(
+      <TranslateButton isTranslating={false} onClick={() => {}} />,
+    );
 
     const button = screen.getByRole("button");
 
     // The button must be clickable when idle
     expect(button).toBeEnabled();
 
-    // queryByText returns null if the element doesn't exist – safer than getByText
-    // which throws. We use it here because we're asserting absence.
-    expect(screen.queryByText("...")).toBeNull();
+    // arrow is visible (opacity-100), spinner is hidden (opacity-0)
+    const [arrowSpan, spinnerSpan] = container.querySelectorAll("button > *");
+    expect(arrowSpan).toHaveClass("opacity-100");
+    expect(spinnerSpan).toHaveClass("opacity-0");
   });
 
-  test("is disabled and shows loading dots while translating", () => {
+  test("is disabled and shows spinner while while translating", () => {
     // isTranslating={true} means an API call is in flight
-    render(<TranslateButton isTranslating={true} onClick={() => {}} />);
+    const { container } = render(
+      <TranslateButton isTranslating={true} onClick={() => {}} />,
+    );
 
     const button = screen.getByRole("button");
 
     // Disabled prevents accidental double-submissions during loading
     expect(button).toBeDisabled();
 
-    // The "..." text replaces the arrow icon to signal activity
-    expect(screen.getByText("...")).toBeInTheDocument();
+    // The arrow icon fades out (opacity-0) and the spinner fades in (opacity-100)
+    // when translating – both stay mounted to avoid a hard visual jump.
+    const [arrowSpan, spinnerSpan] = container.querySelectorAll("button > *");
+    expect(arrowSpan).toHaveClass("opacity-0");
+    expect(spinnerSpan).toHaveClass("opacity-100");
+
+    // "..." text must no longer exist – it was replaced by the spinner
+    expect(screen.queryByText("...")).toBeNull();
   });
 
   test("calls onClick exactly once when clicked in idle state", () => {
