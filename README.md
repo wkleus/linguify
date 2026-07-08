@@ -321,3 +321,7 @@ UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
 ```
 
 > **List `.env` file in `.gitignore`.**
+
+## Planned features
+
+- integration of an AI-powered Automatic Post-Editing (APE) pipeline that enhances machine translation results by applying contextual corrections, improving terminology consistency, and delivering higher-quality translations.
