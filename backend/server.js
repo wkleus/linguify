@@ -1,14 +1,18 @@
+// backend/server.js - local Express server for development
+// use shared services for contact email and translation improvement
 const express = require("express");
 const cors = require("cors");
 const { Resend } = require("resend");
 const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
+const { sendContactEmail } = require("../shared/contactService.js");
+const { improveTranslation } = require("../shared/geminiService.js");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/* Middleware */
-
+// CORS for local development
 app.use(
   cors({
     origin: "http://localhost:5173",
