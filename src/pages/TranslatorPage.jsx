@@ -2,18 +2,19 @@ import TranslatorLayout from "../layout/TranslatorLayout";
 import TranslatorHeader from "../layout/TranslatorHeader";
 import TranslatorBody from "../layout/TranslatorBody";
 import ErrorBox from "../layout/ErrorBox";
-
 import LanguageSelector from "../components/LanguageSelector";
 import LanguageList from "../components/LanguageList";
 import CopyNotification from "../components/CopyNotification";
-
 import useTranslator from "../hooks/useTranslator";
 import useLanguageSwitcher from "../hooks/useLanguageSwitcher";
 import ImproveSuggestionBox from "../components/ImproveSuggestionBox";
 import useImproveTranslation from "../hooks/useImproveTranslation";
-import { useEffect } from "react";
+import AIStudio from "../components/AIStudio";
+import { useEffect, useState } from "react"; // useState hinzugefügt
 
 export default function TranslatorPage() {
+  const [showAIStudio, setShowAIStudio] = useState(false); // ← für AI Studio
+
   const {
     sourceText,
     translatedText,
@@ -54,9 +55,6 @@ export default function TranslatorPage() {
     resetImprovement();
   };
 
-  // const test = useImproveTranslation();
-  // console.log(test);
-
   return (
     <TranslatorLayout>
       <TranslatorHeader />
@@ -80,7 +78,6 @@ export default function TranslatorPage() {
             )
           }
         />
-
         <LanguageList
           visible={watchLanguageList}
           activeLanguage={activeLanguage}
@@ -112,12 +109,42 @@ export default function TranslatorPage() {
 
       <CopyNotification visible={copied} />
       <ErrorBox error={error || improveError} />
-
       <ImproveSuggestionBox
         improvedText={improvedText}
         onApply={handleApplySuggestion}
         onDismiss={resetImprovement}
       />
+
+      {/* temporary testing button */}
+      <button
+        onClick={() => setShowAIStudio(true)}
+        className="mx-auto mt-5 block px-3 py-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all active:scale-95"
+      >
+        Open AI Studio (Test)
+      </button>
+
+      {/* AI studio modal */}
+      {showAIStudio && (
+        <AIStudio
+          originalText={
+            sourceText ||
+            "Hallo, ich möchte gerne nächste Woche einen Termin bei Frau Müller vereinbaren."
+          }
+          currentTranslation={
+            translatedText ||
+            "Hello, I would like to book an appointment with Mrs. Muller next week."
+          }
+          sourceLang={chosenFirstLanguage || "German"}
+          targetLang={chosenSecondLanguage || "English"}
+          onApply={(newText) => {
+            console.log("Applied new translation:", newText);
+            setTranslatedText(newText);
+            alert("New version applied! (See console)");
+            setShowAIStudio(false);
+          }}
+          onClose={() => setShowAIStudio(false)}
+        />
+      )}
     </TranslatorLayout>
   );
 }
