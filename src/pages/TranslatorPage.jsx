@@ -9,6 +9,7 @@ import CopyNotification from "../components/CopyNotification";
 
 import useTranslator from "../hooks/useTranslator";
 import useLanguageSwitcher from "../hooks/useLanguageSwitcher";
+import ImproveSuggestionBox from "../components/ImproveSuggestionBox";
 
 export default function TranslatorPage() {
   const {
@@ -79,6 +80,12 @@ export default function TranslatorPage() {
 
       <CopyNotification visible={copied} />
       <ErrorBox error={error} />
+
+      <ImproveSuggestionBox
+        improvedText="Test suggestion to check the layout..."
+        onApply={() => console.log("apply clicked")}
+        onDismiss={() => console.log("dismiss clicked")}
+      />
     </TranslatorLayout>
   );
 }

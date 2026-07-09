@@ -6,11 +6,11 @@ export default function TranslatorHeader() {
 
   return (
     <>
-      <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide -mb-4 -mt-10">
+      <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide -mt-10 hidden md:block ">
         Translator
       </h1>
-      <button className="close" onClick={() => navigate("/menu")}>
-        <MdClose size={30} />
+      <button className="close " onClick={() => navigate("/menu")}>
+        <MdClose className=" sm:size-4 md:size-6" />
       </button>
     </>
   );

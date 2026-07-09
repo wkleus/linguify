@@ -34,7 +34,7 @@ export default function TextAreaBox({
   const isCjk = ["ja", "zh", "ko"].includes(langCode);
 
   return (
-    <div className="relative flex justify-center">
+    <div className="relative flex justify-center w-full  ">
       {/* Main textarea */}
       <textarea
         maxLength={maxLength}
