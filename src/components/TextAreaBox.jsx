@@ -60,7 +60,7 @@ export default function TextAreaBox({
         />
       )}
 
-      {/* Optional clear button */}
+      {/* Clear button */}
       {showClearButton && (
         <button
           onClick={onClear}

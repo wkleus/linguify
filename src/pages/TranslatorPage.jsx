@@ -10,6 +10,8 @@ import CopyNotification from "../components/CopyNotification";
 import useTranslator from "../hooks/useTranslator";
 import useLanguageSwitcher from "../hooks/useLanguageSwitcher";
 import ImproveSuggestionBox from "../components/ImproveSuggestionBox";
+import useImproveTranslation from "../hooks/useImproveTranslation";
+import { useEffect } from "react";
 
 export default function TranslatorPage() {
   const {
@@ -34,14 +36,35 @@ export default function TranslatorPage() {
     switchLanguages,
   } = useLanguageSwitcher();
 
+  const {
+    improvedText,
+    isImproving,
+    improveError,
+    improveTranslation,
+    resetImprovement,
+  } = useImproveTranslation();
+
+  useEffect(() => {
+    resetImprovement();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [translatedText]);
+
+  const handleApplySuggestion = () => {
+    setTranslatedText(improvedText);
+    resetImprovement();
+  };
+
+  // const test = useImproveTranslation();
+  // console.log(test);
+
   return (
     <TranslatorLayout>
       <TranslatorHeader />
 
       {/*
-        This wrapper is the positioning anchor for LanguageList.
+        this wrapper is the positioning anchor for LanguageList
         relative + w-full means LanguageList can use absolute + top-full
-        to sit exactly below the selector – no hardcoded pixel values needed.
+        to sit exactly below the selector (– no hardcoded pixel values needed!!!)
       */}
       <div className="relative w-full">
         <LanguageSelector
@@ -76,15 +99,24 @@ export default function TranslatorPage() {
         isTranslating={isTranslating}
         chosenFirstLanguage={chosenFirstLanguage}
         chosenSecondLanguage={chosenSecondLanguage}
+        onImprove={() =>
+          improveTranslation(
+            sourceText,
+            translatedText,
+            chosenFirstLanguage,
+            chosenSecondLanguage,
+          )
+        }
+        isImproving={isImproving}
       />
 
       <CopyNotification visible={copied} />
-      <ErrorBox error={error} />
+      <ErrorBox error={error || improveError} />
 
       <ImproveSuggestionBox
-        improvedText="Test suggestion to check the layout..."
-        onApply={() => console.log("apply clicked")}
-        onDismiss={() => console.log("dismiss clicked")}
+        improvedText={improvedText}
+        onApply={handleApplySuggestion}
+        onDismiss={resetImprovement}
       />
     </TranslatorLayout>
   );

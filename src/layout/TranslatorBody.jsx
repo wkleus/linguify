@@ -1,6 +1,7 @@
 import TextAreaBox from "../components/TextAreaBox";
 import TranslateButton from "../components/TranslateButton";
 import { getLanguageCodeByName } from "../data/languagesList";
+import ImproveButton from "../components/ImproveButton";
 
 export default function TranslatorBody({
   sourceText,
@@ -10,6 +11,8 @@ export default function TranslatorBody({
   isTranslating,
   chosenFirstLanguage,
   chosenSecondLanguage,
+  onImprove,
+  isImproving,
 }) {
   // Cmd/Ctrl+Enter translates, Esc clears (plain Enter still allows line breaks)
   const handleKeyDown = (e) => {
@@ -26,14 +29,16 @@ export default function TranslatorBody({
 
   return (
     <div className="flex flex-col justify-center md:flex-row w-full lg:gap-4 gap-2 mt-3 sm:px-15">
-      <TextAreaBox
-        value={sourceText}
-        onChange={setSourceText}
-        onKeyDown={handleKeyDown}
-        showClearButton={true}
-        onClear={() => setSourceText("")}
-        langCode={getLanguageCodeByName(chosenFirstLanguage)}
-      />
+      <div className="relative flex-1">
+        <TextAreaBox
+          value={sourceText}
+          onChange={setSourceText}
+          onKeyDown={handleKeyDown}
+          showClearButton={true}
+          onClear={() => setSourceText("")}
+          langCode={getLanguageCodeByName(chosenFirstLanguage)}
+        />
+      </div>
 
       <div className="flex justify-center items-center ">
         <TranslateButton
@@ -42,11 +47,23 @@ export default function TranslatorBody({
         />
       </div>
 
-      <TextAreaBox
-        value={translatedText}
-        readOnly={true}
-        langCode={getLanguageCodeByName(chosenSecondLanguage)}
-      />
+      <div className="relative flex-1">
+        <TextAreaBox
+          value={translatedText}
+          readOnly={true}
+          langCode={getLanguageCodeByName(chosenSecondLanguage)}
+        />
+
+        {/* Speak button positioned at top left, Clear button appears only in the editable field, 
+        AI suggestion button appears only in the read-only field after translation */}
+        <div className="absolute top-2 right-2">
+          <ImproveButton
+            isImproving={isImproving}
+            disabled={!translatedText?.trim()}
+            onClick={onImprove}
+          />
+        </div>
+      </div>
     </div>
   );
 }

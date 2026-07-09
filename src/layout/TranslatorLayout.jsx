@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function TranslatorLayout({ children }) {
   return (
     <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
-      <div className="relative w-[95%] max-w-6xl h-[90vh] md:h-[75vh]">
+      <div className="relative w-[95%] max-w-6xl h-[90vh] md:h-[80vh]">
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
