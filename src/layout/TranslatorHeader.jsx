@@ -6,7 +6,7 @@ export default function TranslatorHeader() {
 
   return (
     <>
-      <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide -mt-10 hidden md:block ">
+      <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide -mt-5 hidden lg:block">
         Translator
       </h1>
       <button className="close " onClick={() => navigate("/menu")}>

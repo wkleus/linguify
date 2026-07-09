@@ -34,13 +34,13 @@ export default function TextAreaBox({
   const isCjk = ["ja", "zh", "ko"].includes(langCode);
 
   return (
-    <div className="relative flex justify-center w-full  ">
+    <div className="relative flex justify-center w-full mt-1">
       {/* Main textarea */}
       <textarea
         maxLength={maxLength}
         className={`text-box ${isCjk ? "font-cjk" : ""} ${
           value.length === maxLength ? "!border-red-500 !border-3" : ""
-        } ${justArrived ? "text-box-arrive" : ""}`}
+        } ${justArrived ? "text-box-arrive" : ""} h-50 md:h-80 lg:h-70`}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         onKeyDown={onKeyDown}

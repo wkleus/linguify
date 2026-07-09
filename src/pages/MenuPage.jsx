@@ -226,7 +226,7 @@ export default function MenuPage() {
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex items-center justify-center gap-3 mb-8 mt-6 relative z-10"
+          className="flex items-center justify-center gap-3 mb-8 mt-0 md:mt-5 relative z-10"
         >
           <FaCompass
             className="text-4xl text-yellow-100 opacity-80"

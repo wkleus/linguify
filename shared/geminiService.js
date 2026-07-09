@@ -1,6 +1,7 @@
 // Gemini API endpoint
 const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+  // "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"; // NOTE: only 20 requests per day
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 // hard limit to keep input safe and predictable
 const MAX_TEXT_LENGTH = 500;
