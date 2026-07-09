@@ -8,7 +8,7 @@
 [![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
 [![Status](https://img.shields.io/badge/Status-In_Development-yellow)](#)
 
-**Linguify** is a fullstack web application for multilingual text work. It combines a React frontend with a Vercel Serverless Function backend, providing translation, text-to-speech, synonym lookup and a contact form backed by a real email API.
+**Linguify** is a fullstack web application for multilingual text work. It combines a React frontend with a Vercel Serverless Function backend, providing translation, text-to-speech, synonym lookup, a contact form backed by a real email API, **and a fully implemented AI-powered Automatic Post-Editing (APE) feature using Gemini Flash 2.5**.
 
 🔗 **Live:** [linguify-web.vercel.app](https://linguify-web.vercel.app)
 
@@ -18,11 +18,11 @@
 
 ### Start Page
 
-<img src="docs/screenshots/entry.png" width="600" height="350" alt="Start Page" />
+<img src="docs/screenshots/entry.png" width="600" height="380" alt="Start Page" />
 
 ### Menu Page
 
-<img src="docs/screenshots/menu.png" width="600" height="350" alt="Menu Page" />
+<img src="docs/screenshots/menu.png" width="600" height="380" alt="Menu Page" />
 
 ### Translator Module
 
@@ -72,48 +72,51 @@
 
 ### Translation
 
-- Direct translation between 20 languages via MyMemory API
-- Live character counter with 250-character limit
+- Direct translation between 20 languages via **MyMemory API**
+- **Automatic Post-Editing** powered by **Gemini Flash 2.5** for significantly higher quality, contextual corrections and better terminology (user can enable it)
+- **Live character counter** with 250-character limit
 - Smooth result animation on translation arrival
-- **Keyboard shortcuts:** `Cmd/Ctrl + Enter` to translate, `Esc` to clear
-- Optional auto-clear (immediate or delayed) and auto-copy
+- **Keyboard shortcuts**: `Cmd/Ctrl + Enter` to translate, `Esc` to clear
+- Optional **auto-clear** (immediate or delayed) and **auto-copy**
 
 ### Text-to-Speech
 
 - Reads input and output text aloud in the selected language
-- Uses the browser's built-in Web Speech API
+- Uses the browser's built-in **Web Speech API**
 - Independent playback controls per field (stop/start)
-- Automatically uses CJK-optimized font (Noto Sans JP) for Asian languages
+- Automatically uses **CJK-optimized** font (Noto Sans JP) for Asian languages
 
 ### Synonym Finder
 
-- Alternative wording suggestions via Datamuse API
+- Alternative wording suggestions via **Datamuse API**
 - Animated result chips with staggered entrance
-- Enter key shortcut for faster lookup
 - English words recommended (Datamuse is English-only)
 
 ### Settings
 
-- Auto-clear input (immediate or 3-second delay)
-- Auto-copy translation output to clipboard
-- All changes auto-persisted to `localStorage` via `useEffect` — no save button
+- **Auto-clear** input (immediate or delay)
+- **Auto-copy** translation output to clipboard
+- Toggle for **AI Automatic Post-Editing**
+- All changes **auto-persisted** to `localStorage` via `useEffect` — no save button
 
 ### Contact Form
 
 - Connected to **Resend** email API via a Vercel Serverless Function
-- Input sanitization (HTML injection prevention)
-- Server-side email format validation
-- Rate limiting via **Upstash Redis** (sliding window: 2 requests / 5 min per IP)
+- Input **sanitization** (HTML injection prevention)
+- Server-side **email format validation**
+- **Rate limiting** via **Upstash Redis** (sliding window: 2 requests / 5 min per IP)
 - Separate Express.js server for local development with `express-rate-limit`
 
 ### Navigation & UX
 
-- Animated menu with staggered button fly-in (Framer Motion)
-- Entrance animations on every page (consistent `scale + opacity` pattern)
+- Animated menu with staggered button fly-in (**Framer Motion**)
+- Entrance animations on every page (consistent scale + opacity pattern)
 - Floating multilingual background characters on the start page
-- Client-side routing with React Router + dedicated 404 page
+- Client-side routing with **React Router** + dedicated **404 page**
 - Smooth translate button spinner (cross-fade, no hard jump)
 - Layout-shift-free error and copy notifications (opacity overlay pattern)
+
+---
 
 ## Technical Overview
 
@@ -124,15 +127,14 @@
 | **Routing**        | React Router                                                                      |
 | **State**          | React Hooks, Custom Hooks, Context API                                            |
 | **Animations**     | Framer Motion (page transitions, stagger, AnimatePresence) + custom CSS keyframes |
-| **Backend (prod)** | Vercel Serverless Function (`api/contact.js`)                                     |
+| **Backend (prod)** | Vercel Serverless Functions (`api/contact.js`, `api/improve.js`)                  |
 | **Backend (dev)**  | Express.js (`backend/server.js`)                                                  |
+| **AI**             | Gemini Flash 2.5 – Automatic Post-Editing                                         |
 | **Email**          | Resend API                                                                        |
 | **Rate Limiting**  | Upstash Redis + `@upstash/ratelimit` (prod) / `express-rate-limit` (dev)          |
 | **Persistence**    | Browser `localStorage`                                                            |
 | **Testing**        | Jest 30 + React Testing Library                                                   |
 | **Deployment**     | Vercel                                                                            |
-
----
 
 ## Architecture
 
@@ -142,6 +144,7 @@ Browser (React SPA)
     ├── Translation  ──────────────► MyMemory API (external)
     ├── Synonym Finder ────────────► Datamuse API (external)
     ├── Text-to-Speech ────────────► Web Speech API (browser built-in)
+    ├── Post-Editing ──────────────► Gemini Flash 2.5 (via /api/improve)
     │
     └── Contact Form
             │
@@ -178,7 +181,8 @@ Browser (React SPA)
 linguify/
 │
 ├── api/
-│   └── contact.js              # Vercel Serverless Function (prod backend)
+│   ├── contact.js              # Vercel Serverless Function (prod backend)
+│   └── improve.js              # Gemini Post-Editing
 │
 ├── backend/
 │   ├── server.js               # Express.js dev server
@@ -192,10 +196,10 @@ linguify/
 │   ├── components/             # Reusable UI components
 │   ├── context/                # SettingsContext (global state)
 │   ├── data/                   # Static data (language list + helper)
-│   ├── hooks/                  # Custom React hooks
+│   ├── hooks/                  # Custom React hooks (incl. useImproveTranslation.js)
 │   ├── layout/                 # Page layout wrappers
 │   ├── pages/                  # Application pages
-│   ├── App.jsx                 # Routing configuration
+│   ├── App.jsx                 # Routing
 │   ├── index.css               # Global styles + CSS animations
 │   └── main.jsx                # Entry point
 │
@@ -225,6 +229,8 @@ linguify/
 ### Upstash Redis -> For persistent Rate Limiting
 
 `https://upstash.com`
+
+## Gemini Flash 2.5 –> Automatic Post-Editing
 
 ---
 
@@ -308,6 +314,7 @@ VITE_API_URL=http://localhost:3000
 RESEND_API_KEY=your_resend_api_key
 SENDER_EMAIL=your_verified_sender@yourdomain.com
 RECIPIENT_EMAIL=your_email@example.com
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
 ### Vercel (Dashboard → Project -> Settings → Environment Variables)
@@ -318,10 +325,11 @@ SENDER_EMAIL=your_verified_sender@yourdomain.com
 RECIPIENT_EMAIL=your_email@example.com
 UPSTASH_REDIS_REST_URL=your_upstash_redis_url
 UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
 > **List `.env` file in `.gitignore`.**
 
 ## Planned features
 
-- integration of an AI-powered Automatic Post-Editing (APE) pipeline that enhances machine translation results by applying contextual corrections, improving terminology consistency, and delivering higher-quality translations.
+- A dedicated **AI Studio Mode** should let users refine, reshape and analyze translated text using advanced AI tools
