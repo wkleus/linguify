@@ -2,7 +2,7 @@
 // use shared/geminiService.js for Gemini logic; rate-limiting via Upstash Redis
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { improveTranslation } from "../shared/geminiService.js";
+import { improveTranslation } from "../shared/deepseekService.js";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL,
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
 
     // delegate all Gemini logic to shared service
     const { status, body } = await improveTranslation({
-      apiKey: process.env.GEMINI_API_KEY,
+      apiKey: process.env.DEEPSEEK_API_KEY,
       sourceText,
       translatedText,
       sourceLang,

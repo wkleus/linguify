@@ -1,4 +1,4 @@
-// backend/server.js - local Express server for development
+// local Express server for development
 // use shared services for contact email and translation improvement
 const express = require("express");
 const cors = require("cors");
@@ -7,7 +7,7 @@ const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const { sendContactEmail } = require("../shared/contactService.js");
-const { improveTranslation } = require("../shared/geminiService.js");
+const { improveTranslation } = require("../shared/deepseekService.js");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -61,8 +61,8 @@ console.log(
 console.log("✅ SENDER_EMAIL:", process.env.SENDER_EMAIL || "❌ Failure");
 console.log("✅ RECIPIENT_EMAIL:", process.env.RECIPIENT_EMAIL || "❌ Failure");
 console.log(
-  "✅ GEMINI_API_KEY:",
-  process.env.GEMINI_API_KEY ? "Loaded successfully" : "❌ Failure.",
+  "✅ DEEPSEEK_API_KEY:",
+  process.env.DEEPSEEK_API_KEY ? "Loaded successfully" : "❌ Failure.",
 );
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -95,7 +95,7 @@ app.post("/api/improve", async (req, res) => {
       req.body || {};
 
     const { status, body } = await improveTranslation({
-      apiKey: process.env.GEMINI_API_KEY,
+      apiKey: process.env.DEEPSEEK_API_KEY,
       sourceText,
       translatedText,
       sourceLang,
