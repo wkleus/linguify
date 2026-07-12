@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Robot } from "@phosphor-icons/react";
+import { buildApiUrl } from "../utils/apiUrl";
 
 const quickActions = [
   { label: "More formal", value: "Make this more formal" },
@@ -21,30 +22,56 @@ export default function AIStudio({
   const [instruction, setInstruction] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState("deepseek");
+  const [error, setError] = useState("");
 
-  const runMockAI = async (customInstruction) => {
+  const runAI = async (customInstruction) => {
+    setError("");
+    setResult("");
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
 
-    setResult(
-      "AI TRANSLATION:\n\n" +
-        currentTranslation +
-        "\n\n(This version was optimized on base of your instruction.)\n\n",
-    );
-    setLoading(false);
+    try {
+      const res = await fetch(buildApiUrl("/api/improve"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sourceText: originalText,
+          translatedText: currentTranslation,
+          sourceLang,
+          targetLang,
+          instruction: customInstruction,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || `Error (${res.status})`);
+      }
+
+      if (!data.improvedText) {
+        throw new Error("No suggestion received. Please try again.");
+      }
+
+      setResult(data.improvedText);
+    } catch (err) {
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" // dark bg
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
     >
       <motion.div
         initial={{ scale: 0.95, y: 20 }}
         animate={{ scale: 1, y: 0 }}
-        className="bg-zinc-900 text-white w-full  h-full max-w-6xl max-h-[100vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-zinc-700"
+        exit={{ scale: 0.95, y: 20 }}
+        className="bg-zinc-900 text-white w-full h-full max-w-6xl max-h-[100vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-zinc-700"
       >
         {/* Header */}
         <div className="px-6 py-4 border-b border-zinc-700 flex items-center justify-between bg-zinc-950">
@@ -61,7 +88,7 @@ export default function AIStudio({
         </div>
 
         <div className="flex flex-1 overflow-hidden">
-          {/* Left site */}
+          {/* Left side – texts + result */}
           <div className="w-5/12 border-r border-zinc-700 p-6 overflow-auto bg-zinc-950">
             <div className="mb-6">
               <p className="text-zinc-400 text-xs uppercase tracking-widest mb-1">
@@ -81,6 +108,16 @@ export default function AIStudio({
             </div>
 
             <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="mt-4 p-3 bg-red-950 border border-red-800 rounded-2xl text-xs text-red-300"
+                >
+                  {error}
+                </motion.div>
+              )}
               {result && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -91,7 +128,7 @@ export default function AIStudio({
                     <span>RESULT</span>
                     <button
                       onClick={() => onApply(result)}
-                      className="text-emerald-400 hover:text-emerald-300"
+                      className="text-emerald-400 hover:text-emerald-300 transition-colors"
                     >
                       Apply
                     </button>
@@ -104,31 +141,17 @@ export default function AIStudio({
             </AnimatePresence>
           </div>
 
-          {/*  Right site */}
+          {/* Right side – controls */}
           <div className="flex-1 p-5 flex flex-col bg-zinc-900">
-            <div className="mb-3">
-              <label className="block text-zinc-400 text-xs mb-1">
-                PROVIDER
-              </label>
-              <select
-                value={selectedProvider}
-                onChange={(e) => setSelectedProvider(e.target.value)}
-                className="w-full bg-zinc-800 border border-zinc-700 text-white p-2 rounded-2xl text-xs"
-              >
-                <option value="deepseek">DeepSeek (cheap)</option>
-                <option value="gemini">Gemini Flash 2.5</option>
-              </select>
-            </div>
-
             <div className="mb-3">
               <p className="text-zinc-400 text-xs mb-2">FAST ACTIONS</p>
               <div className="grid grid-cols-2 gap-2">
                 {quickActions.map((a, i) => (
                   <button
                     key={i}
-                    onClick={() => runMockAI(a.value)}
+                    onClick={() => runAI(a.value)}
                     disabled={loading}
-                    className="text-left text-xs py-2 px-4 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-2xl transition-colors"
+                    className="text-left text-xs py-2 px-4 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-2xl transition-colors disabled:opacity-50"
                   >
                     {a.label}
                   </button>
@@ -144,7 +167,7 @@ export default function AIStudio({
             />
 
             <button
-              onClick={() => runMockAI(instruction)}
+              onClick={() => runAI(instruction)}
               disabled={loading || !instruction.trim()}
               className="mt-5 py-3.5 bg-purple-600 hover:bg-purple-500 disabled:bg-zinc-700 text-white font-medium rounded-2xl transition-colors text-sm"
             >

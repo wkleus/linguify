@@ -5,15 +5,14 @@ import ErrorBox from "../layout/ErrorBox";
 import LanguageSelector from "../components/LanguageSelector";
 import LanguageList from "../components/LanguageList";
 import CopyNotification from "../components/CopyNotification";
+import AIStudio from "../components/AIStudio";
 import useTranslator from "../hooks/useTranslator";
 import useLanguageSwitcher from "../hooks/useLanguageSwitcher";
-import ImproveSuggestionBox from "../components/ImproveSuggestionBox";
-import useImproveTranslation from "../hooks/useImproveTranslation";
-import AIStudio from "../components/AIStudio";
-import { useEffect, useState } from "react"; // useState hinzugefügt
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 export default function TranslatorPage() {
-  const [showAIStudio, setShowAIStudio] = useState(false); // ← für AI Studio
+  const [showAIStudio, setShowAIStudio] = useState(false);
 
   const {
     sourceText,
@@ -37,33 +36,10 @@ export default function TranslatorPage() {
     switchLanguages,
   } = useLanguageSwitcher();
 
-  const {
-    improvedText,
-    isImproving,
-    improveError,
-    improveTranslation,
-    resetImprovement,
-  } = useImproveTranslation();
-
-  useEffect(() => {
-    resetImprovement();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [translatedText]);
-
-  const handleApplySuggestion = () => {
-    setTranslatedText(improvedText);
-    resetImprovement();
-  };
-
   return (
     <TranslatorLayout>
       <TranslatorHeader />
 
-      {/*
-        this wrapper is the positioning anchor for LanguageList
-        relative + w-full means LanguageList can use absolute + top-full
-        to sit exactly below the selector (– no hardcoded pixel values needed!!!)
-      */}
       <div className="relative w-full">
         <LanguageSelector
           chosenFirstLanguage={chosenFirstLanguage}
@@ -96,55 +72,29 @@ export default function TranslatorPage() {
         isTranslating={isTranslating}
         chosenFirstLanguage={chosenFirstLanguage}
         chosenSecondLanguage={chosenSecondLanguage}
-        onImprove={() =>
-          improveTranslation(
-            sourceText,
-            translatedText,
-            chosenFirstLanguage,
-            chosenSecondLanguage,
-          )
-        }
-        isImproving={isImproving}
+        onImprove={() => setShowAIStudio(true)}
+        isImproving={false}
       />
 
       <CopyNotification visible={copied} />
-      <ErrorBox error={error || improveError} />
-      <ImproveSuggestionBox
-        improvedText={improvedText}
-        onApply={handleApplySuggestion}
-        onDismiss={resetImprovement}
-      />
+      <ErrorBox error={error} />
 
-      {/* temporary testing button */}
-      <button
-        onClick={() => setShowAIStudio(true)}
-        className="mx-auto mt-5 block px-3 py-2 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all active:scale-95"
-      >
-        Open AI Studio (Test)
-      </button>
-
-      {/* AI studio modal */}
-      {showAIStudio && (
-        <AIStudio
-          originalText={
-            sourceText ||
-            "Hallo, ich möchte gerne nächste Woche einen Termin bei Frau Müller vereinbaren."
-          }
-          currentTranslation={
-            translatedText ||
-            "Hello, I would like to book an appointment with Mrs. Muller next week."
-          }
-          sourceLang={chosenFirstLanguage || "German"}
-          targetLang={chosenSecondLanguage || "English"}
-          onApply={(newText) => {
-            console.log("Applied new translation:", newText);
-            setTranslatedText(newText);
-            alert("New version applied! (See console)");
-            setShowAIStudio(false);
-          }}
-          onClose={() => setShowAIStudio(false)}
-        />
-      )}
+      {/* AI Studio modal – opens when the improve button is clicked */}
+      <AnimatePresence>
+        {showAIStudio && (
+          <AIStudio
+            originalText={sourceText}
+            currentTranslation={translatedText}
+            sourceLang={chosenFirstLanguage}
+            targetLang={chosenSecondLanguage}
+            onApply={(newText) => {
+              setTranslatedText(newText);
+              setShowAIStudio(false);
+            }}
+            onClose={() => setShowAIStudio(false)}
+          />
+        )}
+      </AnimatePresence>
     </TranslatorLayout>
   );
 }
