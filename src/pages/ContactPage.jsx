@@ -89,15 +89,12 @@ export default function ContactPage() {
       >
         {/* Header with title and close button */}
         <div className="flex items-center justify-between">
-          <h1 className="uppercase font-bold text-2xl sm:text-3xl text-amber-400 tracking-wide">
+          <h1 className="uppercase font-bold text-2xl sm:text-3xl text-amber-500 tracking-wide">
             Contact
           </h1>
-          <button
-            onClick={() => navigate("/menu")}
-            className="text-white/80 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
-            aria-label="Close"
-          >
-            <MdClose size={30} />
+
+          <button className="close" onClick={() => navigate("/menu")}>
+            <MdClose className="size-3 sm:size-6 " />
           </button>
         </div>
 
@@ -170,9 +167,9 @@ export default function ContactPage() {
 
           <motion.button
             type="submit"
-            className="bg-amber-600 text-lg text-white font-bold py-3.5 rounded-xl hover:scale-[1.02] hover:bg-amber-500 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            className="bg-amber-600/80 text-sm sm:text-base text-white font-bold py-3.5 rounded-xl hover:bg-amber-600 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
             disabled={status.loading} // Disable button while loading
           >
             {status.loading ? "Sending..." : "Send Message"}

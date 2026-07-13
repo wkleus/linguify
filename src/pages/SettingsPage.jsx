@@ -18,8 +18,8 @@ export default function SettingsPage() {
     <SettingsLayout>
       <SettingsHeader />
 
-      <div className="flex flex-col gap-6 text-white text-lg">
-        <div className="font-bold">Auto-clear:</div>
+      <div className="flex flex-col gap-5 text-white text-lg">
+        <div className="font-bold text-sm sm:text-lg">Auto-clear:</div>
 
         {/* setAutoClearInstant automatically disables autoClearDelay (in Context) */}
         <SettingsOption
@@ -36,7 +36,7 @@ export default function SettingsPage() {
           onChange={() => setAutoClearDelay(!autoClearDelay)}
         />
 
-        <div className="font-bold">Auto-copy:</div>
+        <div className="font-bold text-sm sm:text-lg">Auto-copy:</div>
 
         <SettingsOption
           label="Auto-copy output"

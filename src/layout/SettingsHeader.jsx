@@ -7,13 +7,13 @@ export default function SettingsHeader() {
   return (
     <>
       {/* Title of the settings page */}
-      <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide text-center">
+      <h1 className="uppercase font-bold text-3xl text-amber-500 tracking-wide text-center">
         Settings
       </h1>
 
       {/* Close button that navigates back to /menu */}
       <button className="close" onClick={() => navigate("/menu")}>
-        <MdClose size={30} />
+        <MdClose className="size-3 sm:size-6 " />
       </button>
     </>
   );
