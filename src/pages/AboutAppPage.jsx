@@ -29,7 +29,7 @@ export default function AboutAppPage() {
       >
         {/* Close button */}
         <button className="close" onClick={() => navigate("/menu")}>
-          <MdClose size={30} />
+          <MdClose className="size-3 sm:size-6 " />
         </button>
 
         <motion.h1
@@ -37,7 +37,7 @@ export default function AboutAppPage() {
           initial="hidden"
           animate="visible"
           custom={0.1}
-          className="text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8"
+          className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8"
         >
           About Linguify
         </motion.h1>
@@ -48,7 +48,7 @@ export default function AboutAppPage() {
           initial="hidden"
           animate="visible"
           custom={0.2}
-          className="text-white/90 leading-7 mb-6"
+          className="text-white/90 leading-6 text-sm sm:text-base mb-6"
         >
           Linguify is a web‑based tool designed to support users in working with
           multilingual text. It provides translation, synonym lookup, and
@@ -66,11 +66,11 @@ export default function AboutAppPage() {
         >
           <div className="flex items-center mb-2">
             <FaFlagCheckered size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
               Purpose and Scope
             </h2>
           </div>
-          <p className="text-white/90 leading-6">
+          <p className="text-white/90 leading-6 text-sm sm:text-base">
             Built for users who regularly work with text in different languages
             — whether writing, learning, or reviewing content. Linguify reduces
             manual steps and keeps frequently needed tools in one place.
@@ -87,11 +87,11 @@ export default function AboutAppPage() {
         >
           <div className="flex items-center mb-2">
             <HiSparkles size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
               Functional Overview
             </h2>
           </div>
-          <ul className="text-white/90 leading-7 list-disc pl-6">
+          <ul className="text-white/90 leading-7 list-disc pl-6 text-sm sm:text-base">
             <li>
               <span className="font-semibold">Translation — </span>
               Direct text translation between 20 languages with keyboard
@@ -129,11 +129,11 @@ export default function AboutAppPage() {
         >
           <div className="flex items-center mb-2">
             <FiZap size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
               Technical Basis
             </h2>
           </div>
-          <p className="text-white/90 leading-6">
+          <p className="text-white/90 leading-6 text-sm sm:text-base">
             Built with React, Tailwind CSS, Framer Motion, and custom hooks for
             clean separation of logic and UI. Translation and synonym data come
             from external APIs (MyMemory, Datamuse). Text‑to‑speech uses the
@@ -157,11 +157,11 @@ export default function AboutAppPage() {
         >
           <div className="flex items-center mb-2">
             <GiCrystalBall size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
               Planned Development
             </h2>
           </div>
-          <p className="text-white/90 leading-6">
+          <p className="text-white/90 leading-6 text-sm sm:text-base">
             Upcoming updates may include extended language support, user
             accounts, translation history, and further accessibility
             improvements.

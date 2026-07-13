@@ -28,7 +28,7 @@ export default function HelpPage() {
       >
         {/* Close button */}
         <button className="close" onClick={() => navigate("/menu")}>
-          <MdClose size={30} />
+          <MdClose className="size-3 sm:size-6 " />
         </button>
 
         <motion.h1
@@ -36,7 +36,7 @@ export default function HelpPage() {
           initial="hidden"
           animate="visible"
           custom={0.1}
-          className="text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8"
+          className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8"
         >
           Help & Support
         </motion.h1>
@@ -46,7 +46,7 @@ export default function HelpPage() {
           initial="hidden"
           animate="visible"
           custom={0.2}
-          className="text-white/90 leading-7 mb-6"
+          className="text-white/90 leading-6 mb-6 text-sm sm:text-base"
         >
           An overview of all available features in Linguify and how to use them.
         </motion.p>
@@ -61,13 +61,15 @@ export default function HelpPage() {
         >
           <div className="flex items-center mb-2">
             <RiTranslate size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">Translator</h2>
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
+              Translator
+            </h2>
           </div>
-          <p className="text-white/90 leading-6 mb-2">
+          <p className="text-white/90 leading-6 mb-2 text-sm sm:text-base">
             Translates text between supported languages with a minimal, focused
             interface.
           </p>
-          <ul className="text-white/90 leading-6 list-disc pl-6">
+          <ul className="text-white/90 leading-6 list-disc pl-6 text-sm sm:text-base">
             <li>Select a source and a target language.</li>
             <li>Enter text into the input field.</li>
             <li>Press the central button or use a keyboard shortcut.</li>
@@ -97,11 +99,11 @@ export default function HelpPage() {
         >
           <div className="flex items-center mb-2">
             <HiSpeakerWave size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
               Text‑to‑Speech
             </h2>
           </div>
-          <p className="text-white/90 leading-6">
+          <p className="text-white/90 leading-6 text-sm sm:text-base">
             Both the input and output fields have a speaker button (top left).
             Click it to hear the text read aloud in the selected language. Click
             again to stop. Uses the browser's built‑in Speech API — no
@@ -119,11 +121,11 @@ export default function HelpPage() {
         >
           <div className="flex items-center mb-2">
             <FiSearch size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
               Synonym Finder
             </h2>
           </div>
-          <p className="text-white/90 leading-6">
+          <p className="text-white/90 leading-6 text-sm sm:text-base">
             Provides alternative wording suggestions for individual terms —
             useful when revising text or looking for more precise expressions.
           </p>
@@ -139,9 +141,11 @@ export default function HelpPage() {
         >
           <div className="flex items-center mb-2">
             <FiSettings size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">Settings</h2>
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
+              Settings
+            </h2>
           </div>
-          <p className="text-white/90 leading-6">
+          <p className="text-white/90 leading-6 text-sm sm:text-base">
             Customize automated behavior: auto‑clear the input field after
             translation, or auto‑copy the result to the clipboard. Changes take
             effect immediately and are stored locally in the browser.
@@ -158,11 +162,11 @@ export default function HelpPage() {
         >
           <div className="flex items-center mb-2">
             <BiHelpCircle size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-xl font-semibold text-amber-400">
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
               Additional Support
             </h2>
           </div>
-          <p className="text-white/90 leading-6">
+          <p className="text-white/90 leading-6 text-sm sm:text-base">
             If something behaves unexpectedly or you have suggestions for
             improvement, use the{" "}
             <button
