@@ -7,17 +7,17 @@ export default function LanguageSelector({
   onSwitchLanguages,
 }) {
   return (
-    <div className="text-white w-full min-h-35 flex justify-center items-center relative -mb-25 lg:-mb-18 ">
+    <div className="text-white w-full min-h-15  md:min-h-35 flex justify-center items-center relative  lg:-mb-18 ">
       {/* First language selector */}
       <div
-        className="lingo mb-20 lg:mb-5"
+        className="lingo md:-mb-30 lg:mb-5"
         onClick={() => onSelectLanguage("from")}
       >
         {chosenFirstLanguage}
       </div>
 
       {/* Swap languages button */}
-      <div className="mx-8 mb-20 lg:mb-5 flex justify-center items-center align-middle text-center">
+      <div className="mx-8 md:-mb-30 lg:mb-5 flex justify-center items-center align-middle text-center">
         <HiArrowPathRoundedSquare
           size={42}
           className="mx-35 absolute hover:scale-105 hover:bg-white/10 rounded-2xl ease-in duration-150 cursor-pointer"
@@ -27,7 +27,7 @@ export default function LanguageSelector({
 
       {/* Second language selector */}
       <div
-        className="lingo mb-20 lg:mb-5"
+        className="lingo md:-mb-30 lg:mb-5"
         onClick={() => onSelectLanguage("to")}
       >
         {chosenSecondLanguage}

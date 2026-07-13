@@ -107,14 +107,14 @@ const menuItems = [
   {
     title: "Contact",
     path: "/contact",
-    pos: { top: "18%", left: "12%" },
+    pos: { top: "20%", left: "12%" },
     icon: FaEnvelope,
     color: "#4ECDC4",
   },
   {
     title: "About App",
     path: "/about-app",
-    pos: { top: "55%", left: "10%" },
+    pos: { top: "55%", left: "12%" },
     icon: FaInfoCircle,
     color: "#45B7D1",
   },
@@ -135,14 +135,14 @@ const menuItems = [
   {
     title: "Translator",
     path: "/translator",
-    pos: { top: "24%", left: "65%" },
+    pos: { top: "25%", left: "63%" },
     icon: FaLanguage,
     color: "#96C9B4",
   },
   {
     title: "Settings",
     path: "/settings",
-    pos: { top: "65%", left: "70%" },
+    pos: { top: "65%", left: "68%" },
     icon: FaCog,
     color: "#FFbA5C",
   },
@@ -233,7 +233,7 @@ export default function MenuPage() {
             style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.2))" }}
           />
           <h1
-            className="text-4xl font-bold text-yellow-100 opacity-80"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold text-yellow-100 opacity-80"
             style={{ textShadow: "0 2px 10px rgba(0,0,0,0.2)" }}
           >
             Navigation
@@ -249,27 +249,45 @@ export default function MenuPage() {
             <motion.button
               key={item.title}
               onClick={() => navigate(item.path)}
-              style={{
-                position: "absolute",
-                ...item.pos,
-                transform: "translate(-50%, -50%)",
-                padding: "0.6rem 1.2rem",
-                background: "rgba(255,255,255,0.12)",
-                border: "1px solid rgba(255,255,255,0.25)",
-                borderRadius: "12px",
-                color: "white",
-                fontSize: "clamp(0.9rem, 1.2vw, 1.2rem)",
-                fontWeight: "600",
-                cursor: "pointer",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                letterSpacing: "0.3px",
-                zIndex: 10,
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-              }}
+              className="
+  absolute
+  -translate-x-1/8 -translate-y-1/15
+  md:px-[1.2rem] md:py-[0.6rem] px-[0.6rem] py-[0.3rem]
+  bg-white/10
+  border border-white/25
+  rounded-xl
+  text-white
+  font-semibold
+  cursor-pointer
+  shadow-md
+  backdrop-blur-md
+  tracking-wide
+  z-10
+  flex items-center gap-2
+  text-[clamp(0.9rem,1.2vw,1.2rem)]
+"
+              style={item.pos}
+              // style={{
+              //   position: "absolute",
+              //   ...item.pos,
+              //   transform: "translate(-50%, -50%)",
+              //   padding: "0.6rem 1.2rem",
+              //   background: "rgba(255,255,255,0.12)",
+              //   border: "1px solid rgba(255,255,255,0.25)",
+              //   borderRadius: "12px",
+              //   color: "white",
+              //   fontSize: "clamp(0.9rem, 1.2vw, 1.2rem)",
+              //   fontWeight: "600",
+              //   cursor: "pointer",
+              //   boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+              //   backdropFilter: "blur(8px)",
+              //   WebkitBackdropFilter: "blur(8px)",
+              //   letterSpacing: "0.3px",
+              //   zIndex: 10,
+              //   display: "flex",
+              //   alignItems: "center",
+              //   gap: "0.5rem",
+              // }}
               initial={{
                 opacity: 0,
                 scale: 0.3,
