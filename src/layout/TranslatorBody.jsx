@@ -28,7 +28,7 @@ export default function TranslatorBody({
   };
 
   return (
-    <div className="flex flex-col justify-center md:flex-row w-full lg:gap-4 gap-2 mt-3 sm:px-15">
+    <div className="flex flex-col justify-center md:flex-row w-full lg:gap-4 gap-2 md:mt-3  sm:px-15">
       <div className="relative flex-1">
         <TextAreaBox
           value={sourceText}

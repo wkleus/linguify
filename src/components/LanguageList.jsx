@@ -23,7 +23,7 @@ export default function LanguageList({
         bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
         rounded-lg overflow-y-auto z-50 border border-white/60
         font-mono scrollbar-hide outline-none
-       mt-3 w-full h-[67vh] md:h-[42vh] xl:h-[47vh] 
+       mt-1 md:mt-3 w-full h-[68vh] md:h-[48vh] xl:h-[47vh] 
         ${isClosing ? "animate-fadeSlideUp" : "animate-fadeSlideDown"}
       `}
     >

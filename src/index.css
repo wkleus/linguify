@@ -32,7 +32,7 @@ body {
 }
 
 .lingo {
-  @apply text-xl cursor-pointer font-bold mx-auto hover:bg-white/10 duration-100 p-2 rounded-lg;
+  @apply cursor-pointer font-bold mx-auto hover:bg-white/10 duration-100 p-2 rounded-lg;
 }
 
 .text-box {
