@@ -5,7 +5,6 @@ import { buildApiUrl } from "../utils/apiUrl";
 
 const quickActions = [
   { label: "More formal", value: "Make this more formal" },
-  { label: "Shorter", value: "Make this shorter" },
   { label: "More natural", value: "Make this more natural" },
   { label: "Friendlier", value: "Make this friendlier" },
   { label: "Back-translation", value: "Back translate for quality check" },
@@ -23,11 +22,13 @@ export default function AIStudio({
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isBackTranslation, setIsBackTranslation] = useState(false);
 
   const runAI = async (customInstruction) => {
     setError("");
     setResult("");
     setLoading(true);
+    setIsBackTranslation(/back[\s-]?translat/i.test(customInstruction || ""));
 
     try {
       const res = await fetch(buildApiUrl("/api/improve"), {
@@ -125,24 +126,36 @@ export default function AIStudio({
                   className="mt-4"
                 >
                   <div className="flex justify-between mb-2 text-xs text-zinc-400">
-                    <span>RESULT</span>
-                    <button
-                      onClick={() => onApply(result)}
-                      className="text-emerald-400 hover:text-emerald-300 transition-colors"
-                    >
-                      Apply
-                    </button>
+                    <span>
+                      {isBackTranslation
+                        ? `BACK-TRANSLATION • ${sourceLang} (for comparison)`
+                        : "RESULT"}
+                    </span>
+                    {!isBackTranslation && (
+                      <button
+                        onClick={() => onApply(result)}
+                        className="text-emerald-400 hover:text-emerald-300 transition-colors"
+                      >
+                        Apply
+                      </button>
+                    )}
                   </div>
                   <div className="p-3 bg-emerald-950 border border-emerald-900 rounded-3xl text-xs text-emerald-100 leading-relaxed">
                     {result}
                   </div>
+                  {isBackTranslation && (
+                    <p className="mt-2 text-[11px] text-zinc-500 leading-relaxed">
+                      Compare this against the original text above to check
+                      translation quality. Not applied automatically.
+                    </p>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
           {/* Right side – controls */}
-          <div className="flex-1 p-5 flex flex-col bg-zinc-900">
+          <div className="flex-1 px-10 py-25 md:py-20 lg:px-20 lg:py-15 flex flex-col bg-zinc-900">
             <div className="mb-3">
               <p className="text-zinc-400 text-xs mb-2">FAST ACTIONS</p>
               <div className="grid grid-cols-2 gap-2">

@@ -5,12 +5,16 @@ const DEEPSEEK_MODEL = "deepseek-v4-flash"; // deepseek-v4-flash = fast & cheape
 // Hard limit to keep input safe and predictable
 const MAX_TEXT_LENGTH = 500;
 
+// Max length for the free-text / quick-action instruction
+const MAX_INSTRUCTION_LENGTH = 200;
+
 // Validates all user inputs
 function validateImproveInput({
   sourceText,
   translatedText,
   sourceLang,
   targetLang,
+  instruction,
 }) {
   const check = (label, value) =>
     typeof value !== "string" || !value.trim()
@@ -24,16 +28,50 @@ function validateImproveInput({
     check("Translated text", translatedText),
     !sourceLang?.trim() && "Source language is required.",
     !targetLang?.trim() && "Target language is required.",
+    instruction != null &&
+      typeof instruction === "string" &&
+      instruction.length > MAX_INSTRUCTION_LENGTH &&
+      `Instruction must be shorter than ${MAX_INSTRUCTION_LENGTH} characters.`,
   ].filter(Boolean);
 }
 
-// Build minimal prompt (no explanations in output)
+// Build prompt - when an instruction (quick action or free text) is given,
+// it takes priority and steers the edit; otherwise fall back to generic post-editing
 function buildPostEditPrompt({
   sourceText,
   translatedText,
   sourceLang,
   targetLang,
+  instruction,
 }) {
+  const trimmedInstruction =
+    typeof instruction === "string" ? instruction.trim() : "";
+
+  // Back-translation is a special quality-check action: it must translate the
+  // *translation* back into the *source* language, not follow the generic
+  // "stay in targetLang" template used by other quick actions.
+  if (/back[\s-]?translat/i.test(trimmedInstruction)) {
+    return `You are a professional ${sourceLang} translator performing a back-translation for quality control.
+Translate the following ${targetLang} text literally back into ${sourceLang}, so it can be compared against the original.
+Respond ONLY with the back-translated ${sourceLang} text, no explanations.
+
+Text to back-translate (${targetLang}):
+${translatedText}`.trim();
+  }
+
+  if (trimmedInstruction) {
+    return `You are a professional ${targetLang} translator doing automatic post-editing.
+Apply the following instruction to the machine translation: "${trimmedInstruction}"
+Preserve the original meaning unless the instruction explicitly asks to change tone/length/style.
+Respond ONLY with the resulting ${targetLang} text, no explanations.
+
+Original (${sourceLang}):
+${sourceText}
+
+Machine translation (${targetLang}):
+${translatedText}`.trim();
+  }
+
   return `You are a professional ${targetLang} translator doing automatic post-editing.
 Improve the machine translation while preserving meaning, tone, and formality.
 If it's already good, return it unchanged.
@@ -53,12 +91,14 @@ async function improveTranslation({
   translatedText,
   sourceLang,
   targetLang,
+  instruction,
 }) {
   const errors = validateImproveInput({
     sourceText,
     translatedText,
     sourceLang,
     targetLang,
+    instruction,
   });
   if (errors.length) return { status: 400, body: { error: errors[0], errors } };
 
@@ -70,6 +110,7 @@ async function improveTranslation({
     translatedText,
     sourceLang,
     targetLang,
+    instruction,
   });
 
   let res;
@@ -127,4 +168,5 @@ module.exports = {
   buildPostEditPrompt,
   validateImproveInput,
   MAX_TEXT_LENGTH,
+  MAX_INSTRUCTION_LENGTH,
 };

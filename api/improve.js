@@ -1,5 +1,3 @@
-// api/improve.js - Vercel serverless function for POST /api/improve
-// use shared/geminiService.js for Gemini logic; rate-limiting via Upstash Redis
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { improveTranslation } from "../shared/deepseekService.js";
@@ -41,16 +39,17 @@ export default async function handler(req, res) {
       });
     }
 
-    const { sourceText, translatedText, sourceLang, targetLang } =
+    const { sourceText, translatedText, sourceLang, targetLang, instruction } =
       req.body || {};
 
-    // delegate all Gemini logic to shared service
+    // delegate all DeepSeek logic to shared service
     const { status, body } = await improveTranslation({
       apiKey: process.env.DEEPSEEK_API_KEY,
       sourceText,
       translatedText,
       sourceLang,
       targetLang,
+      instruction,
     });
 
     return res.status(status).json(body);

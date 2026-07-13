@@ -38,7 +38,7 @@ const limiter = rateLimit({
 
 app.use("/api/contact", limiter);
 
-// rate limiter: 10 requests per 5 minutes for improve endpoint (more generous)
+// rate limiter: 10 requests per 5 minutes for improve endpoint
 const improveLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
   max: 10,
@@ -91,7 +91,7 @@ app.post("/api/contact", async (req, res) => {
 // translation improvement endpoint
 app.post("/api/improve", async (req, res) => {
   try {
-    const { sourceText, translatedText, sourceLang, targetLang } =
+    const { sourceText, translatedText, sourceLang, targetLang, instruction } =
       req.body || {};
 
     const { status, body } = await improveTranslation({
@@ -100,6 +100,7 @@ app.post("/api/improve", async (req, res) => {
       translatedText,
       sourceLang,
       targetLang,
+      instruction,
     });
 
     res.status(status).json(body);
