@@ -6,7 +6,7 @@ import TranslateButton from "../components/TranslateButton";
 // fireEvent    – simulates real user interactions like clicks
 
 describe("TranslateButton", () => {
-  test("is enabled and shows no loading indicator when not translating", () => {
+  test("is enabled and shows arrow icon when not translating", () => {
     // isTranslating={false} is the default idle state
     const { container } = render(
       <TranslateButton isTranslating={false} onClick={() => {}} />,
