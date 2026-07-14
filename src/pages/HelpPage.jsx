@@ -48,7 +48,7 @@ export default function HelpPage() {
           custom={0.2}
           className="text-white/90 leading-6 mb-6 text-sm sm:text-base"
         >
-          An overview of all available features in Linguify and how to use them.
+          How to use Linguify’s features.
         </motion.p>
 
         {/* Translator */}
@@ -62,7 +62,7 @@ export default function HelpPage() {
           <div className="flex items-center mb-2">
             <RiTranslate size={24} className="mr-3 text-amber-500" />
             <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
-              Translator
+              Translator + AI Studio
             </h2>
           </div>
           <p className="text-white/90 leading-6 mb-2 text-sm sm:text-base">
@@ -70,21 +70,22 @@ export default function HelpPage() {
             interface.
           </p>
           <ul className="text-white/90 leading-6 list-disc pl-6 text-sm sm:text-base">
-            <li>Select a source and a target language.</li>
-            <li>Enter text into the input field.</li>
-            <li>Press the central button or use a keyboard shortcut.</li>
-            <li>The result appears in the output field.</li>
-            <li>Languages can be switched at any time.</li>
+            <li>Select source and target language.</li>
+            <li>Enter text (live 250-char counter).</li>
             <li>
-              Shortcuts:{" "}
-              <kbd className="px-1.5 py-0.5 rounded bg-black/20 text-sm">
-                Cmd/Ctrl + Enter
-              </kbd>{" "}
-              to translate,{" "}
-              <kbd className="px-1.5 py-0.5 rounded bg-black/20 text-sm">
-                Esc
-              </kbd>{" "}
-              to clear.
+              Use <kbd>Cmd/Ctrl + Enter</kbd> to translate or click the button.
+            </li>
+            <li>
+              Enable <strong>AI Post-Editing</strong> (DeepSeek v4 Flash) in
+              Settings for improved quality.
+            </li>
+            <li>
+              In the output area you can use{" "}
+              <strong>AI Studio Quick Actions</strong> or custom instructions to
+              further refine the text.
+            </li>
+            <li>
+              <kbd>Esc</kbd> clears the input.
             </li>
           </ul>
         </motion.section>
@@ -106,8 +107,7 @@ export default function HelpPage() {
           <p className="text-white/90 leading-6 text-sm sm:text-base">
             Both the input and output fields have a speaker button (top left).
             Click it to hear the text read aloud in the selected language. Click
-            again to stop. Uses the browser's built‑in Speech API — no
-            additional software required.
+            again to stop. Uses the browser's built‑in Web Speech API.
           </p>
         </motion.section>
 
@@ -126,8 +126,9 @@ export default function HelpPage() {
             </h2>
           </div>
           <p className="text-white/90 leading-6 text-sm sm:text-base">
-            Provides alternative wording suggestions for individual terms —
-            useful when revising text or looking for more precise expressions.
+            Provides alternative wording suggestions via Datamuse for individual
+            terms — useful when revising text or looking for more precise
+            expressions.
           </p>
         </motion.section>
 
@@ -147,8 +148,9 @@ export default function HelpPage() {
           </div>
           <p className="text-white/90 leading-6 text-sm sm:text-base">
             Customize automated behavior: auto‑clear the input field after
-            translation, or auto‑copy the result to the clipboard. Changes take
-            effect immediately and are stored locally in the browser.
+            translation, auto‑copy the result to the clipboard, toggle AI
+            Post-Editing. Changes take effect immediately and are stored locally
+            and automatically in the browser.
           </p>
         </motion.section>
 
