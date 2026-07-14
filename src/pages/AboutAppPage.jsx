@@ -50,10 +50,10 @@ export default function AboutAppPage() {
           custom={0.2}
           className="text-white/90 leading-6 text-sm sm:text-base mb-6"
         >
-          Linguify is a web‑based tool designed to support users in working with
-          multilingual text. It provides translation, synonym lookup, and
-          text‑to‑speech playback in a single, minimal interface — no additional
-          software required.
+          Linguify is a fullstack web application for multilingual text work. It
+          offers translation, AI-powered post-editing with DeepSeek,
+          text-to-speech, synonym lookup and an AI Studio in a clean, responsive
+          interface.
         </motion.p>
 
         {/* Purpose */}
@@ -71,9 +71,9 @@ export default function AboutAppPage() {
             </h2>
           </div>
           <p className="text-white/90 leading-6 text-sm sm:text-base">
-            Built for users who regularly work with text in different languages
-            — whether writing, learning, or reviewing content. Linguify reduces
-            manual steps and keeps frequently needed tools in one place.
+            Designed for translators, language learners, writers and content
+            reviewers. Linguify combines classic tools with modern AI to deliver
+            higher quality results faster.
           </p>
         </motion.div>
 
@@ -88,33 +88,41 @@ export default function AboutAppPage() {
           <div className="flex items-center mb-2">
             <HiSparkles size={24} className="mr-3 text-amber-500" />
             <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
-              Functional Overview
+              Key Features
             </h2>
           </div>
           <ul className="text-white/90 leading-7 list-disc pl-6 text-sm sm:text-base">
             <li>
-              <span className="font-semibold">Translation — </span>
-              Direct text translation between 20 languages with keyboard
-              shortcuts (Cmd/Ctrl + Enter to translate, Esc to clear).
+              <span className="font-semibold">
+                Translation + AI Post-Editing —{" "}
+              </span>
+              MyMemory translation with powerful{" "}
+              <strong>Automatic Post-Editing</strong> powered by{" "}
+              <strong>DeepSeek v4 Flash</strong> for contextual improvements,
+              terminology and style.
+            </li>
+            <li>
+              <span className="font-semibold">AI Studio — </span>
+              Quick actions and custom instructions to refine translations (e.g.
+              "make more formal", "back-translate", "simplify" etc.).
             </li>
             <li>
               <span className="font-semibold">Text‑to‑Speech — </span>
-              Plays back input and output text aloud in the correct language via
-              the browser's built‑in Speech API.
+              Browser-native Web Speech API with independent controls and CJK
+              font optimization.
             </li>
             <li>
               <span className="font-semibold">Synonym Finder — </span>
-              Alternative wording suggestions for individual terms, useful for
-              writing and revision.
+              Datamuse-powered suggestions for better wording.
             </li>
             <li>
-              <span className="font-semibold">Settings — </span>
-              Auto‑save options for clearing input or copying results
-              automatically after each translation.
+              <span className="font-semibold">Smart Settings &amp; UX — </span>
+              Auto-clear, auto-copy, live character counter, keyboard shortcuts,
+              Framer Motion animations, persisted settings.
             </li>
             <li>
-              <span className="font-semibold">Help & Contact — </span>
-              Usage instructions and a way to submit feedback.
+              <span className="font-semibold">Contact Form — </span>
+              Secure delivery via Resend with rate limiting (Upstash Redis).
             </li>
           </ul>
         </motion.div>
@@ -137,7 +145,10 @@ export default function AboutAppPage() {
             Built with React, Tailwind CSS, Framer Motion, and custom hooks for
             clean separation of logic and UI. Translation and synonym data come
             from external APIs (MyMemory, Datamuse). Text‑to‑speech uses the
-            browser's native Web Speech API — no backend required.
+            browser's native Web Speech API. AI post-editing runs via DeepSeek
+            (OpenAI-compatible) through Vercel Serverless Functions. All
+            settings are persisted locally. Robust rate limiting protects the AI
+            quota.
             <br />
             <br />
             The contact form uses{" "}
@@ -162,9 +173,9 @@ export default function AboutAppPage() {
             </h2>
           </div>
           <p className="text-white/90 leading-6 text-sm sm:text-base">
-            Upcoming updates may include extended language support, user
-            accounts, translation history, and further accessibility
-            improvements.
+            Upcoming updates may include further AI Studio enhancements,
+            extended language support, user accounts, translation history and
+            further accessibility improvements.
           </p>
         </motion.div>
 
@@ -176,8 +187,8 @@ export default function AboutAppPage() {
           custom={0.7}
           className="text-center text-white/70 mt-16 text-sm pb-4"
         >
-          © {new Date().getFullYear()} Linguify — A compact toolkit for
-          language‑related tasks.
+          © {new Date().getFullYear()} Linguify — AI-enhanced multilingual
+          toolkit
         </motion.p>
       </motion.div>
     </div>
