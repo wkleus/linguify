@@ -97,7 +97,7 @@ export default function AboutAppPage() {
                 Translation + AI Post-Editing —{" "}
               </span>
               MyMemory translation with powerful{" "}
-              <strong>Automatic Post-Editing</strong> powered by{" "}
+              <strong>AI Post-Editing via AI Studio</strong> powered by{" "}
               <strong>DeepSeek v4 Flash</strong> for contextual improvements,
               terminology and style.
             </li>

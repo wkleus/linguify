@@ -4,11 +4,14 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4%2B-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-12%2B-ff69b4?logo=framer&logoColor=white)](https://www.framer.com/motion/)
 [![Vite](https://img.shields.io/badge/Vite-7%2B-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
+[![DeepSeek v4 Flash](https://img.shields.io/badge/DeepSeek_v4_Flash-latest-000000?logo=lightning&logoColor=white)](https://www.deepseek.com)
+[![Resend](https://img.shields.io/badge/Resend-latest-0B7285?logo=maildotru&logoColor=white)](https://resend.com)
+[![React Router](https://img.shields.io/badge/React_Router-6%2B-CA4245?logo=reactrouter&logoColor=white)](https://reactrouter.com)
 [![Jest](https://img.shields.io/badge/Jest-30%2B-c21325?logo=jest&logoColor=white)](https://jestjs.io)
 [![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
 [![Status](https://img.shields.io/badge/Status-In_Development-yellow)](#)
 
-**Linguify** is a fullstack web application for multilingual text work. It combines a React frontend with a Vercel Serverless Function backend, providing translation, text-to-speech, synonym lookup, a contact form backed by a real email API, **and a fully implemented AI-powered Automatic Post-Editing (APE) feature using Gemini Flash 2.5**.
+**Linguify** is a fullstack web application for multilingual text work. It combines fast translation with powerful DeepSeek AI post-editing, an interactive AI Studio, text-to-speech, synonym lookup, and a secure contact form.
 
 🔗 **Live:** [linguify-web.vercel.app](https://linguify-web.vercel.app)
 
@@ -72,12 +75,19 @@
 
 ### Translation
 
-- Direct translation between 20 languages via **MyMemory API**
-- **Automatic Post-Editing** powered by **Gemini Flash 2.5** for significantly higher quality, contextual corrections and better terminology (user can enable it)
+- Direct translation between 20+ languages via **MyMemory API**
+- **AI Post-Editing** powered by **DeepSeek v4 Flash** for significantly higher quality, contextual corrections and better terminology
 - **Live character counter** with 250-character limit
-- Smooth result animation on translation arrival
 - **Keyboard shortcuts**: `Cmd/Ctrl + Enter` to translate, `Esc` to clear
-- Optional **auto-clear** (immediate or delayed) and **auto-copy**
+- Optional **auto-clear** (immediate or delayed) & **auto-copy**
+
+### AI Studio & AI Post-Editing
+
+- **AI Studio button** directly in the translation output textarea
+- Opens a modal with Quick Actions (e.g. "make more formal", "simplify", "back-translate")
+- Custom free-text instructions / prompts
+- Instant refinement of the current translation using **DeepSeek v4 Flash** (fast & cost-effective)
+- Rate-limited to protect API quota
 
 ### Text-to-Speech
 
@@ -88,15 +98,13 @@
 
 ### Synonym Finder
 
-- Alternative wording suggestions via **Datamuse API**
+- Alternative wording suggestions via **Datamuse API** (English-focussed)
 - Animated result chips with staggered entrance
-- English words recommended (Datamuse is English-only)
 
 ### Settings
 
 - **Auto-clear** input (immediate or delay)
 - **Auto-copy** translation output to clipboard
-- Toggle for **AI Automatic Post-Editing**
 - All changes **auto-persisted** to `localStorage` via `useEffect` — no save button
 
 ### Contact Form
@@ -104,7 +112,7 @@
 - Connected to **Resend** email API via a Vercel Serverless Function
 - Input **sanitization** (HTML injection prevention)
 - Server-side **email format validation**
-- **Rate limiting** via **Upstash Redis** (sliding window: 2 requests / 5 min per IP)
+- **Rate limiting** via **Upstash Redis**
 - Separate Express.js server for local development with `express-rate-limit`
 
 ### Navigation & UX
@@ -129,7 +137,7 @@
 | **Animations**     | Framer Motion (page transitions, stagger, AnimatePresence) + custom CSS keyframes |
 | **Backend (prod)** | Vercel Serverless Functions (`api/contact.js`, `api/improve.js`)                  |
 | **Backend (dev)**  | Express.js (`backend/server.js`)                                                  |
-| **AI**             | Gemini Flash 2.5 – Automatic Post-Editing                                         |
+| **AI**             | **DeepSeek v4 Flash** – AI Studio Post-Editing                                    |
 | **Email**          | Resend API                                                                        |
 | **Rate Limiting**  | Upstash Redis + `@upstash/ratelimit` (prod) / `express-rate-limit` (dev)          |
 | **Persistence**    | Browser `localStorage`                                                            |
@@ -144,7 +152,7 @@ Browser (React SPA)
     ├── Translation  ──────────────► MyMemory API (external)
     ├── Synonym Finder ────────────► Datamuse API (external)
     ├── Text-to-Speech ────────────► Web Speech API (browser built-in)
-    ├── Post-Editing ──────────────► Gemini Flash 2.5 (via /api/improve)
+    ├── AI Studio Post-Editing ────► DeepSeek v4 Flash (via /api/improve)
     │
     └── Contact Form
             │
@@ -160,6 +168,11 @@ Browser (React SPA)
                                            │
                                        Resend API ──► Email
 ```
+
+### Architecture Highlights
+
+- AI Studio is triggered manually from the output textarea button
+- All AI refinement happens on-demand via user interaction
 
 ### Frontend Structure
 
@@ -182,7 +195,7 @@ linguify/
 │
 ├── api/
 │   ├── contact.js              # Vercel Serverless Function (prod backend)
-│   └── improve.js              # Gemini Post-Editing
+│   └── improve.js              # DeepSeek Post-Editing
 │
 ├── backend/
 │   ├── server.js               # Express.js dev server
@@ -230,7 +243,7 @@ linguify/
 
 `https://upstash.com`
 
-## Gemini Flash 2.5 –> Automatic Post-Editing
+### DeepSeek v4 Flash –> AI Post-Editing
 
 ---
 
@@ -314,7 +327,7 @@ VITE_API_URL=http://localhost:3000
 RESEND_API_KEY=your_resend_api_key
 SENDER_EMAIL=your_verified_sender@yourdomain.com
 RECIPIENT_EMAIL=your_email@example.com
-GEMINI_API_KEY=your_gemini_api_key
+DEEPSEEK_API_KEY=your_deepseek_api_key
 ```
 
 ### Vercel (Dashboard → Project -> Settings → Environment Variables)
@@ -325,11 +338,13 @@ SENDER_EMAIL=your_verified_sender@yourdomain.com
 RECIPIENT_EMAIL=your_email@example.com
 UPSTASH_REDIS_REST_URL=your_upstash_redis_url
 UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
-GEMINI_API_KEY=your_gemini_api_key
+DEEPSEEK_API_KEY=your_deepseek_api_key
 ```
 
 > **List `.env` file in `.gitignore`.**
 
 ## Planned features
 
-- A dedicated **AI Studio Mode** should let users refine, reshape and analyze translated text using advanced AI tools
+- Further AI Studio enhancements
+- Translation history
+- More languages & accessibility improvements
