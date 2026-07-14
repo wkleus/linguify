@@ -3,6 +3,7 @@ import SettingsHeader from "../layout/SettingsHeader";
 import SettingsOption from "../components/SettingsOption";
 
 import useSettings from "../hooks/useSettings";
+import { li } from "framer-motion/client";
 
 export default function SettingsPage() {
   const {
@@ -12,6 +13,8 @@ export default function SettingsPage() {
     setAutoClearInstant,
     setAutoClearDelay,
     setAutoCopy,
+    liveTranslation,
+    setLiveTranslation,
   } = useSettings();
 
   return (
@@ -43,6 +46,15 @@ export default function SettingsPage() {
           tooltip="Copies the translation to your clipboard automatically."
           checked={autoCopy}
           onChange={() => setAutoCopy(!autoCopy)}
+        />
+
+        <div className="font-bold text-sm sm:text-lg"> Translation:</div>
+
+        <SettingsOption
+          label="Live translation"
+          tooltip="When the user types, the app automatically translates after a brief pause."
+          checked={liveTranslation}
+          onChange={() => setLiveTranslation(!liveTranslation)}
         />
       </div>
     </SettingsLayout>
