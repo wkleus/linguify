@@ -36,9 +36,10 @@ export default function useTranslator() {
   };
 
   // Main translation function
-  const translate = async (fromLang, toLang) => {
+  // isLive=true skips clearing the output field so old translation stays visible until new one arrives (avoids blank flash)
+  const translate = async (fromLang, toLang, isLive = false) => {
     setError("");
-    setTranslatedText("");
+    if (!isLive) setTranslatedText("");
 
     // Layer 1: validate before any API call
     if (!sourceText.trim()) {
@@ -139,7 +140,7 @@ export default function useTranslator() {
     if (debouncedText.length > 500) return;
     if (isTranslating) return;
 
-    translate(currentLangs.from, currentLangs.to);
+    translate(currentLangs.from, currentLangs.to, true);
     // <translate> excluded from dependency array to avoid infinite loops
   }, [debouncedText, liveTranslation]);
 
