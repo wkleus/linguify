@@ -16,6 +16,9 @@ export function SettingsProvider({ children }) {
   const [autoCopy, setAutoCopy] = useState(
     () => localStorage.getItem("autoCopy") === "true",
   );
+  const [liveTranslation, setLiveTranslation] = useState(
+    () => localStorage.getItem("liveTranslation") === "true",
+  );
 
   // Auto-save: persists to localStorage whenever a setting changes.
   // The empty-array mount run is intentionally skipped via the initializer
@@ -31,6 +34,10 @@ export function SettingsProvider({ children }) {
   useEffect(() => {
     localStorage.setItem("autoCopy", autoCopy);
   }, [autoCopy]);
+
+  useEffect(() => {
+    localStorage.setItem("liveTranslation", liveTranslation);
+  }, [liveTranslation]);
 
   // Setters with mutual exclusion for autoClear options
   const handleSetAutoClearInstant = (value) => {
@@ -49,9 +56,11 @@ export function SettingsProvider({ children }) {
         autoClearInstant,
         autoClearDelay,
         autoCopy,
+        liveTranslation,
         setAutoClearInstant: handleSetAutoClearInstant,
         setAutoClearDelay: handleSetAutoClearDelay,
         setAutoCopy,
+        setLiveTranslation,
       }}
     >
       {children}

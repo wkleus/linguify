@@ -11,24 +11,26 @@ export default function TextAreaBox({
   onClear,
   onKeyDown,
   langCode,
+  animate = true,
 }) {
   // Separate speech instance per box so input/output can be controlled independently
   const { speak, stop, isSpeaking, isSupported } = useSpeech();
 
   // Briefly animates the read-only box when a new translation arrives
   // (textarea content can't be CSS-transitioned directly)
+  // Skipped during live translation to avoid flickering on every keystroke
   const [justArrived, setJustArrived] = useState(false);
   const previousValue = useRef(value);
 
   useEffect(() => {
-    if (readOnly && value && value !== previousValue.current) {
+    if (animate && readOnly && value && value !== previousValue.current) {
       setJustArrived(true);
       const timeout = setTimeout(() => setJustArrived(false), 400);
       previousValue.current = value;
       return () => clearTimeout(timeout);
     }
     previousValue.current = value;
-  }, [value, readOnly]);
+  }, [value, readOnly, animate]);
 
   // CJK languages render better in Noto Sans JP than in the default Latin font
   const isCjk = ["ja", "zh", "ko"].includes(langCode);

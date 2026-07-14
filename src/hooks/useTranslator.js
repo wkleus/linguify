@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { getLanguageCodeByName } from "../data/languagesList";
 import { useSettingsContext } from "../context/SettingsContext";
+import useDebounce from "./useDebounce";
 
 export default function useTranslator() {
   // Text states
@@ -12,11 +13,21 @@ export default function useTranslator() {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
 
+  // Language state – needed for live translation trigger
+  const [currentLangs, setCurrentLangs] = useState({
+    from: "German",
+    to: "English",
+  });
+
   // Settings come from Context – reactive: changes take effect immediately
-  const { autoClearInstant, autoClearDelay, autoCopy } = useSettingsContext();
+  const { autoClearInstant, autoClearDelay, autoCopy, liveTranslation } =
+    useSettingsContext();
 
   // Ref for delayed clearing timeout
   const clearTimeoutRef = useRef(null);
+
+  // Debounced source text – only updates 700ms after typing stops - used exclusively for live translation to avoid excessive API calls
+  const debouncedText = useDebounce(sourceText, 700);
 
   // Copies text to clipboard
   const copyToClipboard = (text) => {
@@ -48,6 +59,9 @@ export default function useTranslator() {
       setError("The source and target languages should be different.");
       return;
     }
+
+    // Keep track of current languages for live translation
+    setCurrentLangs({ from: fromLang, to: toLang });
 
     try {
       setIsTranslating(true);
@@ -117,6 +131,18 @@ export default function useTranslator() {
     }
   };
 
+  // Live translation: fires automatically when debouncedText changes - but only if user enables it in Settings
+  // Guards: skip if empty, too long or translation is already running
+  useEffect(() => {
+    if (!liveTranslation) return;
+    if (!debouncedText.trim()) return;
+    if (debouncedText.length > 500) return;
+    if (isTranslating) return;
+
+    translate(currentLangs.from, currentLangs.to);
+    // <translate> excluded from dependency array to avoid infinite loops
+  }, [debouncedText, liveTranslation]);
+
   return {
     sourceText,
     translatedText,
@@ -126,5 +152,6 @@ export default function useTranslator() {
     setSourceText,
     setTranslatedText,
     translate,
+    setCurrentLangs,
   };
 }

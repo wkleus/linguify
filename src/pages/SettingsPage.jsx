@@ -3,7 +3,6 @@ import SettingsHeader from "../layout/SettingsHeader";
 import SettingsOption from "../components/SettingsOption";
 
 import useSettings from "../hooks/useSettings";
-import { li } from "framer-motion/client";
 
 export default function SettingsPage() {
   const {
@@ -48,7 +47,7 @@ export default function SettingsPage() {
           onChange={() => setAutoCopy(!autoCopy)}
         />
 
-        <div className="font-bold text-sm sm:text-lg"> Translation:</div>
+        <div className="font-bold text-sm sm:text-lg">Live Translation:</div>
 
         <SettingsOption
           label="Live translation"

@@ -2,6 +2,7 @@ import TextAreaBox from "../components/TextAreaBox";
 import TranslateButton from "../components/TranslateButton";
 import { getLanguageCodeByName } from "../data/languagesList";
 import ImproveButton from "../components/ImproveButton";
+import { useSettingsContext } from "../context/SettingsContext";
 
 export default function TranslatorBody({
   sourceText,
@@ -14,6 +15,8 @@ export default function TranslatorBody({
   onImprove,
   isImproving,
 }) {
+  const { liveTranslation } = useSettingsContext();
+
   // Cmd/Ctrl+Enter translates, Esc clears (plain Enter still allows line breaks)
   const handleKeyDown = (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
@@ -52,6 +55,7 @@ export default function TranslatorBody({
           value={translatedText}
           readOnly={true}
           langCode={getLanguageCodeByName(chosenSecondLanguage)}
+          animate={!liveTranslation}
         />
 
         {/* Speak button positioned at top left, Clear button appears only in the editable field, 
