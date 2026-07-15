@@ -89,7 +89,7 @@ export default function ContactPage() {
       >
         {/* Header with title and close button */}
         <div className="flex items-center justify-between">
-          <h1 className="uppercase font-bold text-2xl sm:text-3xl text-amber-500 tracking-wide">
+          <h1 className="uppercase font-bold text-2xl sm:text-3xl text-amber-400 tracking-wide">
             Contact
           </h1>
 
@@ -167,7 +167,7 @@ export default function ContactPage() {
 
           <motion.button
             type="submit"
-            className="bg-amber-600/80 text-sm sm:text-base text-white font-bold py-3.5 rounded-xl hover:bg-amber-600 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="bg-amber-500/90 text-sm sm:text-base text-white font-bold py-3.5 rounded-xl hover:bg-amber-500 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             disabled={status.loading} // Disable button while loading

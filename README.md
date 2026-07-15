@@ -29,31 +29,35 @@
 
 ### Translator Module
 
-<img src="docs/screenshots/translator.png" width="600" height="350" alt="Translator" />
+<img src="docs/screenshots/translator.png" width="600" height="380" alt="Translator" />
+
+### AI Studio
+
+<img src="docs/screenshots/ai-studio.png" width="600" height="380" alt="AI Studio Modal" />
 
 ### Synonym Finder
 
-<img src="docs/screenshots/synonym-finder.png" width="600" height="350" alt="Synonym Finder" />
+<img src="docs/screenshots/synonym-finder.png" width="600" height="380" alt="Synonym Finder" />
 
 ### Settings
 
-<img src="docs/screenshots/settings.png" width="600" height="400" alt="Settings" />
+<img src="docs/screenshots/settings.png" width="600" height="380" alt="Settings" />
 
 ### About App
 
-<img src="docs/screenshots/about.png" width="600" height="400" alt="About App" />
+<img src="docs/screenshots/about.png" width="600" height="380" alt="About App" />
 
 ### Help
 
-<img src="docs/screenshots/help.png" width="600" height="400" alt="Help and Support" />
+<img src="docs/screenshots/help.png" width="600" height="380" alt="Help and Support" />
 
 ### Contact
 
-<img src="docs/screenshots/contact.png" width="600" height="350" alt="Contact" />
+<img src="docs/screenshots/contact.png" width="600" height="380" alt="Contact" />
 
 ### 404 Not Found Page
 
-<img src="docs/screenshots/404.png" width="600" height="350" alt="404 Not Found Page" />
+<img src="docs/screenshots/404.png" width="600" height="380" alt="404 Not Found Page" />
 
 ---
 
@@ -77,6 +81,7 @@
 
 - Direct translation between 20+ languages via **MyMemory API**
 - **AI Post-Editing** powered by **DeepSeek v4 Flash** for significantly higher quality, contextual corrections and better terminology
+- **Live translation** — translates automatically while typing after a short pause (debounced, opt-in via Settings)
 - **Live character counter** with 250-character limit
 - **Keyboard shortcuts**: `Cmd/Ctrl + Enter` to translate, `Esc` to clear
 - Optional **auto-clear** (immediate or delayed) & **auto-copy**
@@ -105,6 +110,7 @@
 
 - **Auto-clear** input (immediate or delay)
 - **Auto-copy** translation output to clipboard
+- **Live translation** toggle — enables automatic translation while typing
 - All changes **auto-persisted** to `localStorage` via `useEffect` — no save button
 
 ### Contact Form
@@ -173,6 +179,7 @@ Browser (React SPA)
 
 - AI Studio is triggered manually from the output textarea button
 - All AI refinement happens on-demand via user interaction
+- Live translation uses a debounced hook (`useDebounce`) to minimize API calls while typing
 
 ### Frontend Structure
 
@@ -180,7 +187,8 @@ Browser (React SPA)
 - **Layouts** — page wrappers for consistent card/container structure
 - **Components** — reusable UI elements (buttons, selectors, text areas, tooltips)
 - **Custom Hooks** — application logic separated from UI:
-  - `useTranslator()` — translation, API calls, three-layer error handling
+  - `useTranslator()` — translation, API calls, three-layer error handling, live translation trigger
+  - `useDebounce()` — delays a value update until typing pauses; used by `useTranslator` for live translation
   - `useLanguageSwitcher()` — language selection and swap
   - `useSpeech()` — Web Speech API wrapper
   - `useSettings()` — SettingsContext consumer
@@ -209,7 +217,7 @@ linguify/
 │   ├── components/             # Reusable UI components
 │   ├── context/                # SettingsContext (global state)
 │   ├── data/                   # Static data (language list + helper)
-│   ├── hooks/                  # Custom React hooks (incl. useImproveTranslation.js)
+│   ├── hooks/                  # Custom React hooks (incl. useDebounce.js)
 │   ├── layout/                 # Page layout wrappers
 │   ├── pages/                  # Application pages
 │   ├── App.jsx                 # Routing
@@ -342,6 +350,8 @@ DEEPSEEK_API_KEY=your_deepseek_api_key
 ```
 
 > **List `.env` file in `.gitignore`.**
+
+---
 
 ## Planned features
 

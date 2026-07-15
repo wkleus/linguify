@@ -7,7 +7,7 @@ export default function SettingsHeader() {
   return (
     <>
       {/* Title of the settings page */}
-      <h1 className="uppercase font-bold text-3xl text-amber-500 tracking-wide text-center">
+      <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide text-center">
         Settings
       </h1>
 
