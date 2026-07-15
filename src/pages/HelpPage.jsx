@@ -149,8 +149,10 @@ export default function HelpPage() {
           <p className="text-white/90 leading-6 text-sm sm:text-base">
             Customize automated behavior: auto‑clear the input field after
             translation, auto‑copy the result to the clipboard, toggle AI
-            Post-Editing. Changes take effect immediately and are stored locally
-            and automatically in the browser.
+            Post-Editing, or enable <strong>live translation</strong> — the app
+            translates automatically while you type, after a short pause.
+            Changes take effect immediately and are stored locally and
+            automatically in the browser.
           </p>
         </motion.section>
 

@@ -117,7 +117,8 @@ export default function AboutAppPage() {
             </li>
             <li>
               <span className="font-semibold">Smart Settings &amp; UX — </span>
-              Auto-clear, auto-copy, live character counter, keyboard shortcuts,
+              Auto-clear, auto-copy, <strong>live translation</strong>{" "}
+              (debounced, opt-in), live character counter, keyboard shortcuts,
               Framer Motion animations, persisted settings.
             </li>
             <li>
@@ -143,12 +144,14 @@ export default function AboutAppPage() {
           </div>
           <p className="text-white/90 leading-6 text-sm sm:text-base">
             Built with React, Tailwind CSS, Framer Motion, and custom hooks for
-            clean separation of logic and UI. Translation and synonym data come
-            from external APIs (MyMemory, Datamuse). Text‑to‑speech uses the
-            browser's native Web Speech API. AI post-editing runs via DeepSeek
-            (OpenAI-compatible) through Vercel Serverless Functions. All
-            settings are persisted locally. Robust rate limiting protects the AI
-            quota.
+            clean separation of logic and UI — including a custom{" "}
+            <strong>useDebounce</strong> hook that powers live translation by
+            delaying API calls until typing pauses. Translation and synonym data
+            come from external APIs (MyMemory, Datamuse). Text‑to‑speech uses
+            the browser's native Web Speech API. AI post-editing runs via
+            DeepSeek (OpenAI-compatible) through Vercel Serverless Functions.
+            All settings are persisted locally. Robust rate limiting protects
+            the AI quota.
             <br />
             <br />
             The contact form uses{" "}
