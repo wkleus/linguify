@@ -5,7 +5,7 @@ import ErrorBox from "../layout/ErrorBox";
 import LanguageSelector from "../components/LanguageSelector";
 import LanguageList from "../components/LanguageList";
 import CopyNotification from "../components/CopyNotification";
-import AIStudio from "../components/AIStudio";
+import AIStudioModal from "../components/AIStudioModal";
 import useTranslator from "../hooks/useTranslator";
 import useLanguageSwitcher from "../hooks/useLanguageSwitcher";
 import { AnimatePresence } from "framer-motion";
@@ -82,15 +82,16 @@ export default function TranslatorPage() {
       {/* AI Studio modal – opens when the improve button is clicked */}
       <AnimatePresence>
         {showAIStudio && (
-          <AIStudio
+          <AIStudioModal
+            isOpen={showAIStudio}
             originalText={sourceText}
             currentTranslation={translatedText}
-            sourceLang={chosenFirstLanguage}
-            targetLang={chosenSecondLanguage}
-            onApply={(newText) => {
+            setCurrentTranslation={(newText) => {
               setTranslatedText(newText);
               setShowAIStudio(false);
             }}
+            sourceLanguage={chosenFirstLanguage}
+            targetLanguage={chosenSecondLanguage}
             onClose={() => setShowAIStudio(false)}
           />
         )}

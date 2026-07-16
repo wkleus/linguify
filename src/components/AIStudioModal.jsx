@@ -1,63 +1,51 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Robot } from "@phosphor-icons/react";
-import { buildApiUrl } from "../utils/apiUrl";
+import { useImproveTranslation } from "../hooks/useImproveTranslation";
 
 const quickActions = [
-  { label: "More formal", value: "Make this more formal" },
+  { label: "Make more formal", value: "Make this more formal" },
+  { label: "Shorter", value: "Make this shorter" },
   { label: "More natural", value: "Make this more natural" },
   { label: "Friendlier", value: "Make this friendlier" },
   { label: "Back-translation", value: "Back translate for quality check" },
 ];
 
-export default function AIStudio({
+export default function AIStudioModal({
+  isOpen,
   originalText,
   currentTranslation,
-  sourceLang,
-  targetLang,
-  onApply,
+  setCurrentTranslation,
+  sourceLanguage,
+  targetLanguage,
   onClose,
 }) {
+  const { improveTranslation, isImproving } = useImproveTranslation();
+
   const [instruction, setInstruction] = useState("");
   const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isBackTranslation, setIsBackTranslation] = useState(false);
+
+  if (!isOpen) return null;
 
   const runAI = async (customInstruction) => {
     setError("");
     setResult("");
-    setLoading(true);
     setIsBackTranslation(/back[\s-]?translat/i.test(customInstruction || ""));
 
     try {
-      const res = await fetch(buildApiUrl("/api/improve"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sourceText: originalText,
-          translatedText: currentTranslation,
-          sourceLang,
-          targetLang,
-          instruction: customInstruction,
-        }),
+      const { improvedTranslation } = await improveTranslation({
+        originalText,
+        translatedText: currentTranslation,
+        sourceLang: sourceLanguage,
+        targetLang: targetLanguage,
+        customInstruction,
       });
 
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        throw new Error(data.error || `Error (${res.status})`);
-      }
-
-      if (!data.improvedText) {
-        throw new Error("No suggestion received. Please try again.");
-      }
-
-      setResult(data.improvedText);
+      setResult(improvedTranslation);
     } catch (err) {
       setError(err.message || "An unexpected error occurred.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -93,7 +81,7 @@ export default function AIStudio({
           <div className="w-5/12 border-r border-zinc-700 p-6 overflow-auto bg-zinc-950">
             <div className="mb-6">
               <p className="text-zinc-400 text-xs uppercase tracking-widest mb-1">
-                Original • {sourceLang}
+                Original • {sourceLanguage}
               </p>
               <p className="text-zinc-200 text-xs leading-relaxed">
                 {originalText}
@@ -101,7 +89,7 @@ export default function AIStudio({
             </div>
             <div>
               <p className="text-zinc-400 text-xs uppercase tracking-widest mb-1">
-                Current Translation • {targetLang}
+                Current Translation • {targetLanguage}
               </p>
               <p className="text-blue-400 text-xs leading-relaxed">
                 {currentTranslation}
@@ -128,12 +116,12 @@ export default function AIStudio({
                   <div className="flex justify-between mb-2 text-xs text-zinc-400">
                     <span>
                       {isBackTranslation
-                        ? `BACK-TRANSLATION • ${sourceLang} (for comparison)`
+                        ? `BACK-TRANSLATION • ${sourceLanguage} (for comparison)`
                         : "RESULT"}
                     </span>
                     {!isBackTranslation && (
                       <button
-                        onClick={() => onApply(result)}
+                        onClick={() => setCurrentTranslation(result)}
                         className="text-emerald-400 hover:text-emerald-300 transition-colors"
                       >
                         Apply
@@ -155,7 +143,7 @@ export default function AIStudio({
           </div>
 
           {/* Right side – controls */}
-          <div className="flex-1 px-10 py-25 md:py-20 lg:px-20 lg:py-15 flex flex-col bg-zinc-900">
+          <div className="flex-1 p-5 flex flex-col bg-zinc-900">
             <div className="mb-3">
               <p className="text-zinc-400 text-xs mb-2">FAST ACTIONS</p>
               <div className="grid grid-cols-2 gap-2">
@@ -163,7 +151,7 @@ export default function AIStudio({
                   <button
                     key={i}
                     onClick={() => runAI(a.value)}
-                    disabled={loading}
+                    disabled={isImproving}
                     className="text-left text-xs py-2 px-4 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-2xl transition-colors disabled:opacity-50"
                   >
                     {a.label}
@@ -175,16 +163,16 @@ export default function AIStudio({
             <textarea
               value={instruction}
               onChange={(e) => setInstruction(e.target.value)}
-              placeholder="Enter your prompt here..."
+              placeholder="Enter custom instruction..."
               className="flex-1 bg-zinc-800 border border-zinc-700 text-white p-4 rounded-3xl resize-none focus:outline-none focus:border-purple-500 text-xs"
             />
 
             <button
               onClick={() => runAI(instruction)}
-              disabled={loading || !instruction.trim()}
+              disabled={isImproving || !instruction.trim()}
               className="mt-5 py-3.5 bg-purple-600 hover:bg-purple-500 disabled:bg-zinc-700 text-white font-medium rounded-2xl transition-colors text-sm"
             >
-              {loading ? "AI is working..." : "Optimize with AI"}
+              {isImproving ? "AI is working..." : "Apply"}
             </button>
           </div>
         </div>

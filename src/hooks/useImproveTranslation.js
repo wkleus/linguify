@@ -1,0 +1,48 @@
+import { useState } from "react";
+import { buildApiUrl } from "../utils/apiUrl";
+
+// Calls the backend's /api/improve endpoint to apply a quick action or
+// custom instruction to a translation
+export function useImproveTranslation() {
+  const [isImproving, setIsImproving] = useState(false);
+
+  const improveTranslation = async ({
+    originalText,
+    translatedText,
+    sourceLang,
+    targetLang,
+    customInstruction,
+  }) => {
+    setIsImproving(true);
+
+    try {
+      const res = await fetch(buildApiUrl("/api/improve"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sourceText: originalText,
+          translatedText,
+          sourceLang,
+          targetLang,
+          instruction: customInstruction,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || `Error (${res.status})`);
+      }
+
+      if (!data.improvedText) {
+        throw new Error("No suggestion received. Please try again.");
+      }
+
+      return { improvedTranslation: data.improvedText };
+    } finally {
+      setIsImproving(false);
+    }
+  };
+
+  return { improveTranslation, isImproving };
+}
