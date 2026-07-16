@@ -1,7 +1,7 @@
-// api/contact.js
 import { Resend } from "resend";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { sendContactEmail } from "../shared/contactService.js";
 
 // Initialize Resend with API key from environment variables
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -17,16 +17,8 @@ const ratelimit = new Ratelimit({
   redis: redis,
   limiter: Ratelimit.slidingWindow(2, "5 m"),
   analytics: true,
+  prefix: "ratelimit:contact", // separate from improve limite
 });
-
-// Strips HTML tags and trims whitespace to prevent HTML injection.
-const sanitize = (str) =>
-  String(str)
-    .replace(/<[^>]*>/g, "")
-    .trim();
-
-// Basic email format check – keeps obviously invalid addresses out
-const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 /**
  * Vercel Serverless Function handler
@@ -59,56 +51,15 @@ export default async function handler(req, res) {
 
     const { name, email, message } = req.body;
 
-    // Validate required fields
-    if (!name || !email || !message) {
-      return res.status(400).json({
-        error: "All fields are required.",
-      });
-    }
-
-    // Sanitize
-    const cleanName = sanitize(name);
-    const cleanEmail = sanitize(email);
-    const cleanMessage = sanitize(message);
-
-    // Check if fields are empty after sanitization
-    if (!cleanName || !cleanEmail || !cleanMessage) {
-      return res.status(400).json({
-        error: "Fields cannot be empty or contain only HTML tags.",
-      });
-    }
-
-    // Email format check
-    if (!isValidEmail(cleanEmail)) {
-      return res.status(400).json({ error: "Invalid email address." });
-    }
-
-    // send email with sanitized values
-    const { data, error } = await resend.emails.send({
-      from: process.env.SENDER_EMAIL || "onboarding@resend.dev",
-      to: [process.env.RECIPIENT_EMAIL],
-      replyTo: cleanEmail, // Sanitized
-      subject: `LINGUIFY - New contact request from ${cleanName}`, // Sanitized
-      html: `
-        <h1>LINGUIFY</h1>   
-        <h2>New Contact Request</h2>
-        <p><strong>Name:</strong> ${cleanName}</p>
-        <p><strong>Email:</strong> ${cleanEmail}</p>
-        <p><strong>Message:</strong></p>
-        <p>${cleanMessage}</p>
-      `,
+    // delegate validation, sanitization and sending to shared service
+    const { status, body } = await sendContactEmail({
+      resend,
+      senderEmail: process.env.SENDER_EMAIL,
+      recipientEmail: process.env.RECIPIENT_EMAIL,
+      fields: { name, email, message },
     });
 
-    if (error) {
-      console.error("Resend error:", error);
-      return res.status(500).json({ error: error.message });
-    }
-
-    // Success response
-    res.status(200).json({
-      success: true,
-      message: "Email was successfully sent.",
-    });
+    return res.status(status).json(body);
   } catch (error) {
     console.error("Server error:", error);
     res.status(500).json({

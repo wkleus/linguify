@@ -93,7 +93,11 @@ export default function ContactPage() {
             Contact
           </h1>
 
-          <button className="close" onClick={() => navigate("/menu")}>
+          <button
+            className="close"
+            onClick={() => navigate("/menu")}
+            aria-label="Close"
+          >
             <MdClose className="size-3 sm:size-6 " />
           </button>
         </div>
