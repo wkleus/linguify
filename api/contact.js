@@ -2,9 +2,7 @@ import { Resend } from "resend";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { sendContactEmail } from "../shared/contactService.js";
-
-// Initialize Resend with API key from environment variables
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { missingEnvVar } from "../shared/missingEnvVar.js";
 
 // Initialize Redis for rate limiting
 const redis = new Redis({
@@ -31,6 +29,20 @@ export default async function handler(req, res) {
   }
 
   try {
+    const missing = missingEnvVar([
+      "RESEND_API_KEY",
+      "SENDER_EMAIL",
+      "RECIPIENT_EMAIL",
+      "UPSTASH_REDIS_REST_URL",
+      "UPSTASH_REDIS_REST_TOKEN",
+    ]);
+    if (missing) {
+      console.error(`Missing required env var: ${missing}`);
+      return res.status(500).json({ error: "Server is not configured." });
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     // Rate limit check
     const ip =
       req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
@@ -49,7 +61,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const { name, email, message } = req.body;
+    const { name, email, message } = req.body || {};
 
     // delegate validation, sanitization and sending to shared service
     const { status, body } = await sendContactEmail({

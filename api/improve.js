@@ -1,6 +1,7 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { improveTranslation } from "../shared/deepseekService.js";
+import { missingEnvVar } from "../shared/missingEnvVar.js";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL,
@@ -21,6 +22,15 @@ export default async function handler(req, res) {
   }
 
   try {
+    const missing = missingEnvVar([
+      "UPSTASH_REDIS_REST_URL",
+      "UPSTASH_REDIS_REST_TOKEN",
+    ]);
+    if (missing) {
+      console.error(`Missing required env var: ${missing}`);
+      return res.status(500).json({ error: "Server is not configured." });
+    }
+
     // get client IP from proxy headers or fallback to socket address
     const ip =
       req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
