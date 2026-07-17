@@ -5,6 +5,8 @@ name: Run Tests
 on:
   push:
     branches: [main] # run workflow only when pushing to main branch
+  pull_request:
+    branches: [main] # also run on Pull Requests targeting main, before merge
 
 jobs:
   test:
@@ -18,5 +20,6 @@ jobs:
           node-version: 22 # use Node.js version 22 (my current version!)
 
       - run: npm ci # install dependencies in clean CI mode
+      - run: npm run lint # fail the build on lint errors
       - run: npm test # run test suite
 
