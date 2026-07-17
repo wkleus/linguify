@@ -21,5 +21,6 @@ jobs:
 
       - run: npm ci # install dependencies in clean CI mode
       - run: npm run lint # fail the build on lint errors
+      - run: npm audit --audit-level=high # fail on high/critical dependency vulnerabilities
       - run: npm test # run test suite
 

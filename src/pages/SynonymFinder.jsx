@@ -89,7 +89,7 @@ export default function SynonymFinderPage() {
           <button
             onClick={findSynonyms}
             disabled={loading}
-            className="bg-amber-600 text-white font-bold py-1 px-3 text-sm sm:text-md sm:py-3 sm:px-6 rounded-xl hover:scale-105 transition disabled:opacity-50"
+            className="bg-amber-600 text-white font-bold py-1 px-3 text-sm sm:text-md sm:py-3 sm:px-6 rounded-xl hover:scale-105 transition disabled:opacity-50 min-w-35 sm:min-w-45"
           >
             {loading ? "Searching..." : "Find Synonyms"}
           </button>

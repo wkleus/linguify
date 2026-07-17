@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { formatWaitTime } from "../utils/formatWaitTime";
 
 export default function ContactPage() {
   const navigate = useNavigate();
@@ -38,8 +39,7 @@ export default function ContactPage() {
       // CAll backend API / Send form data to backend API
       // IMPORTANT: With Vite, environment variables must start with VITE_ to be available in the frontend!
       // Determine the API URL based on the environment
-      // If we are on Vercel (production/preview), use the relative URL
-      // If we are local, use localhost:3000
+      // If on Vercel (production/preview), use relative URL, if local, use localhost:3000
       const isProduction = import.meta.env.PROD;
       const apiUrl = isProduction
         ? "/api/contact" // on Vercel full path: /api/contact
@@ -56,6 +56,15 @@ export default function ContactPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
+        if (response.status === 429) {
+          const wait = formatWaitTime(errorData.reset);
+          throw new Error(
+            wait
+              ? `Too many requests – please wait ${wait} before trying again.`
+              : errorData.error ||
+                  "Too many requests – please try again later.",
+          );
+        }
         throw new Error(errorData.error || "Failed to send message");
       }
 
@@ -184,7 +193,7 @@ export default function ContactPage() {
             <motion.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center text-green-300 font-semibold text-lg bg-green-900/30 py-2 rounded-lg"
+              className="text-center text-green-200 font-light text-sm bg-green-600/30 py-2 rounded-lg"
             >
               ✓ Message sent successfully!
             </motion.div>
@@ -195,7 +204,7 @@ export default function ContactPage() {
             <motion.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center text-red-300 font-semibold text-sm bg-red-900/30 py-2 rounded-lg"
+              className="text-center text-red-200 font-light text-sm bg-red-900/30 py-2 rounded-lg"
             >
               ⚠ {status.error}
             </motion.div>

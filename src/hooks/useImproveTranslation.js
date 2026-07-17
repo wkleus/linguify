@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { buildApiUrl } from "../utils/apiUrl";
+import { formatWaitTime } from "../utils/formatWaitTime";
 
 // Calls the backend's /api/improve endpoint to apply a quick action or
 // custom instruction to a translation
@@ -31,6 +32,14 @@ export function useImproveTranslation() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
+        if (res.status === 429) {
+          const wait = formatWaitTime(data.reset);
+          throw new Error(
+            wait
+              ? `Too many requests – please wait ${wait} before trying again.`
+              : data.error || "Too many requests – please try again later.",
+          );
+        }
         throw new Error(data.error || `Error (${res.status})`);
       }
 
