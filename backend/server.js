@@ -27,13 +27,20 @@ app.use(express.json());
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000,
   max: 2,
-  message: {
-    error: "Too many requests – please wait a few minutes before trying again.",
-  },
   statusCode: 429,
   standardHeaders: true,
   legacyHeaders: false,
   skipFailedRequests: true,
+  // include a `reset` timestamp in the body, same shape the frontend
+  // already expects from the Upstash-based Vercel route
+  handler: (req, res) => {
+    const resetSeconds = Number(res.getHeader("RateLimit-Reset")) || 0;
+    res.status(429).json({
+      error:
+        "Too many requests – please wait a few minutes before trying again.",
+      reset: new Date(Date.now() + resetSeconds * 1000).toISOString(),
+    });
+  },
 });
 
 app.use("/api/contact", limiter);
@@ -42,13 +49,18 @@ app.use("/api/contact", limiter);
 const improveLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
   max: 10,
-  message: {
-    error: "Too many requests – please wait a few minutes before trying again.",
-  },
   statusCode: 429,
   standardHeaders: true,
   legacyHeaders: false,
   skipFailedRequests: true,
+  handler: (req, res) => {
+    const resetSeconds = Number(res.getHeader("RateLimit-Reset")) || 0;
+    res.status(429).json({
+      error:
+        "Too many requests – please wait a few minutes before trying again.",
+      reset: new Date(Date.now() + resetSeconds * 1000).toISOString(),
+    });
+  },
 });
 
 app.use("/api/improve", improveLimiter);
