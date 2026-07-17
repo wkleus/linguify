@@ -45,6 +45,7 @@ async function sendContactEmail({
       html: buildEmailHtml(clean),
     }));
   } catch (err) {
+    console.error("Resend error:", err);
     return { status: 500, body: { error: "Sending email failed." } };
   }
 

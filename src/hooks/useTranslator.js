@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { getLanguageCodeByName } from "../data/languagesList";
-import { useSettingsContext } from "../context/SettingsContext";
+import { useSettingsContext } from "../context/useSettingsContext";
 import useDebounce from "./useDebounce";
 
 export default function useTranslator() {
@@ -141,7 +141,11 @@ export default function useTranslator() {
     if (isTranslating) return;
 
     translate(currentLangs.from, currentLangs.to, true);
-    // <translate> excluded from dependency array to avoid infinite loops
+    // currentLangs, isTranslating and translate are intentionally excluded:
+    // this should only re-fire when the debounced text or the setting changes,
+    // not on every language switch or translate() identity change (which would
+    // cause infinite loops / duplicate requests).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedText, liveTranslation]);
 
   return {

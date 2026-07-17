@@ -163,6 +163,8 @@ const getRandomDirection = (index) => {
   return directions[index % directions.length];
 };
 
+// Deterministic per-index tilt for the fly-in animation - using index instead of Math.random() keeps rendering pure
+const getInitialRotation = (index) => ((index * 37) % 20) - 10;
 export default function MenuPage() {
   const navigate = useNavigate();
 
@@ -256,7 +258,7 @@ export default function MenuPage() {
                 scale: 0.3,
                 x: direction.x,
                 y: direction.y,
-                rotate: Math.random() * 20 - 10,
+                rotate:  getInitialRotation(index),
               }}
               animate={{
                 opacity: 1,

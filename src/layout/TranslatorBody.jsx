@@ -2,7 +2,7 @@ import TextAreaBox from "../components/TextAreaBox";
 import TranslateButton from "../components/TranslateButton";
 import { getLanguageCodeByName } from "../data/languagesList";
 import ImproveButton from "../components/ImproveButton";
-import { useSettingsContext } from "../context/SettingsContext";
+import { useSettingsContext } from "../context/useSettingsContext";
 
 export default function TranslatorBody({
   sourceText,

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import SpeakButton from "./SpeakButton";
 import useSpeech from "../hooks/useSpeech";
 
@@ -20,17 +20,22 @@ export default function TextAreaBox({
   // (textarea content can't be CSS-transitioned directly)
   // Skipped during live translation to avoid flickering on every keystroke
   const [justArrived, setJustArrived] = useState(false);
-  const previousValue = useRef(value);
+  const [previousValue, setPreviousValue] = useState(value);
 
+  // Detect the value change during render itself instead of in an Effect - avoids an extra render pass.
+  // Use state rather than a ref, since refs must not be read/written during render
+  if (value !== previousValue) {
+    const shouldAnimate = animate && readOnly && value;
+    setPreviousValue(value);
+    if (shouldAnimate) setJustArrived(true);
+  }
+
+  // Auto-clear the flash after it has played
   useEffect(() => {
-    if (animate && readOnly && value && value !== previousValue.current) {
-      setJustArrived(true);
-      const timeout = setTimeout(() => setJustArrived(false), 400);
-      previousValue.current = value;
-      return () => clearTimeout(timeout);
-    }
-    previousValue.current = value;
-  }, [value, readOnly, animate]);
+    if (!justArrived) return;
+    const timeout = setTimeout(() => setJustArrived(false), 400);
+    return () => clearTimeout(timeout);
+  }, [justArrived]);
 
   // CJK languages render better in Noto Sans JP than in the default Latin font
   const isCjk = ["ja", "zh", "ko"].includes(langCode);
