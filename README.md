@@ -6,16 +6,15 @@
 [![Vite](https://img.shields.io/badge/Vite-7%2B-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
 [![DeepSeek v4 Flash](https://img.shields.io/badge/DeepSeek_v4_Flash-latest-000000?logo=lightning&logoColor=white)](https://www.deepseek.com)
 [![Resend](https://img.shields.io/badge/Resend-latest-0B7285?logo=maildotru&logoColor=white)](https://resend.com)
-[![React Router](https://img.shields.io/badge/React_Router-6%2B-CA4245?logo=reactrouter&logoColor=white)](https://reactrouter.com)
+[![React Router](https://img.shields.io/badge/React_Router-7%2B-CA4245?logo=reactrouter&logoColor=white)](https://reactrouter.com)
 [![Jest](https://img.shields.io/badge/Jest-30%2B-c21325?logo=jest&logoColor=white)](https://jestjs.io)
 [![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
 [![Status](https://img.shields.io/badge/Status-In_Development-yellow)](#)
+[![CI](https://img.shields.io/badge/CI-lint_%2B_audit_%2B_tests-brightgreen)](#)
 
 **Linguify** is a fullstack web application for multilingual text work. It combines fast translation with powerful DeepSeek AI post-editing, an interactive AI Studio, text-to-speech, synonym lookup, and a secure contact form.
 
-🔗 **Live:** [linguify-web.vercel.app](https://linguify-web.vercel.app)
-
----
+## 🔗 **Live:** [linguify-web.vercel.app](https://linguify-web.vercel.app)
 
 ## Screenshots
 
@@ -180,18 +179,21 @@ Browser (React SPA)
 - AI Studio is triggered manually from the output textarea button
 - All AI refinement happens on-demand via user interaction
 - Live translation uses a debounced hook (`useDebounce`) to minimize API calls while typing
+- Routes are lazy-loaded (`React.lazy` + `Suspense`) except the entry page, so users only download the code for pages they actually visit
+- An app-wide `ErrorBoundary` catches render crashes and shows a fallback instead of a blank screen
 
 ### Frontend Structure
 
 - **Pages** — each with a Framer Motion entrance animation
 - **Layouts** — page wrappers for consistent card/container structure
-- **Components** — reusable UI elements (buttons, selectors, text areas, tooltips)
+- **Components** — reusable UI elements (buttons, selectors, text areas, tooltips, `ErrorBoundary`)
 - **Custom Hooks** — application logic separated from UI:
   - `useTranslator()` — translation, API calls, three-layer error handling, live translation trigger
   - `useDebounce()` — delays a value update until typing pauses; used by `useTranslator` for live translation
   - `useLanguageSwitcher()` — language selection and swap
   - `useSpeech()` — Web Speech API wrapper
   - `useSettings()` — SettingsContext consumer
+  - `useImproveTranslation()` — calls the AI Studio improve endpoint, exposes `isImproving` loading state
 - **Context** — `SettingsContext` provides global settings state without prop drilling; auto-persisted via `useEffect`
 
 ---
@@ -200,6 +202,10 @@ Browser (React SPA)
 
 ```
 linguify/
+│
+├── .github/
+│   └── workflows/
+│       └── test.yml            # CI: lint, dependency audit, tests
 │
 ├── api/
 │   ├── contact.js              # Vercel Serverless Function (prod backend)
@@ -212,17 +218,23 @@ linguify/
 ├── docs/
 │   └── screenshots/            # README screenshots
 │
+├── shared/                     # Logic shared between Vercel functions & Express dev server
+│   ├── contactService.js
+│   ├── contactSanitize.js
+│   ├── deepseekService.js
+│   └── missingEnvVar.js        # fail-fast check for required env vars
+│
 ├── src/
 │   ├── __tests__/              # Jest + React Testing Library tests
-│   ├── components/             # Reusable UI components
-│   ├── context/                # SettingsContext (global state)
+│   ├── components/             # Reusable UI components (incl. ErrorBoundary.jsx)
+│   ├── context/                # SettingsContext (global state), split into context instance, provider and hook
 │   ├── data/                   # Static data (language list + helper)
 │   ├── hooks/                  # Custom React hooks (incl. useDebounce.js)
 │   ├── layout/                 # Page layout wrappers
 │   ├── pages/                  # Application pages
 │   ├── App.jsx                 # Routing
 │   ├── index.css               # Global styles + CSS animations
-│   └── main.jsx                # Entry point
+│   └── main.jsx                # Entry point, wraps the app in ErrorBoundary
 │
 ├── vercel.json                 # Vercel routing config (SPA + API rewrites)
 ├── vite.config.js
@@ -271,6 +283,7 @@ npm test
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
 | `__tests__/ErrorBox.test.jsx`        | Invisible (opacity-0) on null/empty, visible (opacity-100) with message, updates on prop change               |
 | `__tests__/TranslateButton.test.jsx` | Arrow visible in idle state, spinner visible while translating, click handler, disabled button ignores clicks |
+| `__tests__/AIStudio.test.jsx`        | Quick action buttons and custom instruction input send the correct parameters to the AI improvement API       |
 
 ### Testing approach
 
@@ -280,6 +293,18 @@ Tests focus on **user-visible behaviour**:
 - `screen` queries elements the same way a user would see them
 - `fireEvent` simulates real interactions such as clicks
 - `queryByText` is used to assert absence of elements without throwing
+
+---
+
+## Continuous Integration
+
+Every push and pull request against `main` runs automatically via GitHub Actions (`.github/workflows/test.yml`):
+
+1. **Lint** — `npm run lint` (ESLint 9, flat config)
+2. **Dependency audit** — `npm audit --audit-level=high`, for both the root project and `backend/`
+3. **Tests** — `npm test`
+
+All three must pass before a PR can be merged.
 
 ---
 
@@ -350,6 +375,8 @@ DEEPSEEK_API_KEY=your_deepseek_api_key
 ```
 
 > **List `.env` file in `.gitignore`.**
+>
+> Missing required environment variables are caught at request time with a clear `500` error (`Server is not configured.`) instead of a cryptic crash — see `shared/missingEnvVar.js`.
 
 ---
 
@@ -357,4 +384,4 @@ DEEPSEEK_API_KEY=your_deepseek_api_key
 
 - Further AI Studio enhancements
 - Translation history
-- More languages & accessibility improvements
+- More languages

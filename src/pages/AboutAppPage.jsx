@@ -177,8 +177,7 @@ export default function AboutAppPage() {
           </div>
           <p className="text-white/90 leading-6 text-sm sm:text-base">
             Upcoming updates may include further AI Studio enhancements,
-            extended language support, user accounts, translation history and
-            further accessibility improvements.
+            extended language support, user accounts, translation history.
           </p>
         </motion.div>
 
