@@ -1,4 +1,5 @@
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
+import { getSpeechRate } from "../utils/getSpeechRate";
 
 // Reads the given text aloud. Renders nothing if unsupported.
 export default function SpeakButton({
@@ -8,6 +9,7 @@ export default function SpeakButton({
   stop,
   isSpeaking,
   isSupported,
+  rateLevel = "normal",
 }) {
   if (!isSupported) return null;
 
@@ -15,7 +17,7 @@ export default function SpeakButton({
     if (isSpeaking) {
       stop();
     } else {
-      speak(text, langCode);
+      speak(text, langCode, getSpeechRate(rateLevel, langCode));
     }
   };
 

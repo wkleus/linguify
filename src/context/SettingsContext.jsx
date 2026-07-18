@@ -18,6 +18,13 @@ export function SettingsProvider({ children }) {
     () => localStorage.getItem("liveTranslation") === "true",
   );
 
+  // Text-to-speech rate level: "slow" | "normal" | "fast"
+  // Actual playback rate is computed per-language (-> getSpeechRate.js)
+  const [speechRate, setSpeechRate] = useState(() => {
+    const stored = localStorage.getItem("speechRate");
+    return ["slow", "normal", "fast"].includes(stored) ? stored : "normal";
+  });
+
   // Auto-save: persists to localStorage whenever a setting changes.
   // The empty-array mount run is intentionally skipped via the initializer
   // above – localStorage is only written when the user actually toggles something.
@@ -37,6 +44,10 @@ export function SettingsProvider({ children }) {
     localStorage.setItem("liveTranslation", liveTranslation);
   }, [liveTranslation]);
 
+  useEffect(() => {
+    localStorage.setItem("speechRate", speechRate);
+  }, [speechRate]);
+
   // Setters with mutual exclusion for autoClear options
   const handleSetAutoClearInstant = (value) => {
     setAutoClearInstant(value);
@@ -55,10 +66,12 @@ export function SettingsProvider({ children }) {
         autoClearDelay,
         autoCopy,
         liveTranslation,
+        speechRate,
         setAutoClearInstant: handleSetAutoClearInstant,
         setAutoClearDelay: handleSetAutoClearDelay,
         setAutoCopy,
         setLiveTranslation,
+        setSpeechRate,
       }}
     >
       {children}

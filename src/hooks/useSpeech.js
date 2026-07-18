@@ -16,7 +16,7 @@ export default function useSpeech() {
   }, [isSupported]);
 
   const speak = useCallback(
-    (text, langCode) => {
+    (text, langCode, rate) => {
       if (!isSupported || !text?.trim()) return;
 
       // Cancel first, or overlapping clicks queue up and speak one after another.

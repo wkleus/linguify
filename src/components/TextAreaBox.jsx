@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import SpeakButton from "./SpeakButton";
 import useSpeech from "../hooks/useSpeech";
+import { useSettingsContext } from "../context/useSettingsContext";
 
 export default function TextAreaBox({
   value,
@@ -15,6 +16,7 @@ export default function TextAreaBox({
 }) {
   // Separate speech instance per box so input/output can be controlled independently
   const { speak, stop, isSpeaking, isSupported } = useSpeech();
+  const { speechRate } = useSettingsContext();
 
   // Briefly animates the read-only box when a new translation arrives
   // (textarea content can't be CSS-transitioned directly)
@@ -46,7 +48,7 @@ export default function TextAreaBox({
       <textarea
         maxLength={maxLength}
         className={`text-box ${isCjk ? "font-cjk" : ""} ${
-          value.length === maxLength ? "!border-red-500 !border-3" : ""
+          value.length === maxLength ? "border-red-500! border-3!" : ""
         } ${justArrived ? "text-box-arrive" : ""} h-50 md:h-80 lg:h-70`}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
@@ -64,6 +66,7 @@ export default function TextAreaBox({
           stop={stop}
           isSpeaking={isSpeaking}
           isSupported={isSupported}
+          rateLevel={speechRate}
         />
       )}
 

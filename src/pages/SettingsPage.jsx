@@ -15,6 +15,8 @@ export default function SettingsPage() {
     setAutoCopy,
     liveTranslation,
     setLiveTranslation,
+    speechRate,
+    setSpeechRate,
   } = useSettings();
 
   return (
@@ -59,7 +61,11 @@ export default function SettingsPage() {
 
         <div className="font-bold text-sm sm:text-lg">Text-to-Speech:</div>
 
-        <SpeechRateOption tooltip="Controls how fast the text is read aloud." />
+        <SpeechRateOption
+          value={speechRate}
+          onChange={setSpeechRate}
+          tooltip="Controls how fast the text is read aloud."
+        />
       </div>
     </SettingsLayout>
   );

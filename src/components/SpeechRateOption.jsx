@@ -1,12 +1,12 @@
 import Tooltip from "./Tooltip";
 
 const RATES = [
-  { label: "Slow", value: 0.75 },
-  { label: "Normal", value: 1 },
-  { label: "Fast", value: 1.5 },
+  { label: "Slow", value: "slow" },
+  { label: "Normal", value: "normal" },
+  { label: "Fast", value: "fast" },
 ];
 
-export default function SpeechRateOption({ value, tooltip }) {
+export default function SpeechRateOption({ value, onChange, tooltip }) {
   return (
     <div className="ml-5 flex justify-between items-center bg-white/10 p-4 rounded-xl border border-white/20">
       <span className="flex items-center text-sm sm:text-[15px]">
