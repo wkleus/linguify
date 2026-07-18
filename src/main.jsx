@@ -7,14 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 import { SettingsProvider } from "./context/SettingsContext.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
-// Dark Mode BEFORE React renders
-const savedDark = localStorage.getItem("darkMode") === "true";
-if (savedDark) {
-  document.documentElement.classList.add("dark");
-} else {
-  document.documentElement.classList.remove("dark");
-}
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   // ErrorBoundary wraps everything - catches render crashes anywhere in the
   // tree below it and shows fallback instead of blank white screen
