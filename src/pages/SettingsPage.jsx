@@ -1,6 +1,7 @@
 import SettingsLayout from "../layout/SettingsLayout";
 import SettingsHeader from "../layout/SettingsHeader";
 import SettingsOption from "../components/SettingsOption";
+import SpeechRateOption from "../components/SpeechRateOption";
 
 import useSettings from "../hooks/useSettings";
 
@@ -55,6 +56,10 @@ export default function SettingsPage() {
           checked={liveTranslation}
           onChange={() => setLiveTranslation(!liveTranslation)}
         />
+
+        <div className="font-bold text-sm sm:text-lg">Text-to-Speech:</div>
+
+        <SpeechRateOption tooltip="Controls how fast the text is read aloud." />
       </div>
     </SettingsLayout>
   );

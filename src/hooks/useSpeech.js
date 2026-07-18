@@ -24,6 +24,7 @@ export default function useSpeech() {
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = langCode;
+      utterance.rate = rate;
 
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
