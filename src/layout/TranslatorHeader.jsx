@@ -6,15 +6,15 @@ export default function TranslatorHeader() {
 
   return (
     <>
-      <div className="flex items-center justify-center gap-3 mt-10 md:-mb-15 lg:mb-0">
+      <div className="flex items-center justify-center gap-3 mt-10 md:-mb-15 lg:mb-0 text-yellow-50/90">
         <MdTranslate
-          className="text-5xl text-yellow-50 hidden md:block"
-          style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.5))" }}
+          className="text-5xl  hidden md:block"
+          style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
         />
 
         <h1
-          className="uppercase font-semibold tracking-wide hidden md:block text-2xl md:text-3xl 3xl:text-4xl text-yellow-50  font-playful"
-          style={{ textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}
+          className="uppercase font-semibold tracking-wide hidden md:block text-2xl md:text-3xl 3xl:text-4xl   font-playful"
+          style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
         >
           Translator
         </h1>

@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
+import SpeechBubblePattern from "../components/SpeechBubblePattern";
 
 export default function TranslatorLayout({ children }) {
   return (
     <div className="w-full h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-white/5 blur-[160px]"></div>
+
+      {/* Decorative background buuble pattern */}
+      <SpeechBubblePattern className="absolute inset-0 w-full h-full" />
 
       {/* Card Container */}
       <div className="relative w-[95%] max-w-6xl h-[85vh] md:h-[80vh] text-xs sm:text-sm mx-15 z-10">
