@@ -1,4 +1,5 @@
 import { MdClose } from "react-icons/md";
+import { IoBuildSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 export default function SettingsHeader() {
@@ -7,10 +8,18 @@ export default function SettingsHeader() {
   return (
     <>
       {/* Title of the settings page */}
-      <h1 className="uppercase font-bold text-3xl text-amber-400 tracking-wide text-center">
-        Settings
-      </h1>
-
+      <div className="flex items-center justify-center gap-3 mt-8 mb-5 text-yellow-50/90 ">
+        <IoBuildSharp
+          className=" text-4xl"
+          style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
+        />
+        <h1
+          className="font-playful text-center uppercase font-semibold text-2xl sm:text-3xl tracking-tight sm:tracking-wide md:text-3xl 3xl:text-4xl font-playful"
+          style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
+        >
+          Settings
+        </h1>
+      </div>
       {/* Close button that navigates back to /menu */}
       <button className="close" onClick={() => navigate("/menu")}>
         <MdClose className="size-3 sm:size-6 " />

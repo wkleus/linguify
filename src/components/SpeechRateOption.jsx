@@ -20,9 +20,9 @@ export default function SpeechRateOption({ value, onChange, tooltip }) {
               key={rate.value}
               type="button"
               onClick={() => onChange(rate.value)}
-              className={`px-2.5 py-1 text-xs rounded-md transition cursor-pointer ${
+              className={`px-2.5 py-1 border border-white/20 text-xs rounded-md transition cursor-pointer ${
                 value === rate.value
-                  ? "bg-amber-500 text-white font-semibold"
+                  ? "bg-blue-500 border-white/50 text-white/90 font-medium"
                   : "bg-white/10 text-white/70 hover:bg-white/20"
               }`}
             >
