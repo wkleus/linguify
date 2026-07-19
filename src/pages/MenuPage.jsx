@@ -169,7 +169,7 @@ export default function MenuPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center p-4">
       {/* Main container */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -258,7 +258,7 @@ export default function MenuPage() {
                 scale: 0.3,
                 x: direction.x,
                 y: direction.y,
-                rotate:  getInitialRotation(index),
+                rotate: getInitialRotation(index),
               }}
               animate={{
                 opacity: 1,

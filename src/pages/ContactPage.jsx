@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdMailOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { formatWaitTime } from "../utils/formatWaitTime";
+import IsometricPattern from "../components/IsometricPattern";
 
 export default function ContactPage() {
   const navigate = useNavigate();
@@ -88,20 +89,31 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+    <div className="relative w-full min-h-screen bg-linear-to-br from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center p-4 overflow-hidden">
+      {/* Decorative background pattern */}
+      <IsometricPattern className="absolute inset-0 w-full h-full" />
+
       {/* Animated card container */}
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 sm:p-10 flex flex-col gap-6 sm:gap-8"
+        className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/40 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 sm:p-10 flex flex-col gap-6 sm:gap-8"
       >
         {/* Header with title and close button */}
         <div className="flex items-center justify-between">
-          <h1 className="uppercase font-bold text-2xl sm:text-3xl text-amber-400 tracking-wide">
-            Contact
-          </h1>
-
+          <div className="flex items-center justify-center gap-3 mt-10 text-yellow-100/80">
+            <MdMailOutline
+              className=" text-5xl  hidden md:block"
+              style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
+            />
+            <h1
+              className="sm:text-3xl uppercase font-semibold tracking-wide hidden md:block text-2xl md:text-3xl 3xl:text-4xl   font-playful"
+              style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
+            >
+              Contact
+            </h1>
+          </div>
           <button
             className="close"
             onClick={() => navigate("/menu")}
@@ -171,7 +183,7 @@ export default function ContactPage() {
               name="message"
               value={formData.message}
               onChange={handleChange}
-              className="p-3 rounded-xl bg-white/10 border border-white/20 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition resize-y"
+              className="p-3 rounded-xl bg-white/10 border border-white/20 min-h-30 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition resize-y"
               placeholder="Your message..."
               required
               disabled={status.loading} // Disable textarea while loading
@@ -180,9 +192,7 @@ export default function ContactPage() {
 
           <motion.button
             type="submit"
-            className="bg-amber-500/90 text-sm sm:text-base text-white font-bold py-3.5 rounded-xl hover:bg-amber-500 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
+            className="submit border border-white/20  tracking-wide text-sm sm:text-base text-yellow-100/90 font-semibold py-3.5 rounded-xl  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 bg-white/3"
             disabled={status.loading} // Disable button while loading
           >
             {status.loading ? "Sending..." : "Send Message"}
