@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { SettingsContext } from "./settingsContextInstance";
+import languagesList from "../data/languagesList";
+
+const isKnownLanguage = (name) =>
+  languagesList.languages.some((l) => l.name === name);
 
 // Provider component – wraps the entire app
 export function SettingsProvider({ children }) {
@@ -25,6 +29,16 @@ export function SettingsProvider({ children }) {
     return ["slow", "normal", "fast"].includes(stored) ? stored : "normal";
   });
 
+  // Default language pair, applied when Translator page first loads
+  const [defaultSourceLanguage, setDefaultSourceLanguage] = useState(() => {
+    const stored = localStorage.getItem("defaultSourceLanguage");
+    return isKnownLanguage(stored) ? stored : "German";
+  });
+  const [defaultTargetLanguage, setDefaultTargetLanguage] = useState(() => {
+    const stored = localStorage.getItem("defaultTargetLanguage");
+    return isKnownLanguage(stored) ? stored : "English";
+  });
+
   // Auto-save: persists to localStorage whenever a setting changes.
   // The empty-array mount run is intentionally skipped via the initializer
   // above – localStorage is only written when the user actually toggles something.
@@ -48,6 +62,14 @@ export function SettingsProvider({ children }) {
     localStorage.setItem("speechRate", speechRate);
   }, [speechRate]);
 
+  useEffect(() => {
+    localStorage.setItem("defaultSourceLanguage", defaultSourceLanguage);
+  }, [defaultSourceLanguage]);
+
+  useEffect(() => {
+    localStorage.setItem("defaultTargetLanguage", defaultTargetLanguage);
+  }, [defaultTargetLanguage]);
+
   // Setters with mutual exclusion for autoClear options
   const handleSetAutoClearInstant = (value) => {
     setAutoClearInstant(value);
@@ -59,6 +81,21 @@ export function SettingsProvider({ children }) {
     if (value) setAutoClearInstant(false);
   };
 
+  // Prevents source and target being set to the same language
+  const handleSetDefaultSourceLanguage = (name) => {
+    if (name === defaultTargetLanguage) {
+      setDefaultTargetLanguage(defaultSourceLanguage);
+    }
+    setDefaultSourceLanguage(name);
+  };
+
+  const handleSetDefaultTargetLanguage = (name) => {
+    if (name === defaultSourceLanguage) {
+      setDefaultSourceLanguage(defaultTargetLanguage);
+    }
+    setDefaultTargetLanguage(name);
+  };
+
   return (
     <SettingsContext.Provider
       value={{
@@ -67,11 +104,15 @@ export function SettingsProvider({ children }) {
         autoCopy,
         liveTranslation,
         speechRate,
+        defaultSourceLanguage,
+        defaultTargetLanguage,
         setAutoClearInstant: handleSetAutoClearInstant,
         setAutoClearDelay: handleSetAutoClearDelay,
         setAutoCopy,
         setLiveTranslation,
         setSpeechRate,
+        setDefaultSourceLanguage: handleSetDefaultSourceLanguage,
+        setDefaultTargetLanguage: handleSetDefaultTargetLanguage,
       }}
     >
       {children}

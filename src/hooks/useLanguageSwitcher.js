@@ -1,15 +1,23 @@
 import { useState } from "react";
+import { useSettingsContext } from "../context/useSettingsContext";
 
 export default function useLanguageSwitcher() {
+  const { defaultSourceLanguage, defaultTargetLanguage } = useSettingsContext();
+
   // Controls visibility of the language dropdown list
   const [watchLanguageList, setWatchLanguageList] = useState(false);
 
   // Tracks which selector ("from" or "to") is currently active
   const [activeLanguage, setActiveLanguage] = useState(null);
 
-  // Selected languages for translation
-  const [chosenFirstLanguage, setChosenFirstLanguage] = useState("German");
-  const [chosenSecondLanguage, setChosenSecondLanguage] = useState("English");
+  // Selected languages for translation - initialized from the user's
+  // configured default pair (Settings page), falls back to German/English
+  const [chosenFirstLanguage, setChosenFirstLanguage] = useState(
+    defaultSourceLanguage,
+  );
+  const [chosenSecondLanguage, setChosenSecondLanguage] = useState(
+    defaultTargetLanguage,
+  );
 
   // Controls closing animation of the language list
   const [isClosing, setIsClosing] = useState(false);

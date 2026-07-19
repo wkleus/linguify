@@ -2,6 +2,7 @@ import SettingsLayout from "../layout/SettingsLayout";
 import SettingsHeader from "../layout/SettingsHeader";
 import SettingsOption from "../components/SettingsOption";
 import SpeechRateOption from "../components/SpeechRateOption";
+import DefaultLanguageOption from "../components/DefaultLanguageOption";
 
 import useSettings from "../hooks/useSettings";
 
@@ -17,6 +18,10 @@ export default function SettingsPage() {
     setLiveTranslation,
     speechRate,
     setSpeechRate,
+    defaultSourceLanguage,
+    defaultTargetLanguage,
+    setDefaultSourceLanguage,
+    setDefaultTargetLanguage,
   } = useSettings();
 
   return (
@@ -48,6 +53,15 @@ export default function SettingsPage() {
           tooltip="Copies the translation to your clipboard automatically."
           checked={autoCopy}
           onChange={() => setAutoCopy(!autoCopy)}
+        />
+
+        <div className="font-bold text-sm sm:text-lg">Default languages:</div>
+
+        <DefaultLanguageOption
+          sourceLanguage={defaultSourceLanguage}
+          targetLanguage={defaultTargetLanguage}
+          onSourceChange={setDefaultSourceLanguage}
+          onTargetChange={setDefaultTargetLanguage}
         />
 
         <div className="font-bold text-sm sm:text-lg">Live Translation:</div>

@@ -119,7 +119,7 @@ export default function LinguifyEntry() {
       {/* Headline */}
       <h1 className="font-semibold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-2 drop-shadow-[0_0_18px_rgba(0,0,0,0.45)]">
         Welcome to{" "}
-        <span className="animate-logo-glow font-playful bg-gradient-to-r from-pink-500  via-cyan-500 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]">
+        <span className="animate-logo-glow font-playful bg-linear-to-r from-pink-500  via-cyan-500 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]">
           Linguify
         </span>
       </h1>
