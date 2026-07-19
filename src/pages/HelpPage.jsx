@@ -4,7 +4,9 @@ import { HiSpeakerWave } from "react-icons/hi2";
 import { FiSearch, FiSettings } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { RiTranslate } from "react-icons/ri";
+import { FaLifeRing } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import LightBulbPattern from "./../components/LightBulbPattern";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -19,27 +21,37 @@ export default function HelpPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+    <div className="w-full h-screen bg-linear-to-r  from-blue-600/90 via-indigo-600/90 to-cyan-600/90 flex items-center justify-center p-4">
+      {/* Decorative background pattern of question marks */}
+      <LightBulbPattern className="absolute inset-0 w-full h-full" />
+
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-[90%] max-w-4xl h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-10 overflow-y-auto"
+        className="relative w-[90%] max-w-4xl h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] px-10 overflow-y-auto"
       >
         {/* Close button */}
         <button className="close" onClick={() => navigate("/menu")}>
           <MdClose className="size-3 sm:size-6 " />
         </button>
 
-        <motion.h1
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0.1}
-          className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8"
-        >
-          Help & Support
-        </motion.h1>
+        <div className="flex items-center gap-3 mt-8 mb-5 text-amber-400">
+          <FaLifeRing
+            className=" text-4xl mt-1"
+            style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
+          />
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0.1}
+            className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8 sm:tracking-wide md:text-3xl 3xl:text-4xl font-playful"
+            style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
+          >
+            Help & Support
+          </motion.h1>
+        </div>
 
         <motion.p
           variants={fadeUp}
