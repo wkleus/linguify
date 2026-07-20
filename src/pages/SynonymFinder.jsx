@@ -51,7 +51,7 @@ export default function SynonymFinderPage() {
   };
 
   return (
-    <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+    <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center">
       {/* Background pattern of circles */}
       <CirclePattern className="absolute inset-0 w-full h-full" />
 

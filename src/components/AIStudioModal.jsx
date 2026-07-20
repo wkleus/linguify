@@ -63,7 +63,7 @@ export default function AIStudioModal({
         className="bg-zinc-900 text-white w-full h-full max-w-6xl max-h-[100vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-zinc-700"
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-zinc-700 flex items-center justify-between bg-zinc-950">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-zinc-700 flex items-center justify-between bg-zinc-950">
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <Robot size={24} weight="bold" />
             AI Studio
@@ -76,9 +76,9 @@ export default function AIStudioModal({
           </button>
         </div>
 
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden">
           {/* Left side – texts + result */}
-          <div className="w-5/12 border-r border-zinc-700 p-6 overflow-auto bg-zinc-950">
+          <div className="md:w-5/12 md:border-r border-b md:border-b-0 border-zinc-700 p-4 sm:p-6 md:overflow-auto bg-zinc-950">
             <div className="mb-6">
               <p className="text-zinc-400 text-xs uppercase tracking-widest mb-1">
                 Original • {sourceLanguage}
@@ -143,10 +143,10 @@ export default function AIStudioModal({
           </div>
 
           {/* Right side – controls */}
-          <div className="flex-1 p-5 flex flex-col bg-zinc-900">
+          <div className="flex-1 p-4 sm:p-5 flex flex-col bg-zinc-900">
             <div className="mb-3">
               <p className="text-zinc-400 text-xs mb-2">FAST ACTIONS</p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {quickActions.map((a, i) => (
                   <button
                     key={i}
@@ -164,7 +164,7 @@ export default function AIStudioModal({
               value={instruction}
               onChange={(e) => setInstruction(e.target.value)}
               placeholder="Enter custom instruction..."
-              className="flex-1 bg-zinc-800 border border-zinc-700 text-white p-4 rounded-3xl resize-none focus:outline-none focus:border-purple-500 text-xs"
+              className="flex-1 min-h-32 sm:min-h-40 md:min-h-0 bg-zinc-800 border border-zinc-700 text-white p-4 rounded-3xl resize-none focus:outline-none focus:border-purple-500 text-xs"
             />
 
             <button
