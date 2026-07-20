@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { MdClose, MdInfo } from "react-icons/md";
+import { AiOutlineSwap } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "../components/Tooltip";
+import CirclePattern from "../components/CirclePattern";
 
 export default function SynonymFinderPage() {
   const navigate = useNavigate();
@@ -50,18 +52,30 @@ export default function SynonymFinderPage() {
 
   return (
     <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+      {/* Background pattern of circles */}
+      <CirclePattern className="absolute inset-0 w-full h-full" />
+
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-xl p-10 flex flex-col items-center gap-6"
       >
-        <h1 className="uppercase font-bold text-2xl sm:text-3xl text-amber-400 tracking-tight sm:tracking-wide">
-          Synonym Finder
-        </h1>
+        <div className="flex items-center justify-center gap-3 mt-8 mb-5 text-yellow-100/80">
+          <AiOutlineSwap
+            className=" text-5xl"
+            style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
+          />
+          <h1
+            className="uppercase font-bold text-2xl sm:text-3xl tracking-tight sm:tracking-wide md:text-2xl 3xl:text-3xl font-playful"
+            style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
+          >
+            Synonym Finder
+          </h1>
+        </div>
 
         <button className="close" onClick={() => navigate("/menu")}>
-          <MdClose className="size-3 sm:size-6 " />
+          <MdClose className="size-3 sm:size-5" />
         </button>
 
         <motion.div
@@ -76,7 +90,7 @@ export default function SynonymFinderPage() {
             onChange={(e) => setWord(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && findSynonyms()}
             placeholder="Enter a word..."
-            className="w-full p-1 sm:p-3 rounded-xl bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm sm:text-md"
+            className="w-3/4 p-1 sm:p-3 rounded-xl bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-1 focus:ring-yellow-100/50 text-sm sm:text-md"
           />
 
           <Tooltip text="This tool works best with common English words. Phrases, rare terms, or non-English words may produce inaccurate results. Enter a single word at a time.">
@@ -89,7 +103,7 @@ export default function SynonymFinderPage() {
           <button
             onClick={findSynonyms}
             disabled={loading}
-            className="bg-amber-600 text-white font-bold py-1 px-3 text-sm sm:text-md sm:py-3 sm:px-6 rounded-xl hover:scale-105 transition disabled:opacity-50 min-w-35 sm:min-w-45"
+            className="submit px-3 sm:text-md sm:py-2 sm:px-6 hover:scale-105 transition min-w-35 sm:min-w-45 border border-white/20  tracking-wide text-sm sm:text-base text-yellow-100/90 font-semibold py-3.5 rounded-xl  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 bg-white/3"
           >
             {loading ? "Searching..." : "Find Synonyms"}
           </button>
