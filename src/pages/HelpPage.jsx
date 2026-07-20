@@ -29,16 +29,16 @@ export default function HelpPage() {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-[90%] max-w-4xl h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] px-10 overflow-y-auto"
+        className="relative w-[90%] max-w-3xl h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] px-10 overflow-y-auto"
       >
         {/* Close button */}
         <button className="close" onClick={() => navigate("/menu")}>
-          <MdClose className="size-3 sm:size-6 " />
+          <MdClose className="size-3 sm:size-5" />
         </button>
 
         <div className="flex items-center gap-3 mt-8 mb-5 text-amber-400">
           <FaLifeRing
-            className=" text-4xl mt-1"
+            className=" text-3xl mt-1"
             style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
           />
           <motion.h1
@@ -46,7 +46,7 @@ export default function HelpPage() {
             initial="hidden"
             animate="visible"
             custom={0.1}
-            className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8 sm:tracking-wide md:text-3xl 3xl:text-4xl font-playful"
+            className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8 sm:tracking-wide md:text-2xl 3xl:text-3xl font-playful"
             style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
           >
             Help & Support

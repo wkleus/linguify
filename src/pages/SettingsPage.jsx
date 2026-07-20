@@ -28,8 +28,8 @@ export default function SettingsPage() {
     <SettingsLayout>
       <SettingsHeader />
 
-      <div className="flex flex-col gap-5 text-white text-lg">
-        <div className="font-bold text-sm sm:text-lg">Auto-clear:</div>
+      <div className="flex flex-col gap-4 text-white text-sm md:text-[16px]">
+        <div className="font-bold">Auto-clear:</div>
 
         {/* setAutoClearInstant automatically disables autoClearDelay (in Context) */}
         <SettingsOption
@@ -46,7 +46,7 @@ export default function SettingsPage() {
           onChange={() => setAutoClearDelay(!autoClearDelay)}
         />
 
-        <div className="font-bold text-sm sm:text-lg">Auto-copy:</div>
+        <div className="font-bold ">Auto-copy:</div>
 
         <SettingsOption
           label="Auto-copy output"
@@ -55,7 +55,7 @@ export default function SettingsPage() {
           onChange={() => setAutoCopy(!autoCopy)}
         />
 
-        <div className="font-bold text-sm sm:text-lg">Default languages:</div>
+        <div className="font-bold ">Default languages:</div>
 
         <DefaultLanguageOption
           sourceLanguage={defaultSourceLanguage}
@@ -64,7 +64,7 @@ export default function SettingsPage() {
           onTargetChange={setDefaultTargetLanguage}
         />
 
-        <div className="font-bold text-sm sm:text-lg">Live Translation:</div>
+        <div className="font-bold">Live Translation:</div>
 
         <SettingsOption
           label="Live translation"
@@ -73,7 +73,7 @@ export default function SettingsPage() {
           onChange={() => setLiveTranslation(!liveTranslation)}
         />
 
-        <div className="font-bold text-sm sm:text-lg">Text-to-Speech:</div>
+        <div className="font-bold">Text-to-Speech:</div>
 
         <SpeechRateOption
           value={speechRate}

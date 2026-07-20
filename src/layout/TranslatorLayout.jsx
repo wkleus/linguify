@@ -10,7 +10,7 @@ export default function TranslatorLayout({ children }) {
       <SpeechBubblePattern className="absolute inset-0 w-full h-full" />
 
       {/* Card Container */}
-      <div className="relative w-[95%] max-w-6xl h-[85vh] md:h-[80vh] text-xs sm:text-sm mx-15 z-10">
+      <div className="relative w-[95%] max-w-5xl h-[85vh] md:h-[70vh] text-xs sm:text-sm mx-15 z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}

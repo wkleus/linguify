@@ -6,14 +6,14 @@ export default function TranslatorHeader() {
 
   return (
     <>
-      <div className="flex items-center justify-center gap-3 mt-10 md:-mb-15 lg:mb-0 text-yellow-50/90">
+      <div className="flex items-center justify-center gap-3 mt-5 md:-mb-15 lg:mb-0 text-yellow-50/90">
         <MdTranslate
-          className="text-5xl  hidden md:block"
+          className="text-4xl  hidden md:block"
           style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
         />
 
         <h1
-          className="uppercase font-semibold tracking-wide hidden md:block text-2xl md:text-3xl 3xl:text-4xl   font-playful"
+          className="uppercase font-semibold tracking-wide hidden md:block text-2xl md:text-[26px] 3xl:text-3xl font-playful"
           style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
         >
           Translator
@@ -21,7 +21,7 @@ export default function TranslatorHeader() {
       </div>
 
       <button className="close " onClick={() => navigate("/menu")}>
-        <MdClose className=" sm:size-4 md:size-6" />
+        <MdClose className="size-3 sm:size-5" />
       </button>
     </>
   );

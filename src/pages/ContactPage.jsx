@@ -98,17 +98,17 @@ export default function ContactPage() {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-[90%] max-w-3xl bg-white/10 backdrop-blur-2xl border border-white/40 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 sm:p-10 flex flex-col gap-6 sm:gap-8"
+        className="relative w-[85%] max-w-xl bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 sm:p-8 flex flex-col gap-5 sm:gap-6"
       >
         {/* Header with title and close button */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center justify-center gap-3 mt-10 text-yellow-100/80">
+          <div className="flex items-center justify-center gap-3  text-yellow-100/80">
             <MdMailOutline
-              className=" text-5xl  hidden md:block"
+              className=" text-4xl  hidden md:block"
               style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
             />
             <h1
-              className="sm:text-3xl uppercase font-semibold tracking-wide hidden md:block text-2xl md:text-3xl 3xl:text-4xl   font-playful"
+              className="sm:text-3xl uppercase font-semibold tracking-wide hidden md:block text-2xl md:text-2xl 3xl:text-3xl font-playful"
               style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
             >
               Contact
@@ -119,7 +119,7 @@ export default function ContactPage() {
             onClick={() => navigate("/menu")}
             aria-label="Close"
           >
-            <MdClose className="size-3 sm:size-6 " />
+            <MdClose className="size-3 sm:size-5" />
           </button>
         </div>
 
@@ -144,8 +144,8 @@ export default function ContactPage() {
               type="text"
               value={formData.name}
               onChange={handleChange}
-              className="p-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition"
-              placeholder="Your name"
+              className="p-2 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring text-sm focus:ring-gray-300/70 focus:border-transparent transition"
+              placeholder="Your name..."
               required
               disabled={status.loading} // Disable input while loading
             />
@@ -164,8 +164,8 @@ export default function ContactPage() {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="p-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition"
-              placeholder="your@email.com"
+              className="p-2 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-1 text-sm focus:ring-gray-300/70 focus:border-transparent transition"
+              placeholder="your@email.com..."
               required
               disabled={status.loading} // Disable input while loading
             />
@@ -183,7 +183,7 @@ export default function ContactPage() {
               name="message"
               value={formData.message}
               onChange={handleChange}
-              className="p-3 rounded-xl bg-white/10 border border-white/20 min-h-30 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-transparent transition resize-y"
+              className="p-2 rounded-xl bg-white/10 border border-white/20 min-h-30 focus:outline-none focus:ring-1 text-sm focus:ring-gray-300/70  focus:border-transparent transition resize-y"
               placeholder="Your message..."
               required
               disabled={status.loading} // Disable textarea while loading
@@ -192,7 +192,7 @@ export default function ContactPage() {
 
           <motion.button
             type="submit"
-            className="submit border border-white/20  tracking-wide text-sm sm:text-base text-yellow-100/90 font-semibold py-3.5 rounded-xl  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 bg-white/3"
+            className="submit border border-white/20  tracking-wide text-sm sm:text-base text-yellow-100/90 font-semibold py-2 rounded-xl  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 bg-white/3"
             disabled={status.loading} // Disable button while loading
           >
             {status.loading ? "Sending..." : "Send Message"}

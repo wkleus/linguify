@@ -2,7 +2,7 @@ import Tooltip from "./Tooltip";
 
 export default function SettingsOption({ label, checked, onChange, tooltip }) {
   return (
-    <div className="ml-5 flex justify-between items-center bg-white/10 p-4 rounded-xl border border-white/20">
+    <div className="ml-5 flex justify-between items-center bg-white/10 p-2.5 rounded-xl border border-white/20">
       {/* Label text */}
       <span className="flex items-center text-sm sm:text-[15px]">{label}</span>
 
