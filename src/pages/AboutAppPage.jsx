@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { FaFlagCheckered } from "react-icons/fa";
+import { FaFlagCheckered, FaQuestionCircle } from "react-icons/fa";
 import { FiZap } from "react-icons/fi";
 import { GiCrystalBall } from "react-icons/gi";
 import { HiSparkles } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import TrianglePattern from "./../components/TrianglePattern";
 
 // Shared animation variants
 const fadeUp = {
@@ -20,27 +21,36 @@ export default function AboutAppPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
+    <div className="w-full h-screen bg-linear-to-r from-[#19a7c1] via-sky-700/80 to-[#66a6ff] text-white flex items-center justify-center p-4">
+      {/* Background pattern of circles */}
+      <TrianglePattern className="absolute inset-0 w-full h-full" />
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-[90%] max-w-4xl h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-10 overflow-y-auto"
+        className="relative w-[90%] max-w-3xl h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-10 overflow-y-auto"
       >
         {/* Close button */}
         <button className="close" onClick={() => navigate("/menu")}>
-          <MdClose className="size-3 sm:size-6 " />
+          <MdClose className="size-3 sm:size-5 " />
         </button>
 
-        <motion.h1
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0.1}
-          className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide mb-6 mt-8"
-        >
-          About Linguify
-        </motion.h1>
+        <div className="flex items-center gap-3 text-amber-400 mt-6 mb-10">
+          <FaQuestionCircle
+            className=" text-3xl"
+            style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
+          />
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0.1}
+            className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide sm:tracking-wide md:text-2xl 3xl:text-3xl font-playful"
+            style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
+          >
+            About Linguify
+          </motion.h1>
+        </div>
 
         {/* Intro */}
         <motion.p
