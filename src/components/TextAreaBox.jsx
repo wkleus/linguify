@@ -49,7 +49,7 @@ export default function TextAreaBox({
         maxLength={maxLength}
         className={`text-box ${isCjk ? "font-cjk" : ""} ${
           value.length === maxLength ? "border-red-500! border-3!" : ""
-        } ${justArrived ? "text-box-arrive" : ""} h-50 md:h-80 lg:h-70`}
+        } ${justArrived ? "text-box-arrive" : ""} h-40 sm:h-48 md:h-64 lg:h-72`}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         onKeyDown={onKeyDown}
@@ -74,7 +74,7 @@ export default function TextAreaBox({
       {showClearButton && (
         <button
           onClick={onClear}
-          className="absolute top-2 right-2 text-slate-300 cursor-pointer hover:text-white bg-black/20 hover:bg-black/30 px-2 py-1 rounded-md text-xs transition"
+          className="absolute top-2 right-2 text-slate-300 cursor-pointer hover:text-white bg-black/20 hover:bg-black/30 px-3 py-2 sm:px-2 sm:py-1 rounded-md text-xs transition"
         >
           Clear
         </button>

@@ -20,8 +20,8 @@ export default function TranslatorHeader() {
         </h1>
       </div>
 
-      <button className="close " onClick={() => navigate("/menu")}>
-        <MdClose className="size-3 sm:size-5" />
+      <button className="close" onClick={() => navigate("/menu")}>
+        <MdClose className="size-4 sm:size-5" />
       </button>
     </>
   );

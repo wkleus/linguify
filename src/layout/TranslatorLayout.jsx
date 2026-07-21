@@ -10,13 +10,13 @@ export default function TranslatorLayout({ children }) {
       <SpeechBubblePattern className="absolute inset-0 w-full h-full" />
 
       {/* Card Container */}
-      <div className="relative w-[95%] max-w-5xl h-[85vh] md:h-[70vh] text-xs sm:text-sm mx-15 z-10">
+      <div className="relative w-[95%] max-w-5xl h-[92vh] sm:h-[85vh] md:h-[75vh] text-xs sm:text-sm z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="relative w-full h-full bg-white/10 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.25)]
- p-10 flex flex-col items-center justify-[safe_center] overflow-y-auto"
+ p-4 sm:p-6 md:p-10 flex flex-col items-center justify-[safe_center] overflow-y-auto"
         >
           {children}
         </motion.div>
