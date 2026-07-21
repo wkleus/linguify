@@ -22,7 +22,7 @@ export default function SettingsHeader() {
       </div>
       {/* Close button that navigates back to /menu */}
       <button className="close" onClick={() => navigate("/menu")}>
-        <MdClose className="size-3 sm:size-5" />
+        <MdClose className="size-4 sm:size-5" />
       </button>
     </>
   );

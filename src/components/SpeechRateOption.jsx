@@ -8,7 +8,7 @@ const RATES = [
 
 export default function SpeechRateOption({ value, onChange, tooltip }) {
   return (
-    <div className="ml-5 flex justify-between items-center bg-white/10 p-4 rounded-xl border border-white/20">
+    <div className="ml-5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-white/10 p-4 rounded-xl border border-white/20">
       <span className="flex items-center text-sm sm:text-[15px]">
         Text-to-speech rate
       </span>
