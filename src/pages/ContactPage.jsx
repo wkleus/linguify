@@ -119,7 +119,7 @@ export default function ContactPage() {
             onClick={() => navigate("/menu")}
             aria-label="Close"
           >
-            <MdClose className="size-3 sm:size-5" />
+            <MdClose className="size-4 sm:size-5" />
           </button>
         </div>
 
@@ -144,7 +144,7 @@ export default function ContactPage() {
               type="text"
               value={formData.name}
               onChange={handleChange}
-              className="p-2 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring text-sm focus:ring-gray-300/70 focus:border-transparent transition"
+              className="p-3 sm:p-2 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring text-sm focus:ring-gray-300/70 focus:border-transparent transition"
               placeholder="Your name..."
               required
               disabled={status.loading} // Disable input while loading
@@ -164,7 +164,7 @@ export default function ContactPage() {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="p-2 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-1 text-sm focus:ring-gray-300/70 focus:border-transparent transition"
+              className="p-3 sm:p-2 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:ring-1 text-sm focus:ring-gray-300/70 focus:border-transparent transition"
               placeholder="your@email.com..."
               required
               disabled={status.loading} // Disable input while loading
@@ -183,7 +183,7 @@ export default function ContactPage() {
               name="message"
               value={formData.message}
               onChange={handleChange}
-              className="p-2 rounded-xl bg-white/10 border border-white/20 min-h-30 focus:outline-none focus:ring-1 text-sm focus:ring-gray-300/70  focus:border-transparent transition resize-y"
+              className="p-3 sm:p-2 rounded-xl bg-white/10 border border-white/20 min-h-30 focus:outline-none focus:ring-1 text-sm focus:ring-gray-300/70  focus:border-transparent transition resize-y"
               placeholder="Your message..."
               required
               disabled={status.loading} // Disable textarea while loading

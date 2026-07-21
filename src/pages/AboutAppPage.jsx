@@ -21,21 +21,21 @@ export default function AboutAppPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-screen bg-linear-to-r from-[#19a7c1] via-sky-700/80 to-[#66a6ff] text-white flex items-center justify-center p-4">
+    <div className="relative w-full h-screen bg-linear-to-r from-[#19a7c1] via-sky-700/80 to-[#66a6ff] text-white flex items-center justify-center p-4 overflow-hidden">
       {/* Background pattern of circles */}
       <TrianglePattern className="absolute inset-0 w-full h-full" />
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-[90%] max-w-3xl h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-10 overflow-y-auto"
+        className="relative w-[90%] max-w-3xl h-[85vh] sm:h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] p-5 sm:p-8 md:p-10 overflow-y-auto"
       >
         {/* Close button */}
         <button className="close" onClick={() => navigate("/menu")}>
-          <MdClose className="size-3 sm:size-5 " />
+          <MdClose className="size-4 sm:size-5 " />
         </button>
 
-        <div className="flex items-center gap-3 text-amber-400 mt-6 mb-10">
+        <div className="flex items-center gap-3 text-amber-400 mt-8  mb-10">
           <FaQuestionCircle
             className=" text-3xl"
             style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}

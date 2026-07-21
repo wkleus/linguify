@@ -21,19 +21,19 @@ export default function HelpPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-screen bg-linear-to-r from-blue-600/90 via-indigo-600/90 to-cyan-600/90 flex items-center justify-center p-4">
-      {/* Decorative background pattern of question marks */}
+    <div className="relative w-full h-screen bg-linear-to-r from-blue-600/90 via-indigo-600/90 to-cyan-600/90 flex items-center justify-center p-4 overflow-hidden">
+      {/* Decorative background pattern of light bulbs */}
       <LightBulbPattern className="absolute inset-0 w-full h-full" />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative w-[90%] max-w-3xl h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] px-10 overflow-y-auto"
+        className="relative w-[90%] max-w-3xl h-[85vh] sm:h-[80vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] px-5 sm:px-8 md:px-10 overflow-y-auto"
       >
         {/* Close button */}
         <button className="close" onClick={() => navigate("/menu")}>
-          <MdClose className="size-3 sm:size-5" />
+          <MdClose className="size-4 sm:size-5" />
         </button>
 
         <div className="flex items-center gap-3 mt-8 mb-5 text-amber-400">

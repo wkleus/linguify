@@ -99,7 +99,7 @@ body {
 }
 
 .close {
-  @apply absolute top-2 right-2 border-[3px] border-white/30 p-3 sm:p-2 rounded-tr-2xl hover:scale-110 hover:text-white hover:border-white/50 transition duration-400 cursor-pointer text-white/80;
+  @apply absolute top-2 right-2 border-[3px] border-white/30 p-1.5 sm:p-2 rounded-tr-2xl hover:scale-105 hover:text-white hover:border-white/50 transition duration-300 cursor-pointer text-white/80;
 }
 
 .submit {
