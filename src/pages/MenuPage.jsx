@@ -175,7 +175,7 @@ export default function MenuPage() {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative w-[92%] max-w-6xl h-[75vh] rounded-3xl p-8 overflow-hidden"
+        className="relative w-[92%] max-w-6xl h-auto sm:h-[75vh] max-h-[90vh] rounded-3xl p-5 sm:p-8 overflow-y-auto sm:overflow-hidden"
         style={{
           background:
             "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)",
@@ -242,65 +242,94 @@ export default function MenuPage() {
           </h1>
         </motion.div>
 
-        {/* Menu buttons */}
-        {menuItems.map((item, index) => {
-          const direction = getRandomDirection(index);
-          const Icon = item.icon;
+        {/* Menu buttons - scattered "compass" layout, sm and up.
+            Percentage-based positions don't prevent overlap on narrow
+            screens since button width depends on label length, not
+            viewport width - so this layout is desktop/tablet-only.
+            See the stacked mobile menu below for < sm. */}
+        <div className="hidden sm:block">
+          {menuItems.map((item, index) => {
+            const direction = getRandomDirection(index);
+            const Icon = item.icon;
 
-          return (
-            <motion.button
-              key={item.title}
-              onClick={() => navigate(item.path)}
-              className="absolute -translate-x-1/8 -translate-y-1/15 md:px-[1.2rem] md:py-[0.6rem] px-[0.6rem] py-[0.3rem] bg-white/10 border border-white/25 rounded-xl text-white font-semibold cursor-pointer shadow-md backdrop-blur-md tracking-wide z-10 flex items-center gap-2 text-[clamp(0.9rem,1.2vw,1.2rem)]"
-              style={item.pos}
-              initial={{
-                opacity: 0,
-                scale: 0.3,
-                x: direction.x,
-                y: direction.y,
-                rotate: getInitialRotation(index),
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                x: 0,
-                y: 0,
-                rotate: 0,
-              }}
-              transition={{
-                duration: 1,
-                delay: 0.1 + index * 0.07,
-                ease: [0.34, 1.56, 0.64, 1],
-              }}
-              whileHover={{
-                scale: 1.03,
-                background: "rgba(255,255,255,0.25)",
-                boxShadow: "0 8px 30px rgba(0,0,0,0.2)",
-                transition: { duration: 0.2 },
-              }}
-              whileTap={{
-                scale: 0.9,
-                transition: { duration: 0.1 },
-              }}
-            >
-              <Icon
-                className="text-lg"
-                style={{
-                  color: item.color,
-                  filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+            return (
+              <motion.button
+                key={item.title}
+                onClick={() => navigate(item.path)}
+                className="absolute -translate-x-1/8 -translate-y-1/15 md:px-[1.2rem] md:py-[0.6rem] px-[0.6rem] py-[0.3rem] bg-white/10 border border-white/25 rounded-xl text-white font-semibold cursor-pointer shadow-md backdrop-blur-md tracking-wide z-10 flex items-center gap-2 text-[clamp(0.9rem,1.2vw,1.2rem)]"
+                style={item.pos}
+                initial={{
+                  opacity: 0,
+                  scale: 0.3,
+                  x: direction.x,
+                  y: direction.y,
+                  rotate: getInitialRotation(index),
                 }}
-              />
-              <span className="relative z-10">{item.title}</span>
-              {/* Glow effect on hover */}
-              <span
-                className="absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background: `radial-gradient(circle at center, ${item.color}30 0%, transparent 70%)`,
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  x: 0,
+                  y: 0,
+                  rotate: 0,
                 }}
-              />
-            </motion.button>
-          );
-        })}
+                transition={{
+                  duration: 1,
+                  delay: 0.1 + index * 0.07,
+                  ease: [0.34, 1.56, 0.64, 1],
+                }}
+                whileHover={{
+                  scale: 1.03,
+                  background: "rgba(255,255,255,0.25)",
+                  boxShadow: "0 8px 30px rgba(0,0,0,0.2)",
+                  transition: { duration: 0.2 },
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: { duration: 0.1 },
+                }}
+              >
+                <Icon
+                  className="text-lg"
+                  style={{
+                    color: item.color,
+                    filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+                  }}
+                />
+                <span className="relative z-10">{item.title}</span>
+                {/* Glow effect on hover */}
+                <span
+                  className="absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: `radial-gradient(circle at center, ${item.color}30 0%, transparent 70%)`,
+                  }}
+                />
+              </motion.button>
+            );
+          })}
+        </div>
+
+        {/* Menu buttons */}
+        <div className="sm:hidden relative z-10 flex flex-col gap-2.5 mt-2">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.title}
+                onClick={() => navigate(item.path)}
+                className="w-full flex items-center gap-3 px-4 py-3 bg-white/10 border border-white/25 rounded-xl text-white font-semibold cursor-pointer shadow-md backdrop-blur-md tracking-wide active:scale-[0.98] transition"
+              >
+                <Icon
+                  className="text-lg shrink-0"
+                  style={{
+                    color: item.color,
+                    filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+                  }}
+                />
+                <span>{item.title}</span>
+              </button>
+            );
+          })}
+        </div>
 
         {/* Decorative floating dots */}
         <div className="absolute top-10 left-10 w-2 h-2 bg-white rounded-full opacity-40 z-10" />
