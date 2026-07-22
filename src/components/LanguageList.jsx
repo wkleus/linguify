@@ -1,4 +1,5 @@
 import languagesList from "../data/languagesList";
+import { useEffect } from "react";
 
 export default function LanguageList({
   visible,
@@ -6,8 +7,21 @@ export default function LanguageList({
   chosenFirstLanguage,
   chosenSecondLanguage,
   onChooseLanguage,
+  onClose,
   isClosing,
 }) {
+  // Close on Escape
+  useEffect(() => {
+    if (!visible) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [visible, onClose]);
+
   if (!visible) return null;
 
   const currentLanguage =

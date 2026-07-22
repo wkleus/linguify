@@ -7,10 +7,10 @@ export default function LanguageSelector({
   onSwitchLanguages,
 }) {
   return (
-    <div className="text-white w-full min-h-15 md:min-h-35 flex justify-center items-center gap-4 sm:gap-8 relative lg:-mb-18">
+    <div className="text-white w-full min-h-15 md:min-h-35 grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 relative lg:-mb-18">
       {/* First language selector */}
       <div
-        className="text-sm sm:text-lg lingo -mb-5 md:-mb-30 lg:mb-5 cursor-pointer"
+        className="text-sm sm:text-lg lingo -mb-5 md:-mb-30 lg:mb-5 cursor-pointer text-right"
         onClick={() => onSelectLanguage("from")}
       >
         {chosenFirstLanguage}
@@ -26,7 +26,7 @@ export default function LanguageSelector({
 
       {/* Second language selector */}
       <div
-        className="lingo text-sm sm:text-lg md:text-lg -mb-5 md:-mb-30 lg:mb-5 cursor-pointer"
+        className="lingo text-sm sm:text-lg md:text-lg -mb-5 md:-mb-30 lg:mb-5 cursor-pointer text-left"
         onClick={() => onSelectLanguage("to")}
       >
         {chosenSecondLanguage}

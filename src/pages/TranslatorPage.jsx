@@ -9,7 +9,7 @@ import AIStudioModal from "../components/AIStudioModal";
 import useTranslator from "../hooks/useTranslator";
 import useLanguageSwitcher from "../hooks/useLanguageSwitcher";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function TranslatorPage() {
   const [showAIStudio, setShowAIStudio] = useState(false);
@@ -34,13 +34,34 @@ export default function TranslatorPage() {
     handleLanguageSelect,
     handleChooseLanguage,
     switchLanguages,
+    handleCloseLanguageList,
   } = useLanguageSwitcher();
+
+  // Close language list on outside click -> ref wraps both selector labels and list itself,  // so clicking either label (to open
+  // the same or a different list) never counts as "outside"
+  const languagePickerRef = useRef(null);
+
+  useEffect(() => {
+    if (!watchLanguageList) return;
+
+    const handleClickOutside = (e) => {
+      if (
+        languagePickerRef.current &&
+        !languagePickerRef.current.contains(e.target)
+      ) {
+        handleCloseLanguageList();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [watchLanguageList, handleCloseLanguageList]);
 
   return (
     <TranslatorLayout>
       <TranslatorHeader />
 
-      <div className="relative w-full">
+      <div className="relative w-full" ref={languagePickerRef}>
         <LanguageSelector
           chosenFirstLanguage={chosenFirstLanguage}
           chosenSecondLanguage={chosenSecondLanguage}
@@ -61,6 +82,7 @@ export default function TranslatorPage() {
           chosenSecondLanguage={chosenSecondLanguage}
           onChooseLanguage={handleChooseLanguage}
           isClosing={isClosing}
+          onClose={handleCloseLanguageList}
         />
       </div>
 

@@ -44,6 +44,15 @@ export default function useLanguageSwitcher() {
     }, 250);
   };
 
+  // Closes the list without changing the selection (Escape key, outside click)
+  const handleCloseLanguageList = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setWatchLanguageList(false);
+      setIsClosing(false);
+    }, 250);
+  };
+
   // Swaps the selected languages and optionally swaps text content
   const switchLanguages = (
     sourceText,
@@ -70,6 +79,7 @@ export default function useLanguageSwitcher() {
     isClosing,
     handleLanguageSelect,
     handleChooseLanguage,
+    handleCloseLanguageList,
     switchLanguages,
   };
 }
