@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Robot } from "@phosphor-icons/react";
 import { useImproveTranslation } from "../hooks/useImproveTranslation";
@@ -27,6 +27,18 @@ export default function AIStudioModal({
   const [error, setError] = useState("");
   const [isBackTranslation, setIsBackTranslation] = useState(false);
 
+  // Close on Escape
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const runAI = async (customInstruction) => {
@@ -54,12 +66,14 @@ export default function AIStudioModal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      onClick={onClose}
       className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
     >
       <motion.div
         initial={{ scale: 0.95, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.95, y: 20 }}
+        onClick={(e) => e.stopPropagation()}
         className="bg-zinc-900 text-white w-full h-full max-w-6xl max-h-[100vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-zinc-700"
       >
         {/* Header */}
