@@ -17,7 +17,7 @@ const App = () => {
       <Route
         path="/"
         element={
-          <div className="text-white w-full h-[100vh] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex justify-center items-center">
+          <div className="text-white w-full h-[100vh] bg-gradient-to-r from-cyan-800 via-indigo-700 to-blue-600 flex justify-center items-center">
             <div className="w-[90%] max-w-5xl h-[70vh] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.3)] flex flex-col justify-center items-center p-10">
               <EntryPage />
             </div>

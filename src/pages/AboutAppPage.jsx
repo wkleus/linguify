@@ -21,7 +21,7 @@ export default function AboutAppPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative w-full h-screen bg-linear-to-r from-[#19a7c1] via-sky-700/80 to-[#66a6ff] text-white flex items-center justify-center p-4 overflow-hidden">
+    <div className="relative w-full h-screen bg-linear-to-r from-[#197761]/90 via-sky-700 to-[#46a6ff] text-white flex items-center justify-center p-4 overflow-hidden">
       {/* Background pattern of circles */}
       <TrianglePattern className="absolute inset-0 w-full h-full" />
       <motion.div
@@ -35,7 +35,7 @@ export default function AboutAppPage() {
           <MdClose className="size-4 sm:size-5 " />
         </button>
 
-        <div className="flex items-center gap-3 text-amber-400 mt-8  mb-10">
+        <div className="flex items-center gap-3 text-amber-300 mt-8  mb-10">
           <FaQuestionCircle
             className=" text-3xl"
             style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.3))" }}
@@ -45,7 +45,7 @@ export default function AboutAppPage() {
             initial="hidden"
             animate="visible"
             custom={0.1}
-            className="text-2xl sm:text-3xl font-bold text-amber-400 uppercase tracking-wide sm:tracking-wide md:text-2xl 3xl:text-3xl font-playful"
+            className="text-2xl sm:text-3xl font-bold text-amber-300 uppercase tracking-wide sm:tracking-wide md:text-2xl 3xl:text-3xl font-playful"
             style={{ textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
           >
             About Linguify
@@ -75,8 +75,8 @@ export default function AboutAppPage() {
           className="mb-8"
         >
           <div className="flex items-center mb-2">
-            <FaFlagCheckered size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
+            <FaFlagCheckered size={24} className="mr-3 text-amber-300" />
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-300">
               Purpose and Scope
             </h2>
           </div>
@@ -96,8 +96,8 @@ export default function AboutAppPage() {
           className="mb-8"
         >
           <div className="flex items-center mb-2">
-            <HiSparkles size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
+            <HiSparkles size={24} className="mr-3 text-amber-300" />
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-300">
               Key Features
             </h2>
           </div>
@@ -147,8 +147,8 @@ export default function AboutAppPage() {
           className="mb-8"
         >
           <div className="flex items-center mb-2">
-            <FiZap size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
+            <FiZap size={24} className="mr-3 text-amber-300" />
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-300">
               Technical Basis
             </h2>
           </div>
@@ -165,7 +165,7 @@ export default function AboutAppPage() {
             <br />
             <br />
             The contact form uses{" "}
-            <strong className="text-amber-400">Resend</strong> for email
+            <strong className="text-amber-300">Resend</strong> for email
             delivery, with an Express backend for local development and Vercel
             serverless functions for production deployment.
           </p>
@@ -180,8 +180,8 @@ export default function AboutAppPage() {
           className="mb-8"
         >
           <div className="flex items-center mb-2">
-            <GiCrystalBall size={24} className="mr-3 text-amber-500" />
-            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
+            <GiCrystalBall size={24} className="mr-3 text-amber-300" />
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-300">
               Planned Development
             </h2>
           </div>

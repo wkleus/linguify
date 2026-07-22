@@ -95,7 +95,7 @@ export default function LinguifyEntry() {
       initial={{ opacity: 0, y: 0 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 1.5, ease: "easeOut" }}
+      transition={{ duration: 1, ease: "easeOut" }}
       className="relative flex flex-col items-center justify-center w-full h-full p-10 text-center overflow-hidden"
     >
       {/* Drifting multilingual decorative letters */}
@@ -119,7 +119,7 @@ export default function LinguifyEntry() {
       {/* Headline */}
       <h1 className="font-semibold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-2 drop-shadow-[0_0_18px_rgba(0,0,0,0.45)]">
         Welcome to{" "}
-        <span className="animate-logo-glow font-playful bg-linear-to-r from-pink-500  via-cyan-500 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]">
+        <span className="animate-logo-glow font-playful bg-linear-to-r from-pink-700  via-cyan-400 to-purple-500 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]">
           Linguify
         </span>
       </h1>
@@ -148,7 +148,7 @@ export default function LinguifyEntry() {
       <div className="mt-2">
         <button
           onClick={() => navigate("/menu")}
-          className="group tracking-wide bg-white/10 backdrop-blur-xl text-white text-xs md:text-sm  xl:text-lg font-semibold shadow-xl hover:bg-white/20 transition-all duration-300 rounded-full cursor-pointer border border-white/20 px-2.5 py-1 sm:px-3.5 sm:py-1.5 xl:px-6 xl:py-2 flex items-center justify-center gap-0 hover:gap-2"
+          className="group tracking-wide bg-white/15  text-white/80 text-xs md:text-sm  xl:text-lg font-semibold shadow-xl hover:bg-white/20 transition-all duration-300 rounded-full cursor-pointer border border-white/20 px-2.5 py-1 sm:px-3.5 sm:py-1.5 xl:px-5 flex items-center justify-center gap-0 hover:gap-2"
         >
           Start now
           <HiArrowRight className="w-0 opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-300" />
