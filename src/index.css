@@ -175,3 +175,12 @@ body {
     drop-shadow(0 0 28px rgba(255, 80, 80, 0.7));
   opacity: 0.2;
 }
+
+/* Respect the OS-level "reduce motion" accessibility setting. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-logo-glow,
+  .animate-char-drift,
+  .animate-letter-breathe {
+    animation: none;
+  }
+}

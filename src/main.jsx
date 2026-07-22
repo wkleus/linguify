@@ -6,17 +6,20 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { SettingsProvider } from "./context/SettingsContext.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import { MotionConfig } from "framer-motion";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // ErrorBoundary wraps everything - catches render crashes anywhere in the
   // tree below it and shows fallback instead of blank white screen
-  // SettingsProvider wraps the entire app –
-  // now ALL components can access the settings
   <ErrorBoundary>
-    <BrowserRouter>
-      <SettingsProvider>
-        <App />
-      </SettingsProvider>
-    </BrowserRouter>
+    {/* MotionConfig reducedMotion="user": respects the OS-level prefers-reduced-motion setting app-wide, without touching every individual motion.* component */}
+    <MotionConfig reducedMotion="user">
+      <BrowserRouter>
+        {/* SettingsProvider wraps the entire app – now ALL components can access the settings  */}
+        <SettingsProvider>
+          <App />
+        </SettingsProvider>
+      </BrowserRouter>
+    </MotionConfig>
   </ErrorBoundary>,
 );
