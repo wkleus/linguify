@@ -3,30 +3,36 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
 import CirclePattern from "../components/CirclePattern";
-import { IoMdLogIn } from "react-icons/io";
+import { IoMdPersonAdd } from "react-icons/io";
 
-export default function LoginPage() {
+export default function SignUpPage() {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+        },
       });
 
       if (error) throw error;
 
-      // Redirect to main app after successful login
-      navigate("/");
+      alert("Check your email for confirmation link!");
+      navigate("/login");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -38,27 +44,39 @@ export default function LoginPage() {
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="min-h-screen flex items-center justify-center p-4 bg-linear-to-r from-sky-600/90 via-blue-600/90 to-indigo-600/90"
+      className="min-h-screen flex items-center justify-center p-4 bg-linear-to-r from-purple-700/90 via-red-800/90 to-purple-800/90"
     >
-      {/* Decorative background pattern   */}
+      {/* Decorative background pattern */}
       <CirclePattern className="absolute inset-0 w-full h-full" />
 
-      <div className="max-w-md w-full rounded-2xl shadow-xl p-8 bg-white/80 backdrop-blur-2xl border-3 border-blue-800/90">
+      <div className="max-w-md w-full rounded-2xl shadow-xl p-8 bg-white/80 backdrop-blur-2xl border-2 border-blue-800/90">
         <div className="flex flex-col justify-center items-center gap-3 text-blue-800/90">
-          <IoMdLogIn className="text-5xl font-bold text-center" />
+          <IoMdPersonAdd className="text-5xl font-bold text-center" />
           <h1 className="text-3xl font-bold text-center mb-8">
-            Login to Linguify
+            Create Account
           </h1>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleSignUp} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium mb-2">Full Name</label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="John Doe"
+              required
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium mb-2">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-400  focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 rounded-xl border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="you@example.com"
               required
             />
@@ -70,7 +88,7 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-400  focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 rounded-xl border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="••••••••"
               required
             />
@@ -87,14 +105,14 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-blue-800/90 hover:bg-blue-700 cursor-pointer disabled:opacity-70 text-white py-3 rounded-xl font-medium transition-colors flex items-center justify-center"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Creating account..." : "Sign Up"}
           </button>
         </form>
 
         <p className="text-center mt-6 text-sm text-gray-500">
-          Don't have an account?{" "}
-          <Link to="/signup" className="text-blue-700 hover:underline">
-            Sign up
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-700 hover:underline">
+            Login
           </Link>
         </p>
       </div>

@@ -10,6 +10,7 @@ import ContactPage from "./pages/ContactPage";
 import SynonymFinderPage from "./pages/SynonymFinder";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 const App = () => {
   return (
@@ -52,6 +53,7 @@ const App = () => {
 
       {/* Authentication Routes */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
     </Routes>
   );
 };
