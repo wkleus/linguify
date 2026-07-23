@@ -9,6 +9,7 @@ import SettingsPage from "./pages/SettingsPage";
 import ContactPage from "./pages/ContactPage";
 import SynonymFinderPage from "./pages/SynonymFinder";
 import NotFoundPage from "./pages/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   return (
@@ -48,6 +49,9 @@ const App = () => {
 
       {/* 404 – catches every unknown path */}
       <Route path="*" element={<NotFoundPage />} />
+
+      {/* Authentication Routes */}
+      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 };
