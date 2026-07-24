@@ -71,6 +71,16 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+
+      {/* History Page */}
+      <Route
+        path="/history"
+        element={
+          <ProtectedRoute>
+            <HistoryPage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 };
