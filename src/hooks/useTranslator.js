@@ -140,6 +140,7 @@ export default function useTranslator() {
     if (debouncedText.length > 500) return;
     if (isTranslating) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     translate(currentLangs.from, currentLangs.to, true);
     // currentLangs, isTranslating and translate are intentionally excluded:
     // this should only re-fire when the debounced text or the setting changes,
