@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
 import CirclePattern from "../components/CirclePattern";
 import { IoMdLogIn } from "react-icons/io";
+import { MdClose } from "react-icons/md";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -50,6 +51,13 @@ export default function LoginPage() {
             Login to Linguify
           </h1>
         </div>
+
+        <button
+          className="close border-blue-800/50! p-1! top-1! right-1!"
+          onClick={() => navigate("/menu")}
+        >
+          <MdClose className="size-3 sm:size-4 text-blue-800" />
+        </button>
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
