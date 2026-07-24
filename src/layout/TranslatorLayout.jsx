@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import SpeechBubblePattern from "../components/SpeechBubblePattern";
+import UserMenu from "../components/UserMenu";
 
 export default function TranslatorLayout({ children }) {
   return (
     <div className="w-full h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center p-4 relative overflow-hidden">
+      <UserMenu />
       <div className="absolute inset-0 bg-white/5 blur-[160px]"></div>
 
       {/* Decorative background buuble pattern */}

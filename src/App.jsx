@@ -12,6 +12,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import HistoryPage from "./pages/HistoryPage";
 
 const App = () => {
   return (
@@ -30,9 +31,6 @@ const App = () => {
 
       {/* Menu Page */}
       <Route path="/menu" element={<MenuPage />} />
-
-      {/* Translator Page */}
-      <Route path="/translator" element={<TranslatorPage />} />
 
       {/* Help Page */}
       <Route path="/help" element={<HelpPage />} />
@@ -54,11 +52,22 @@ const App = () => {
       <Route path="/signup" element={<SignUpPage />} />
 
       {/* Protected routes – redirect to /login if not authenticated */}
+      {/* Synonym Finder Page */}
       <Route
         path="/synonym-finder"
         element={
           <ProtectedRoute>
             <SynonymFinderPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Translator Page */}
+      <Route
+        path="/translator"
+        element={
+          <ProtectedRoute>
+            <TranslatorPage />
           </ProtectedRoute>
         }
       />
