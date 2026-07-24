@@ -7,7 +7,7 @@ const AuthContext = createContext();
 /**
  * Custom hook to access authentication state and methods - used inside components wrapped by AuthProvider
  */
-export const useAuth = () => {
+const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
@@ -16,8 +16,7 @@ export const useAuth = () => {
 };
 
 /**
- * AuthProvider component - manages global user state and Supabase session
- * Wraps entire app in main.jsx
+ * Manage global user state and Supabase session -> Wraps entire app in main.jsx
  */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Current logged-in user object
@@ -59,3 +58,6 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+// eslint-disable-next-line react-refresh/only-export-components
+export { useAuth };

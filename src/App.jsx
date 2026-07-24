@@ -11,6 +11,7 @@ import SynonymFinderPage from "./pages/SynonymFinder";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
@@ -45,15 +46,22 @@ const App = () => {
       {/* Contact Page */}
       <Route path="/contact" element={<ContactPage />} />
 
-      {/* Synonym Finder Page */}
-      <Route path="/synonym-finder" element={<SynonymFinderPage />} />
-
       {/* 404 – catches every unknown path */}
       <Route path="*" element={<NotFoundPage />} />
 
       {/* Authentication Routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
+
+      {/* Protected routes – redirect to /login if not authenticated */}
+      <Route
+        path="/synonym-finder"
+        element={
+          <ProtectedRoute>
+            <SynonymFinderPage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 };
