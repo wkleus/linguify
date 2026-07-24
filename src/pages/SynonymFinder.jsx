@@ -5,6 +5,7 @@ import { AiOutlineSwap } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "../components/Tooltip";
 import CirclePattern from "../components/CirclePattern";
+import UserMenu from "../components/UserMenu";
 
 export default function SynonymFinderPage() {
   const navigate = useNavigate();
@@ -52,6 +53,8 @@ export default function SynonymFinderPage() {
 
   return (
     <div className="w-full h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center">
+      <UserMenu />
+
       {/* Background pattern of circles */}
       <CirclePattern className="absolute inset-0 w-full h-full" />
 
