@@ -8,8 +8,6 @@ export const saveTranslationToHistory = async ({
   targetText,
   sourceLang,
   targetLang,
-  originalTranslation = null,
-  finalTranslation = null,
 }) => {
   const {
     data: { user },
@@ -26,8 +24,6 @@ export const saveTranslationToHistory = async ({
     target_text: targetText,
     source_lang: sourceLang,
     target_lang: targetLang,
-    original_translation: originalTranslation,
-    final_translation: finalTranslation,
   });
 
   if (error) {

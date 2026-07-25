@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { getLanguageCodeByName } from "../data/languagesList";
 import { useSettingsContext } from "../context/useSettingsContext";
 import useDebounce from "./useDebounce";
-import { saveTranslationToHistory } from "../utils/historyservice";
+import { saveTranslationToHistory } from "../utils/historyService";
 
 export default function useTranslator() {
   // Text states

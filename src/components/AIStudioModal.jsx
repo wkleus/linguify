@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Robot } from "@phosphor-icons/react";
 import { useImproveTranslation } from "../hooks/useImproveTranslation";
+import { saveTranslationToHistory } from "../utils/historyService";
 
 const quickActions = [
   { label: "Make more formal", value: "Make this more formal" },
@@ -59,6 +60,19 @@ export default function AIStudioModal({
     } catch (err) {
       setError(err.message || "An unexpected error occurred.");
     }
+  };
+
+  // Apply AI result and save to history
+  const handleApply = async () => {
+    setCurrentTranslation(result);
+
+    // Save AI-improved translation as new history entry
+    await saveTranslationToHistory({
+      sourceText: originalText,
+      targetText: result,
+      sourceLang: sourceLanguage,
+      targetLang: targetLanguage,
+    });
   };
 
   return (
@@ -135,7 +149,8 @@ export default function AIStudioModal({
                     </span>
                     {!isBackTranslation && (
                       <button
-                        onClick={() => setCurrentTranslation(result)}
+                        // onClick={() => setCurrentTranslation(result)}
+                        onClick={handleApply}
                         className="text-emerald-400 hover:text-emerald-300 transition-colors"
                       >
                         Apply
