@@ -33,3 +33,20 @@ export const saveTranslationToHistory = async ({
 
   return true;
 };
+
+/**
+ * Fetch current user's translation history
+ */
+export const fetchHistory = async () => {
+  const { data, error } = await supabase
+    .from("translation_history")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Failed to fetch history:", error);
+    return [];
+  }
+
+  return data || [];
+};
