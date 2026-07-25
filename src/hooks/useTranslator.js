@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { getLanguageCodeByName } from "../data/languagesList";
 import { useSettingsContext } from "../context/useSettingsContext";
 import useDebounce from "./useDebounce";
+import { saveTranslationToHistory } from "../utils/historyservice";
 
 export default function useTranslator() {
   // Text states
@@ -104,6 +105,18 @@ export default function useTranslator() {
 
       const translated = data.responseData.translatedText;
       setTranslatedText(translated);
+
+      // Save to history
+      // NOTE: only for manual translations, not live (debounced)
+      // calls to avoid storing every keystroke as a separate history entry
+      if (!isLive) {
+        saveTranslationToHistory({
+          sourceText,
+          targetText: translated,
+          sourceLang: fromLang,
+          targetLang: toLang,
+        });
+      }
 
       // Auto-copy feature
       if (autoCopy) {
