@@ -1,10 +1,13 @@
 # Linguify
 
+## 🔗 **Live:** [linguify-web.vercel.app](https://linguify-web.vercel.app)
+
 [![React](https://img.shields.io/badge/React-19%2B-61dafb?logo=react&logoColor=white)](https://react.dev)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4%2B-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-12%2B-ff69b4?logo=framer&logoColor=white)](https://www.framer.com/motion/)
 [![Vite](https://img.shields.io/badge/Vite-7%2B-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
 [![DeepSeek v4 Flash](https://img.shields.io/badge/DeepSeek_v4_Flash-latest-000000?logo=lightning&logoColor=white)](https://www.deepseek.com)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth_%2B_DB-3ecf8e?logo=supabase&logoColor=white)](https://supabase.com)
 [![Resend](https://img.shields.io/badge/Resend-latest-0B7285?logo=maildotru&logoColor=white)](https://resend.com)
 [![React Router](https://img.shields.io/badge/React_Router-7%2B-CA4245?logo=reactrouter&logoColor=white)](https://reactrouter.com)
 [![Jest](https://img.shields.io/badge/Jest-30%2B-c21325?logo=jest&logoColor=white)](https://jestjs.io)
@@ -12,7 +15,7 @@
 [![Status](https://img.shields.io/badge/Status-In_Development-yellow)](#)
 [![CI](https://img.shields.io/badge/CI-lint_%2B_audit_%2B_tests-brightgreen)](#)
 
-**Linguify** is a fullstack web application for multilingual text work. It combines fast translation with powerful DeepSeek AI post-editing, an interactive AI Studio, text-to-speech, synonym lookup, and a secure contact form.
+**Linguify** is a fullstack web application for multilingual text work. It combines fast translation with powerful DeepSeek AI post-editing, an interactive AI Studio, text-to-speech, synonym lookup, user accounts with a persisted translation history (Supabase), and a secure contact form.
 
 ## 🔗 **Live:** [linguify-web.vercel.app](https://linguify-web.vercel.app)
 
@@ -26,9 +29,33 @@
 
 <img src="docs/screenshots/menu.png" width="600" height="380" alt="Menu Page" />
 
+### About App
+
+<img src="docs/screenshots/about.png" width="600" height="380" alt="About App" />
+
+### Help
+
+<img src="docs/screenshots/help.png" width="600" height="380" alt="Help and Support" />
+
+### Contact
+
+<img src="docs/screenshots/contact.png" width="600" height="380" alt="Contact" />
+
+### Sign Up
+
+<img src="docs/screenshots/signup.png" width="600" height="380" alt="Sign Up" />
+
+### Login
+
+<img src="docs/screenshots/login.png" width="600" height="380" alt="Login" />
+
 ### Translator Module
 
 <img src="docs/screenshots/translator.png" width="600" height="380" alt="Translator" />
+
+### Translation History
+
+<img src="docs/screenshots/translation-history.png" width="600" height="380" alt="Translation History" />
 
 ### AI Studio
 
@@ -41,18 +68,6 @@
 ### Settings
 
 <img src="docs/screenshots/settings.png" width="600" height="380" alt="Settings" />
-
-### About App
-
-<img src="docs/screenshots/about.png" width="600" height="380" alt="About App" />
-
-### Help
-
-<img src="docs/screenshots/help.png" width="600" height="380" alt="Help and Support" />
-
-### Contact
-
-<img src="docs/screenshots/contact.png" width="600" height="380" alt="Contact" />
 
 ### 404 Not Found Page
 
@@ -100,6 +115,14 @@
 - Independent playback controls per field (stop/start)
 - Automatically uses **CJK-optimized** font (Noto Sans JP) for Asian languages
 
+### User Accounts & Translation History
+
+- **Login / Sign-up** via **Supabase Auth** (email + password)
+- Protected `/history` route — redirects to `/login` if not authenticated, without a flash of the login page for already-logged-in users
+- Every manual translation (and applied AI Studio refinement) is saved to a **Supabase Postgres** table (`translation_history`)
+- History page lists past translations with source/target language and timestamp, with a **"Restore to Translator"** action per entry
+- **Row Level Security (RLS)** enforced in Postgres — each user can only ever read, insert, or delete their own history rows, verified at the database level (see `supabase/migrations/`)
+
 ### Synonym Finder
 
 - Alternative wording suggestions via **Datamuse API** (English-focussed)
@@ -140,12 +163,14 @@
 | **Routing**        | React Router                                                                      |
 | **State**          | React Hooks, Custom Hooks, Context API                                            |
 | **Animations**     | Framer Motion (page transitions, stagger, AnimatePresence) + custom CSS keyframes |
+| **Auth**           | Supabase Auth (email/password), `AuthContext` + `ProtectedRoute`                  |
+| **Database**       | Supabase Postgres (`translation_history`, secured via Row Level Security)         |
 | **Backend (prod)** | Vercel Serverless Functions (`api/contact.js`, `api/improve.js`)                  |
 | **Backend (dev)**  | Express.js (`backend/server.js`)                                                  |
 | **AI**             | **DeepSeek v4 Flash** – AI Studio Post-Editing                                    |
 | **Email**          | Resend API                                                                        |
 | **Rate Limiting**  | Upstash Redis + `@upstash/ratelimit` (prod) / `express-rate-limit` (dev)          |
-| **Persistence**    | Browser `localStorage`                                                            |
+| **Persistence**    | Browser `localStorage` (settings) + Supabase Postgres (translation history)       |
 | **Testing**        | Jest 30 + React Testing Library                                                   |
 | **Deployment**     | Vercel                                                                            |
 
@@ -158,6 +183,13 @@ Browser (React SPA)
     ├── Synonym Finder ────────────► Datamuse API (external)
     ├── Text-to-Speech ────────────► Web Speech API (browser built-in)
     ├── AI Studio Post-Editing ────► DeepSeek v4 Flash (via /api/improve)
+    │
+    ├── Auth (Login / Sign-up) ────► Supabase Auth
+    │                                       │
+    ├── Translation History ───────► Supabase Postgres (translation_history)
+    │                                       │
+    │                                 Row Level Security
+    │                                 (auth.uid() = user_id)
     │
     └── Contact Form
             │
@@ -181,6 +213,8 @@ Browser (React SPA)
 - Live translation uses a debounced hook (`useDebounce`) to minimize API calls while typing
 - Routes are lazy-loaded (`React.lazy` + `Suspense`) except the entry page, so users only download the code for pages they actually visit
 - An app-wide `ErrorBoundary` catches render crashes and shows a fallback instead of a blank screen
+- `/history` is wrapped in `ProtectedRoute`, which reads auth state from `AuthContext` (session check + `onAuthStateChange` subscription) and redirects unauthenticated users to `/login`
+- History reads/writes go directly from the client to Supabase (no custom backend endpoint); authorization is enforced entirely via Postgres Row Level Security, not application code
 
 ### Frontend Structure
 
@@ -188,13 +222,14 @@ Browser (React SPA)
 - **Layouts** — page wrappers for consistent card/container structure
 - **Components** — reusable UI elements (buttons, selectors, text areas, tooltips, `ErrorBoundary`)
 - **Custom Hooks** — application logic separated from UI:
-  - `useTranslator()` — translation, API calls, three-layer error handling, live translation trigger
+  - `useTranslator()` — translation, API calls, three-layer error handling, live translation trigger, saves successful translations to history
   - `useDebounce()` — delays a value update until typing pauses; used by `useTranslator` for live translation
   - `useLanguageSwitcher()` — language selection and swap
   - `useSpeech()` — Web Speech API wrapper
   - `useSettings()` — SettingsContext consumer
   - `useImproveTranslation()` — calls the AI Studio improve endpoint, exposes `isImproving` loading state
-- **Context** — `SettingsContext` provides global settings state without prop drilling; auto-persisted via `useEffect`
+- **Context** — `SettingsContext` provides global settings state without prop drilling; auto-persisted via `useEffect`. `AuthContext` provides the current Supabase session/user, loading state, and `signOut()`, consumed via `useAuth()`
+- **Utils** — `supabaseClient.js` (Supabase client init), `historyService.js` (`saveTranslationToHistory`, `fetchHistory`)
 
 ---
 
@@ -224,14 +259,18 @@ linguify/
 │   ├── deepseekService.js
 │   └── missingEnvVar.js        # fail-fast check for required env vars
 │
+├── supabase/
+│   └── migrations/             # SQL migrations: translation_history table + RLS policies
+│
 ├── src/
 │   ├── __tests__/              # Jest + React Testing Library tests
-│   ├── components/             # Reusable UI components (incl. ErrorBoundary.jsx)
-│   ├── context/                # SettingsContext (global state), split into context instance, provider and hook
+│   ├── components/             # Reusable UI components (incl. ErrorBoundary.jsx, AIStudioModal.jsx, ProtectedRoute.jsx)
+│   ├── context/                # SettingsContext + AuthContext (global state)
 │   ├── data/                   # Static data (language list + helper)
-│   ├── hooks/                  # Custom React hooks (incl. useDebounce.js)
+│   ├── hooks/                  # Custom React hooks (incl. useDebounce.js, useImproveTranslation.js)
 │   ├── layout/                 # Page layout wrappers
-│   ├── pages/                  # Application pages
+│   ├── pages/                  # Application pages (incl. LoginPage, SignUpPage, HistoryPage)
+│   ├── utils/                  # supabaseClient.js, historyService.js, apiUrl.js, etc.
 │   ├── App.jsx                 # Routing
 │   ├── index.css               # Global styles + CSS animations
 │   └── main.jsx                # Entry point, wraps the app in ErrorBoundary
@@ -263,6 +302,10 @@ linguify/
 
 `https://upstash.com`
 
+### Supabase -> Auth & Translation History storage (Postgres + Row Level Security)
+
+`https://supabase.com`
+
 ### DeepSeek v4 Flash –> AI Post-Editing
 
 ---
@@ -283,6 +326,8 @@ npm test
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
 | `__tests__/ErrorBox.test.jsx`        | Invisible (opacity-0) on null/empty, visible (opacity-100) with message, updates on prop change               |
 | `__tests__/TranslateButton.test.jsx` | Arrow visible in idle state, spinner visible while translating, click handler, disabled button ignores clicks |
+| `__tests__/useDebounce.test.js`      | Value only updates after the debounce delay elapses, resets on rapid subsequent changes                       |
+| `__tests__/useTranslator.test.js`    | Empty-input validation (no API call), successful translation flow stores the result and clears the error      |
 | `__tests__/AIStudio.test.jsx`        | Quick action buttons and custom instruction input send the correct parameters to the AI improvement API       |
 
 ### Testing approach
@@ -352,6 +397,8 @@ vercel
 
 ```env
 VITE_API_URL=http://localhost:3000
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_KEY=your_supabase_anon_key
 ```
 
 ### Backend (`backend/.env`)
@@ -383,5 +430,5 @@ DEEPSEEK_API_KEY=your_deepseek_api_key
 ## Planned features
 
 - Further AI Studio enhancements
-- Translation history
 - More languages
+- Pagination / search within translation history
