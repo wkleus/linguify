@@ -10,9 +10,11 @@ import useTranslator from "../hooks/useTranslator";
 import useLanguageSwitcher from "../hooks/useLanguageSwitcher";
 import { AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function TranslatorPage() {
   const [showAIStudio, setShowAIStudio] = useState(false);
+  const location = useLocation();
 
   const {
     sourceText,
@@ -35,7 +37,26 @@ export default function TranslatorPage() {
     handleChooseLanguage,
     switchLanguages,
     handleCloseLanguageList,
+    setChosenFirstLanguage,
+    setChosenSecondLanguage,
   } = useLanguageSwitcher();
+
+  // Restore from History
+  useEffect(() => {
+    const restoreData = location.state?.restore;
+    if (!restoreData) return;
+
+    setSourceText(restoreData.sourceText || "");
+    setTranslatedText(restoreData.targetText || "");
+    setChosenFirstLanguage(restoreData.sourceLang);
+    setChosenSecondLanguage(restoreData.targetLang);
+  }, [
+    location.state,
+    setSourceText,
+    setTranslatedText,
+    setChosenFirstLanguage,
+    setChosenSecondLanguage,
+  ]);
 
   // Close language list on outside click -> ref wraps both selector labels and list itself,  // so clicking either label (to open
   // the same or a different list) never counts as "outside"

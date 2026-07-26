@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CirclePattern from "../components/CirclePattern";
 import { IoMdTime } from "react-icons/io";
 import { fetchHistory } from "../utils/historyService";
@@ -13,6 +13,7 @@ export default function HistoryPage() {
   // Error message if fetch fails
   const [error, setError] = useState(null);
   // Load history once when component mounts
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -30,6 +31,20 @@ export default function HistoryPage() {
 
     loadHistory(); // Trigger the fetch
   }, []); // Run only once on mount
+
+  // Restore entry → go to Translator with data
+  const handleRestore = (item) => {
+    navigate("/translator", {
+      state: {
+        restore: {
+          sourceText: item.source_text,
+          targetText: item.target_text,
+          sourceLang: item.source_lang,
+          targetLang: item.target_lang,
+        },
+      },
+    });
+  };
 
   return (
     <motion.div
@@ -101,6 +116,14 @@ export default function HistoryPage() {
                     </p>
                   </div>
                 </div>
+
+                {/* Restore Button */}
+                <button
+                  onClick={() => handleRestore(item)}
+                  className="mt-4 text-blue-700 hover:text-blue-800 text-sm font-medium hover:underline"
+                >
+                  Restore to Translator →
+                </button>
               </div>
             ))}
           </div>

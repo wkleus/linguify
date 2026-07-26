@@ -81,5 +81,7 @@ export default function useLanguageSwitcher() {
     handleChooseLanguage,
     handleCloseLanguageList,
     switchLanguages,
+    setChosenFirstLanguage,
+    setChosenSecondLanguage,
   };
 }
