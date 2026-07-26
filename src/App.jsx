@@ -38,9 +38,6 @@ const App = () => {
       {/* About App Page */}
       <Route path="/about-app" element={<AboutAppPage />} />
 
-      {/* Settings Page */}
-      <Route path="/settings" element={<SettingsPage />} />
-
       {/* Contact Page */}
       <Route path="/contact" element={<ContactPage />} />
 
@@ -58,6 +55,16 @@ const App = () => {
         element={
           <ProtectedRoute>
             <SynonymFinderPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Settings Page */}
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <SettingsPage />
           </ProtectedRoute>
         }
       />

@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import TrianglePattern from "../components/TrianglePattern";
+import UserMenu from "../components/UserMenu";
 
 export default function SettingsLayout({ children }) {
   return (
     <div className="w-full h-screen bg-linear-to-r from-blue-600/90 via-indigo-600/90 to-cyan-600/90 flex items-center justify-center p-4">
+      <UserMenu />
+
       {/* Decorative background pattern -> covers full page */}
       <TrianglePattern className="absolute inset-0 w-full h-full" />
 
