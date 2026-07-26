@@ -18,6 +18,13 @@ jest.mock("../context/useSettingsContext", () => ({
   }),
 }));
 
+// Mock historyService: imports supabaseClient.js, which reads
+// import.meta.env at module load time. Jest/Babel can't parse import.meta,
+// so it has to be mocked
+jest.mock("../utils/historyService", () => ({
+  saveTranslationToHistory: jest.fn(),
+}));
+
 describe("useTranslator", () => {
   // empty input must be rejected before any network request is made
   test("shows an error and does not call the API when the input is empty", async () => {

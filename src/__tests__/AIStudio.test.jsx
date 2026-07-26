@@ -20,6 +20,13 @@ jest.mock("../hooks/useImproveTranslation", () => ({
   }),
 }));
 
+// Mock historyService: AIStudioModal calls saveTranslationToHistory() on
+// "Apply" and that module imports supabaseClient.js, which reads import.meta.env,
+// that Jest/Babel can't parse -> so it has to be mocked
+jest.mock("../utils/historyService", () => ({
+  saveTranslationToHistory: jest.fn(),
+}));
+
 /* TEST SUITE */
 
 describe("AI Studio Quick Actions", () => {
