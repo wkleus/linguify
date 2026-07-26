@@ -63,6 +63,24 @@ export default function LoginPage() {
           <MdClose className="size-3 sm:size-4 text-blue-800" />
         </button>
 
+        {/* Test Account Info with credentials for testing purposes */}
+        <div className="mb-6 rounded-xl border border-blue-800/20 bg-blue-800/5 px-4 py-3 text-sm text-blue-900/80 flex items-center justify-between gap-3 flex-wrap">
+          <span>
+            Just testing? Use <code className="font-medium">user@test.com</code>{" "}
+            / <code className="font-medium">123456</code>
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setEmail("user@test.com");
+              setPassword("123456");
+            }}
+            className="shrink-0 cursor-pointer rounded-lg border border-blue-800/40 px-3 py-1.5 text-blue-800 font-medium hover:bg-blue-800/10 transition-colors"
+          >
+            Use test account
+          </button>
+        </div>
+
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label className="block text-sm font-medium mb-2">Email</label>
