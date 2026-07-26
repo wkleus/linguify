@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
 import CirclePattern from "../components/CirclePattern";
 import { IoMdLogIn } from "react-icons/io";
@@ -12,6 +12,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Where the user wanted to go (fallback to /menu)
+  const from = location.state?.from || "/menu";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,8 +30,8 @@ export default function LoginPage() {
 
       if (error) throw error;
 
-      // Redirect to main app after successful login
-      navigate("/");
+      // Redirect back to the page the user came from
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {

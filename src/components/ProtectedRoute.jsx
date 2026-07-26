@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 // Wraps any route that requires authentication
@@ -6,12 +6,24 @@ import { useAuth } from "../context/AuthContext";
 // While auth state is still loading → render nothing to avoid flash of login page for already-authenticated users
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
+  const location = useLocation();
 
   console.log("ProtectedRoute:", { user, loading });
 
-  if (loading) return null;
+  // Still checking the session
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Loading...
+      </div>
+    );
+  }
 
-  if (!user) return <Navigate to="/login" replace />;
+  // Not logged in → redirect to login and save the current path
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
 
+  // User is authenticated → render the protected page
   return children;
 }
