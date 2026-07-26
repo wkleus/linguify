@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { BiHelpCircle } from "react-icons/bi";
 import { HiSpeakerWave } from "react-icons/hi2";
-import { FiSearch, FiSettings } from "react-icons/fi";
+import { FiClock, FiLogIn, FiSearch, FiSettings } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { RiTranslate } from "react-icons/ri";
 import { FaLifeRing } from "react-icons/fa";
@@ -165,6 +165,52 @@ export default function HelpPage() {
             translates automatically while you type, after a short pause.
             Changes take effect immediately and are stored locally and
             automatically in the browser.
+          </p>
+        </motion.section>
+
+        {/* Account & Translation History */}
+        <motion.section
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={0.7}
+          className="mb-8"
+        >
+          <div className="flex items-center mb-2">
+            <FiLogIn size={24} className="mr-3 text-amber-500" />
+            <h2 className="text-[17px] sm:text-xl font-semibold text-amber-400">
+              Account &amp; Translation History
+            </h2>
+          </div>
+          <p className="text-white/90 leading-6 mb-2 text-sm sm:text-base">
+            Create an account with your email and a password to save every
+            translation you make. Your history is private — only you can see it.
+          </p>
+          <ul className="text-white/90 leading-6 list-disc pl-6 text-sm sm:text-base mb-2">
+            <li>
+              <strong>Sign up</strong> with your own email and password to
+              create a personal account.
+            </li>
+            <li>
+              Or just want to try it out?{" "}
+              <strong>Log in with the test account</strong> instead:
+              <br />
+              Email: <code className="text-amber-300">user@test.com</code>{" "}
+              &nbsp;·&nbsp; Password:{" "}
+              <code className="text-amber-300">123456</code>
+            </li>
+          </ul>
+          <div className="flex items-center mb-2 mt-4">
+            <FiClock size={22} className="mr-3 text-amber-500" />
+            <h3 className="text-[16px] sm:text-lg font-semibold text-amber-400">
+              History
+            </h3>
+          </div>
+          <p className="text-white/90 leading-6 text-sm sm:text-base">
+            Once logged in, every manual translation is automatically saved.
+            Open <strong>History</strong> from the menu to browse past
+            translations and restore any entry back into the translator with one
+            click.
           </p>
         </motion.section>
 

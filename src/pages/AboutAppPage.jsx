@@ -62,8 +62,8 @@ export default function AboutAppPage() {
         >
           Linguify is a fullstack web application for multilingual text work. It
           offers translation, AI-powered post-editing with DeepSeek,
-          text-to-speech, synonym lookup and an AI Studio in a clean, responsive
-          interface.
+          text-to-speech, synonym lookup, an AI Studio, and user accounts with a
+          saved translation history, in a clean, responsive interface.
         </motion.p>
 
         {/* Purpose */}
@@ -132,6 +132,15 @@ export default function AboutAppPage() {
               Framer Motion animations, persisted settings.
             </li>
             <li>
+              <span className="font-semibold">
+                Accounts &amp; Translation History —{" "}
+              </span>
+              Sign up with email and password (or try the app instantly with the
+              test account: <code>user@test.com</code> / <code>123456</code>) to
+              automatically save every manual translation and revisit or restore
+              it later.
+            </li>
+            <li>
               <span className="font-semibold">Contact Form — </span>
               Secure delivery via Resend with rate limiting (Upstash Redis).
             </li>
@@ -168,6 +177,12 @@ export default function AboutAppPage() {
             <strong className="text-amber-300">Resend</strong> for email
             delivery, with an Express backend for local development and Vercel
             serverless functions for production deployment.
+            <br />
+            <br />
+            User accounts and translation history are powered by{" "}
+            <strong className="text-amber-300">Supabase</strong> (Auth +
+            Postgres). Access is enforced with Row Level Security, so every user
+            can only ever see their own saved translations.
           </p>
         </motion.div>
 
@@ -187,7 +202,8 @@ export default function AboutAppPage() {
           </div>
           <p className="text-white/90 leading-6 text-sm sm:text-base">
             Upcoming updates may include further AI Studio enhancements,
-            extended language support, user accounts, translation history.
+            extended language support, and pagination/search within translation
+            history.
           </p>
         </motion.div>
 
