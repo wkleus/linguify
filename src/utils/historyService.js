@@ -50,3 +50,20 @@ export const fetchHistory = async () => {
 
   return data || [];
 };
+
+/**
+ * Delete single history entry by id
+ */
+export const deleteHistoryEntry = async (id) => {
+  const { error } = await supabase
+    .from("translation_history")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Failed to delete history entry:", error);
+    return false;
+  }
+
+  return true;
+};

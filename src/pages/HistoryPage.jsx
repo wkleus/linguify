@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import CirclePattern from "../components/CirclePattern";
 import { IoMdTime } from "react-icons/io";
-import { fetchHistory } from "../utils/historyService";
+import { fetchHistory, deleteHistoryEntry } from "../utils/historyService";
+import { FiTrash2 } from "react-icons/fi";
 
 export default function HistoryPage() {
   // State for the list of history entries
@@ -44,6 +45,17 @@ export default function HistoryPage() {
         },
       },
     });
+  };
+
+  // Delete entry from history table in Supabase DB and remove from list
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Delete this translation from history?");
+    if (!confirmed) return;
+
+    const success = await deleteHistoryEntry(id);
+    if (success) {
+      setHistory((prev) => prev.filter((item) => item.id !== id));
+    }
   };
 
   return (
@@ -123,6 +135,15 @@ export default function HistoryPage() {
                   className="mt-4 text-blue-700 hover:text-blue-800 text-sm font-medium hover:underline"
                 >
                   Restore to Translator →
+                </button>
+
+                {/* Delete Button */}
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium"
+                >
+                  <FiTrash2 size={14} />
+                  Delete
                 </button>
               </div>
             ))}
