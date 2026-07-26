@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
-import { FiUser, FiLogOut, FiChevronDown } from "react-icons/fi";
+import { FiUser, FiLogOut, FiChevronDown, FiClock } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
-// User avatar - click opens dropdown with user's email and sign-out button
+// User avatar - click opens dropdown with user's email, history link and sign-out button
 export default function UserMenu() {
   const { user, signOut } = useAuth();
   const [open, setOpen] = useState(false);
@@ -62,6 +63,16 @@ export default function UserMenu() {
               </p>
               <p className="text-white text-sm truncate">{user.email}</p>
             </div>
+
+            {/* History link */}
+            <Link
+              to="/history"
+              onClick={() => setOpen(false)}
+              className="w-full flex items-center gap-2 px-4 py-3.5 text-xs text-white/90 hover:bg-black/30 transition-colors duration-150 cursor-pointer uppercase"
+            >
+              <FiClock size={14} />
+              Translation History
+            </Link>
 
             {/* Sign out */}
             <button
