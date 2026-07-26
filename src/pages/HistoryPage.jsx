@@ -5,10 +5,13 @@ import CirclePattern from "../components/CirclePattern";
 import { IoMdTime } from "react-icons/io";
 import { fetchHistory, deleteHistoryEntry } from "../utils/historyService";
 import { FiTrash2 } from "react-icons/fi";
+import ConfirmModal from "../components/ConfirmModal";
 
 export default function HistoryPage() {
   // State for the list of history entries
   const [history, setHistory] = useState([]);
+  // State for the ID of the entry to be deleted
+  const [deleteId, setDeleteId] = useState(null);
   // Loading state while fetching data from Supabase
   const [loading, setLoading] = useState(true);
   // Error message if fetch fails
@@ -48,14 +51,18 @@ export default function HistoryPage() {
   };
 
   // Delete entry from history table in Supabase DB and remove from list
-  const handleDelete = async (id) => {
-    const confirmed = window.confirm("Delete this translation from history?");
-    if (!confirmed) return;
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+  };
 
-    const success = await deleteHistoryEntry(id);
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+
+    const success = await deleteHistoryEntry(deleteId);
     if (success) {
-      setHistory((prev) => prev.filter((item) => item.id !== id));
+      setHistory((prev) => prev.filter((item) => item.id !== deleteId));
     }
+    setDeleteId(null);
   };
 
   return (
@@ -94,6 +101,17 @@ export default function HistoryPage() {
             No translations yet. Start translating!
           </p>
         )}
+
+        {/* Delete Modal */}
+        <ConfirmModal
+          isOpen={!!deleteId}
+          title="Delete translation?"
+          message="This entry will be permanently removed from your history."
+          confirmText="Delete"
+          cancelText="Cancel"
+          onConfirm={confirmDelete}
+          onCancel={() => setDeleteId(null)}
+        />
 
         {/* History List */}
         {!loading && !error && history.length > 0 && (
@@ -139,7 +157,7 @@ export default function HistoryPage() {
 
                 {/* Delete Button */}
                 <button
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDeleteClick(item.id)}
                   className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium"
                 >
                   <FiTrash2 size={14} />
