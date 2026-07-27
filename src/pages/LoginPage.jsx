@@ -43,15 +43,15 @@ export default function LoginPage() {
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="min-h-screen flex items-center justify-center p-4 bg-linear-to-r from-sky-600/90 via-blue-600/90 to-indigo-600/90"
+      className="h-screen flex items-center justify-center p-4 bg-linear-to-r from-sky-600/90 via-blue-600/90 to-indigo-600/90 overflow-hidden"
     >
       {/* Decorative background pattern   */}
       <CirclePattern className="absolute inset-0 w-full h-full" />
 
-      <div className="max-w-md w-full rounded-2xl shadow-xl p-8 bg-white/80 backdrop-blur-2xl border-3 border-blue-800/90">
-        <div className="flex flex-col justify-center items-center gap-3 text-blue-800/90">
-          <IoMdLogIn className="text-5xl font-bold text-center" />
-          <h1 className="text-3xl font-bold text-center mb-8">
+      <div className="max-w-md w-full max-h-[90vh] sm:max-h-[85vh] overflow-y-auto rounded-2xl shadow-xl p-6 sm:p-8 bg-white/80 backdrop-blur-2xl border-3 border-blue-800/90">
+        <div className="flex flex-col justify-center items-center gap-2 sm:gap-3 text-blue-800/90">
+          <IoMdLogIn className="text-4xl sm:text-5xl font-bold text-center" />
+          <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">
             Login to Linguify
           </h1>
         </div>

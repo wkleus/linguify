@@ -9,6 +9,8 @@ import {
   FiTrash2,
   FiChevronLeft,
   FiChevronRight,
+  FiFilter,
+  FiChevronDown,
 } from "react-icons/fi";
 import { fetchHistory, deleteHistoryEntry } from "../utils/historyService";
 import useDebounce from "../hooks/useDebounce";
@@ -29,7 +31,7 @@ export default function HistoryPage() {
   // Load history once when component mounts
   const navigate = useNavigate();
 
-  // --- Search & filter state ---
+  // Search & filter state
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 300);
   const [sourceLangFilter, setSourceLangFilter] = useState("all");
@@ -37,8 +39,11 @@ export default function HistoryPage() {
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
 
-  // --- Pagination state ---
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Language/date filters are collapsed by default on narrow (mobile) screens
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -173,19 +178,21 @@ export default function HistoryPage() {
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="min-h-screen flex items-center justify-center p-4 bg-linear-to-r from-sky-400 via-blue-500 to-indigo-600"
+      className="h-screen flex items-center justify-center p-4 bg-linear-to-r from-sky-400 via-blue-500 to-indigo-600 overflow-hidden"
     >
       <CirclePattern className="absolute inset-0 w-full h-full" />
 
-      <div className="max-w-4xl w-full max-h-[85vh] sm:max-h-[80vh] rounded-3xl shadow-xl p-4 bg-white/90 backdrop-blur-2xl border border-blue-800/90 relative z-10 flex flex-col overflow-hidden">
-        <div className="flex justify-between items-center mb-3 shrink-0">
+      <div className="max-w-4xl w-full max-h-[85vh] sm:max-h-[80vh] rounded-3xl shadow-xl p-4 sm:p-8 bg-white/90 backdrop-blur-2xl border border-blue-800/90 relative z-10 flex flex-col overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6 sm:mb-8 shrink-0">
           <div className="flex items-center gap-3 text-blue-800">
-            <IoMdTime className="text-3xl" />
-            <h1 className="text-3xl font-bold">Translation History</h1>
+            <IoMdTime className="text-3xl sm:text-4xl" />
+            <h1 className="text-2xl sm:text-4xl font-bold">
+              Translation History
+            </h1>
           </div>
           <Link
             to="/translator"
-            className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium transition-colors"
+            className="bg-blue-800 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-colors text-center"
           >
             New Translation
           </Link>
@@ -193,7 +200,7 @@ export default function HistoryPage() {
 
         {/* Search & Filter Bar */}
         {!loading && !error && history.length > 0 && (
-          <div className="mb-3 p-4 rounded-2xl bg-white/70 border border-gray-200 space-y-2">
+          <div className="mb-4 sm:mb-6 p-3 sm:p-4 rounded-2xl bg-white/70 border border-gray-200 space-y-3 shrink-0">
             <div className="relative">
               <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
@@ -201,11 +208,29 @@ export default function HistoryPage() {
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search in original or translated text..."
-                className="w-full pl-10 pr-4 py-1.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
-            <div className="flex flex-wrap gap-3 items-end">
+            {/* Advanced filters toggle — mobile only. From sm: up, the
+                filter row below is always visible regardless of this. */}
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((open) => !open)}
+              className="sm:hidden flex items-center gap-1.5 text-sm text-blue-700 font-medium"
+              aria-expanded={filtersOpen}
+            >
+              <FiFilter size={14} />
+              {filtersOpen ? "Hide filters" : "Language & date filters"}
+              <FiChevronDown
+                size={14}
+                className={`transition-transform ${filtersOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            <div
+              className={`${filtersOpen ? "flex" : "hidden"} sm:flex flex-wrap gap-3 items-end`}
+            >
               <div className="flex flex-col">
                 <label
                   htmlFor="history-source-lang"
@@ -342,20 +367,20 @@ export default function HistoryPage() {
 
         {/* History List */}
         {!loading && !error && filteredHistory.length > 0 && (
-          <div className="space-y-2 flex-1 overflow-y-auto pr-2 min-h-0">
+          <div className="space-y-4 flex-1 overflow-y-auto pr-2 min-h-0">
             {paginatedHistory.map((item) => (
               <div
                 key={item.id}
                 className="bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl p-5 hover:shadow-md transition-all"
               >
-                <div className="flex justify-between text-sm text-gray-500 mb-3">
+                <div className="flex flex-wrap gap-x-3 gap-y-1 justify-between text-sm text-gray-500 mb-3">
                   <span>{new Date(item.created_at).toLocaleString()}</span>
                   <span className="font-mono">
                     {item.source_lang} → {item.target_lang}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 border border-black/8 rounded-xl p-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <p className="text-xs uppercase tracking-widest text-gray-400 mb-1">
                       Original
@@ -374,31 +399,30 @@ export default function HistoryPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-10 cursor-pointer">
-                  {/* Restore Button */}
-                  <button
-                    onClick={() => handleRestore(item)}
-                    className="mt-2 text-blue-800 hover:text-blue-700 text-sm font-medium hover:underline cursor-pointer"
-                  >
-                    Restore to Translator →
-                  </button>
+                {/* Restore Button */}
+                <button
+                  onClick={() => handleRestore(item)}
+                  className="mt-4 text-blue-700 hover:text-blue-800 text-sm font-medium hover:underline"
+                >
+                  Restore to Translator →
+                </button>
 
-                  {/* Delete Button */}
-                  <button
-                    onClick={() => handleDeleteClick(item.id)}
-                    className="flex items-center gap-1 text-red-700 hover:text-red-600 text-sm font-medium mt-2 cursor-pointer"
-                  >
-                    <FiTrash2 size={14} />
-                    Delete
-                  </button>
-                </div>
+                {/* Delete Button */}
+                <button
+                  onClick={() => handleDeleteClick(item.id)}
+                  className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium mt-2 cursor-pointer"
+                >
+                  <FiTrash2 size={14} />
+                  Delete
+                </button>
               </div>
             ))}
           </div>
         )}
+
         {/* Pagination Controls */}
         {!loading && !error && filteredHistory.length > PAGE_SIZE && (
-          <div className="flex items-center justify-center gap-4 pt-4 mt-2 border-t border-gray-200 shrink-0">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 pt-4 mt-2 border-t border-gray-200 shrink-0">
             <button
               type="button"
               onClick={() => setCurrentPage(Math.max(1, safePage - 1))}
