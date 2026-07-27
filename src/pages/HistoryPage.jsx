@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import CirclePattern from "../components/CirclePattern";
 import { IoMdTime } from "react-icons/io";
+import { FiSearch, FiX, FiTrash2 } from "react-icons/fi";
 import { fetchHistory, deleteHistoryEntry } from "../utils/historyService";
-import { FiTrash2 } from "react-icons/fi";
+import useDebounce from "../hooks/useDebounce";
 import ConfirmModal from "../components/ConfirmModal";
 
 export default function HistoryPage() {
@@ -18,6 +19,14 @@ export default function HistoryPage() {
   const [error, setError] = useState(null);
   // Load history once when component mounts
   const navigate = useNavigate();
+
+  // --- Search & filter state ---
+  const [searchText, setSearchText] = useState("");
+  const debouncedSearchText = useDebounce(searchText, 300);
+  const [sourceLangFilter, setSourceLangFilter] = useState("all");
+  const [targetLangFilter, setTargetLangFilter] = useState("all");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -65,6 +74,71 @@ export default function HistoryPage() {
     setDeleteId(null);
   };
 
+  // Only offer languages that actually occur in the history for filtering,
+  // instead of the full app-wide language list
+  const sourceLangOptions = useMemo(
+    () => [...new Set(history.map((item) => item.source_lang))].sort(),
+    [history],
+  );
+  const targetLangOptions = useMemo(
+    () => [...new Set(history.map((item) => item.target_lang))].sort(),
+    [history],
+  );
+
+  const hasActiveFilters =
+    debouncedSearchText.trim() !== "" ||
+    sourceLangFilter !== "all" ||
+    targetLangFilter !== "all" ||
+    dateFrom !== "" ||
+    dateTo !== "";
+
+  const clearFilters = () => {
+    setSearchText("");
+    setSourceLangFilter("all");
+    setTargetLangFilter("all");
+    setDateFrom("");
+    setDateTo("");
+  };
+
+  // Apply text search, language filters and date range client-side
+  const filteredHistory = useMemo(() => {
+    const query = debouncedSearchText.trim().toLowerCase();
+    // dateTo is inclusive of the whole day, so push it to 23:59:59
+    const toDate = dateTo ? new Date(`${dateTo}T23:59:59.999`) : null;
+    const fromDate = dateFrom ? new Date(`${dateFrom}T00:00:00`) : null;
+
+    return history.filter((item) => {
+      if (
+        query &&
+        !item.source_text.toLowerCase().includes(query) &&
+        !item.target_text.toLowerCase().includes(query)
+      ) {
+        return false;
+      }
+
+      if (sourceLangFilter !== "all" && item.source_lang !== sourceLangFilter) {
+        return false;
+      }
+
+      if (targetLangFilter !== "all" && item.target_lang !== targetLangFilter) {
+        return false;
+      }
+
+      const createdAt = new Date(item.created_at);
+      if (fromDate && createdAt < fromDate) return false;
+      if (toDate && createdAt > toDate) return false;
+
+      return true;
+    });
+  }, [
+    history,
+    debouncedSearchText,
+    sourceLangFilter,
+    targetLangFilter,
+    dateFrom,
+    dateTo,
+  ]);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
@@ -73,19 +147,125 @@ export default function HistoryPage() {
     >
       <CirclePattern className="absolute inset-0 w-full h-full" />
 
-      <div className="max-w-4xl w-full rounded-3xl shadow-xl p-8 bg-white/90 backdrop-blur-2xl border border-blue-800/90 relative z-10">
-        <div className="flex justify-between items-center mb-8">
+      <div className="max-w-4xl w-full max-h-[85vh] sm:max-h-[80vh] rounded-3xl shadow-xl p-4 bg-white/90 backdrop-blur-2xl border border-blue-800/90 relative z-10 flex flex-col overflow-hidden">
+        <div className="flex justify-between items-center mb-3 shrink-0">
           <div className="flex items-center gap-3 text-blue-800">
-            <IoMdTime className="text-4xl" />
-            <h1 className="text-4xl font-bold">Translation History</h1>
+            <IoMdTime className="text-3xl" />
+            <h1 className="text-3xl font-bold">Translation History</h1>
           </div>
           <Link
             to="/translator"
-            className="bg-blue-800 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+            className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium transition-colors"
           >
             New Translation
           </Link>
         </div>
+
+        {/* Search & Filter Bar */}
+        {!loading && !error && history.length > 0 && (
+          <div className="mb-3 p-4 rounded-2xl bg-white/70 border border-gray-200 space-y-2">
+            <div className="relative">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                placeholder="Search in original or translated text..."
+                className="w-full pl-10 pr-4 py-1.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-3 items-end">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="history-source-lang"
+                  className="text-xs text-gray-500 mb-1"
+                >
+                  From language
+                </label>
+                <select
+                  id="history-source-lang"
+                  value={sourceLangFilter}
+                  onChange={(e) => setSourceLangFilter(e.target.value)}
+                  className="px-3 py-2 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="all">All</option>
+                  {sourceLangOptions.map((lang) => (
+                    <option key={lang} value={lang}>
+                      {lang}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col">
+                <label
+                  htmlFor="history-target-lang"
+                  className="text-xs text-gray-500 mb-1"
+                >
+                  To language
+                </label>
+                <select
+                  id="history-target-lang"
+                  value={targetLangFilter}
+                  onChange={(e) => setTargetLangFilter(e.target.value)}
+                  className="px-3 py-2 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="all">All</option>
+                  {targetLangOptions.map((lang) => (
+                    <option key={lang} value={lang}>
+                      {lang}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col">
+                <label
+                  htmlFor="history-date-from"
+                  className="text-xs text-gray-500 mb-1"
+                >
+                  From date
+                </label>
+                <input
+                  id="history-date-from"
+                  type="date"
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
+                  max={dateTo || undefined}
+                  className="px-3 py-2 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <label
+                  htmlFor="history-date-to"
+                  className="text-xs text-gray-500 mb-1"
+                >
+                  To date
+                </label>
+                <input
+                  id="history-date-to"
+                  type="date"
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
+                  min={dateFrom || undefined}
+                  className="px-3 py-2 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm text-blue-700 hover:text-blue-800 hover:bg-blue-800/5 transition-colors cursor-pointer"
+                >
+                  <FiX /> Clear filters
+                </button>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Loading State */}
         {loading && (
@@ -95,7 +275,7 @@ export default function HistoryPage() {
         {/* Error State */}
         {error && <p className="text-center text-red-500 py-12">{error}</p>}
 
-        {/* Empty State */}
+        {/* Empty State (no history at all) */}
         {!loading && !error && history.length === 0 && (
           <p className="text-center text-gray-500 py-12">
             No translations yet. Start translating!
@@ -113,10 +293,27 @@ export default function HistoryPage() {
           onCancel={() => setDeleteId(null)}
         />
 
+        {/* No results for current filters */}
+        {!loading &&
+          !error &&
+          history.length > 0 &&
+          filteredHistory.length === 0 && (
+            <div className="text-center text-gray-500 py-12">
+              <p className="mb-3">No translations match your filters.</p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="text-blue-700 hover:text-blue-800 font-medium hover:underline cursor-pointer"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
+
         {/* History List */}
-        {!loading && !error && history.length > 0 && (
-          <div className="space-y-4 max-h-[65vh] overflow-y-auto pr-2">
-            {history.map((item) => (
+        {!loading && !error && filteredHistory.length > 0 && (
+          <div className="space-y-2 flex-1 overflow-y-auto pr-2 min-h-0">
+            {filteredHistory.map((item) => (
               <div
                 key={item.id}
                 className="bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl p-5 hover:shadow-md transition-all"
@@ -128,7 +325,7 @@ export default function HistoryPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 border border-black/8 rounded-xl p-2">
                   <div>
                     <p className="text-xs uppercase tracking-widest text-gray-400 mb-1">
                       Original
@@ -147,22 +344,24 @@ export default function HistoryPage() {
                   </div>
                 </div>
 
-                {/* Restore Button */}
-                <button
-                  onClick={() => handleRestore(item)}
-                  className="mt-4 text-blue-700 hover:text-blue-800 text-sm font-medium hover:underline"
-                >
-                  Restore to Translator →
-                </button>
+                <div className="flex gap-10 cursor-pointer">
+                  {/* Restore Button */}
+                  <button
+                    onClick={() => handleRestore(item)}
+                    className="mt-2 text-blue-800 hover:text-blue-700 text-sm font-medium hover:underline cursor-pointer"
+                  >
+                    Restore to Translator →
+                  </button>
 
-                {/* Delete Button */}
-                <button
-                  onClick={() => handleDeleteClick(item.id)}
-                  className="flex items-center gap-1 text-red-500 hover:text-red-600 text-sm font-medium"
-                >
-                  <FiTrash2 size={14} />
-                  Delete
-                </button>
+                  {/* Delete Button */}
+                  <button
+                    onClick={() => handleDeleteClick(item.id)}
+                    className="flex items-center gap-1 text-red-700 hover:text-red-600 text-sm font-medium mt-2 cursor-pointer"
+                  >
+                    <FiTrash2 size={14} />
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
