@@ -25,6 +25,7 @@ export default function TranslatorPage() {
     setSourceText,
     setTranslatedText,
     translate,
+    setCurrentLangs,
   } = useTranslator();
 
   const {
@@ -87,14 +88,20 @@ export default function TranslatorPage() {
           chosenFirstLanguage={chosenFirstLanguage}
           chosenSecondLanguage={chosenSecondLanguage}
           onSelectLanguage={handleLanguageSelect}
-          onSwitchLanguages={() =>
+          onSwitchLanguages={() => {
             switchLanguages(
               sourceText,
               translatedText,
               setSourceText,
               setTranslatedText,
-            )
-          }
+            );
+            // Sync currentLangs so live translation doesn't fire with stale (pre-swap)
+            // language pair (Values here are pre-swap, so new pair is their reverse)
+            setCurrentLangs({
+              from: chosenSecondLanguage,
+              to: chosenFirstLanguage,
+            });
+          }}
         />
         <LanguageList
           visible={watchLanguageList}
