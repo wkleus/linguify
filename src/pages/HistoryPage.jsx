@@ -3,10 +3,19 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import CirclePattern from "../components/CirclePattern";
 import { IoMdTime } from "react-icons/io";
-import { FiSearch, FiX, FiTrash2 } from "react-icons/fi";
+import {
+  FiSearch,
+  FiX,
+  FiTrash2,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 import { fetchHistory, deleteHistoryEntry } from "../utils/historyService";
 import useDebounce from "../hooks/useDebounce";
 import ConfirmModal from "../components/ConfirmModal";
+
+// Number of history entries shown per page
+const PAGE_SIZE = 5;
 
 export default function HistoryPage() {
   // State for the list of history entries
@@ -27,6 +36,9 @@ export default function HistoryPage() {
   const [targetLangFilter, setTargetLangFilter] = useState("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+
+  // --- Pagination state ---
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -138,6 +150,24 @@ export default function HistoryPage() {
     dateFrom,
     dateTo,
   ]);
+
+  // Reset to page 1 whenever filter changes
+  const filterKey = `${debouncedSearchText}|${sourceLangFilter}|${targetLangFilter}|${dateFrom}|${dateTo}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setCurrentPage(1);
+  }
+
+  const totalPages = Math.max(1, Math.ceil(filteredHistory.length / PAGE_SIZE));
+  // Derived instead of stored: self-corrects if totalPages shrinks (e.g. after deleting last entry on last page)
+  const safePage = Math.min(currentPage, totalPages);
+
+  const paginatedHistory = useMemo(
+    () =>
+      filteredHistory.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [filteredHistory, safePage],
+  );
 
   return (
     <motion.div
@@ -313,7 +343,7 @@ export default function HistoryPage() {
         {/* History List */}
         {!loading && !error && filteredHistory.length > 0 && (
           <div className="space-y-2 flex-1 overflow-y-auto pr-2 min-h-0">
-            {filteredHistory.map((item) => (
+            {paginatedHistory.map((item) => (
               <div
                 key={item.id}
                 className="bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl p-5 hover:shadow-md transition-all"
@@ -364,6 +394,32 @@ export default function HistoryPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+        {/* Pagination Controls */}
+        {!loading && !error && filteredHistory.length > PAGE_SIZE && (
+          <div className="flex items-center justify-center gap-4 pt-4 mt-2 border-t border-gray-200 shrink-0">
+            <button
+              type="button"
+              onClick={() => setCurrentPage(Math.max(1, safePage - 1))}
+              disabled={safePage === 1}
+              className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-medium text-blue-700 hover:bg-blue-800/5 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors cursor-pointer"
+            >
+              <FiChevronLeft /> Previous
+            </button>
+
+            <span className="text-sm text-gray-500">
+              Page {safePage} of {totalPages}
+            </span>
+
+            <button
+              type="button"
+              onClick={() => setCurrentPage(Math.min(totalPages, safePage + 1))}
+              disabled={safePage === totalPages}
+              className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-medium text-blue-700 hover:bg-blue-800/5 disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors cursor-pointer"
+            >
+              Next <FiChevronRight />
+            </button>
           </div>
         )}
       </div>
