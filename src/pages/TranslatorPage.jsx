@@ -11,10 +11,12 @@ import useLanguageSwitcher from "../hooks/useLanguageSwitcher";
 import { AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useSettingsContext } from "../context/useSettingsContext";
 
 export default function TranslatorPage() {
   const [showAIStudio, setShowAIStudio] = useState(false);
   const location = useLocation();
+  const { liveTranslation } = useSettingsContext();
 
   const {
     sourceText,
@@ -108,7 +110,20 @@ export default function TranslatorPage() {
           activeLanguage={activeLanguage}
           chosenFirstLanguage={chosenFirstLanguage}
           chosenSecondLanguage={chosenSecondLanguage}
-          onChooseLanguage={handleChooseLanguage}
+          onChooseLanguage={(language) => {
+            handleChooseLanguage(language);
+
+            // Only auto-translate when Live Translation is enabled
+            if (!liveTranslation) return;
+            if (!sourceText.trim()) return;
+
+            const newFrom =
+              activeLanguage === "from" ? language.name : chosenFirstLanguage;
+            const newTo =
+              activeLanguage === "from" ? chosenSecondLanguage : language.name;
+
+            translate(newFrom, newTo);
+          }}
           isClosing={isClosing}
           onClose={handleCloseLanguageList}
         />
