@@ -231,11 +231,11 @@ export default function MenuPage() {
           className="flex items-center justify-center gap-3 mb-8 mt-0 md:mt-5 relative z-10"
         >
           <FaCompass
-            className="text-4xl text-yellow-100 opacity-80"
+            className="text-4xl text-yellow-50 opacity-80"
             style={{ filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.2))" }}
           />
           <h1
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-yellow-100 opacity-80"
+            className="font-playful text-2xl md:text-3xl lg:text-4xl font-bold text-yellow-50 opacity-80"
             style={{ textShadow: "0 2px 10px rgba(0,0,0,0.2)" }}
           >
             Navigation
@@ -256,7 +256,7 @@ export default function MenuPage() {
               <motion.button
                 key={item.title}
                 onClick={() => navigate(item.path)}
-                className="absolute -translate-x-1/8 -translate-y-1/15 md:px-[1.2rem] md:py-[0.6rem] px-[0.6rem] py-[0.3rem] bg-white/10 border border-white/25 rounded-xl text-white font-semibold cursor-pointer shadow-md backdrop-blur-md tracking-wide z-10 flex items-center gap-2 text-[clamp(0.9rem,1.2vw,1.2rem)]"
+                className="transition-all duration-300 ease-out absolute -translate-x-1/8 -translate-y-1/15 md:px-[1.2rem] md:py-[0.6rem] px-[0.6rem] py-[0.3rem] bg-white/10 border border-white/25 rounded-xl text-white font-semibold cursor-pointer shadow-md backdrop-blur-md tracking-wide z-10 flex items-center gap-2 text-[clamp(0.9rem,1.2vw,1.2rem)]"
                 style={item.pos}
                 initial={{
                   opacity: 0,
@@ -308,7 +308,7 @@ export default function MenuPage() {
           })}
         </div>
 
-        {/* Menu buttons */}
+        {/* Menu items - stacked on mobile */}
         <div className="sm:hidden relative z-10 flex flex-col gap-2.5 mt-2">
           {menuItems.map((item) => {
             const Icon = item.icon;

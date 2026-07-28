@@ -6,17 +6,17 @@ import { motion } from "framer-motion";
 // Multilingual background characters with organic scatter
 const BACKGROUND_CHARACTERS = [
   {
-    char: "A",
-    top: "9%",
+    char: "B",
+    top: "11%",
     left: "12%",
-    size: "2rem",
+    size: "2.5rem",
     duration: "9s",
     delay: "0s",
   },
   {
     char: "あ",
-    top: "78%",
-    left: "22%",
+    top: "82%",
+    left: "19%",
     size: "4.5rem",
     duration: "11s",
     delay: "-3s",
@@ -32,7 +32,7 @@ const BACKGROUND_CHARACTERS = [
   {
     char: "أ",
     top: "62%",
-    left: "85%",
+    left: "75%",
     size: "3.8rem",
     duration: "10s",
     delay: "-1s",
@@ -55,8 +55,8 @@ const BACKGROUND_CHARACTERS = [
   },
   {
     char: "한",
-    top: "35%",
-    left: "10%",
+    top: "50%",
+    left: "6%",
     size: "4rem",
     duration: "10s",
     delay: "-6s",
@@ -84,6 +84,39 @@ const BACKGROUND_CHARACTERS = [
     size: "1.8rem",
     duration: "9.5s",
     delay: "-2.5s",
+  },
+  {
+    char: "λ",
+    top: "90%",
+    left: "85%",
+    size: "2.7rem",
+    duration: "10s",
+    delay: "-6s",
+  },
+  // some extra dots (minimalistic, organic dispersed)
+  {
+    char: "•",
+    top: "23%",
+    left: "33%",
+    size: "2rem",
+    duration: "7s",
+    delay: "-2s",
+  },
+  {
+    char: "•",
+    top: "67%",
+    left: "12%",
+    size: "1.7rem",
+    duration: "8.5s",
+    delay: "-4s",
+  },
+  {
+    char: "•",
+    top: "74%",
+    left: "72%",
+    size: "1.5rem",
+    duration: "9s",
+    delay: "-3s",
   },
 ];
 
@@ -117,14 +150,14 @@ export default function LinguifyEntry() {
       ))}
 
       {/* Headline */}
-      <h1 className="font-semibold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-2 drop-shadow-[0_0_18px_rgba(0,0,0,0.45)]">
+      <h1 className="font-semibold font-playful text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-2 drop-shadow-[0_0_18px_rgba(0,0,0,0.45)]">
         Welcome to{" "}
         <span className="animate-logo-glow font-playful bg-linear-to-r from-pink-700  via-cyan-400 to-purple-500 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]">
           Linguify
         </span>
       </h1>
 
-      <svg
+      {/* <svg
         className="lightning-zigzag"
         viewBox="0 0 200 800"
         preserveAspectRatio="none"
@@ -137,7 +170,7 @@ export default function LinguifyEntry() {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-      </svg>
+      </svg> */}
 
       {/* Claim */}
       <p className="font-handwritten text-xl sm:text-2xl lg:text-3xl text-white max-w-xl  mb-6 drop-shadow-[0_0_10px_rgba(0,0,0,0.9)]">
@@ -148,7 +181,7 @@ export default function LinguifyEntry() {
       <div className="mt-2">
         <button
           onClick={() => navigate("/menu")}
-          className="group tracking-wide bg-white/15  text-white/80 text-xs md:text-sm  xl:text-lg font-semibold shadow-xl hover:bg-white/20 transition-all duration-300 rounded-full cursor-pointer border border-white/20 px-2.5 py-1 sm:px-3.5 sm:py-1.5 xl:px-5 flex items-center justify-center gap-0 hover:gap-2"
+          className="group font-playful tracking-wide bg-white/15  text-white/80 text-xs md:text-sm  xl:text-lg font-semibold shadow-xl hover:bg-white/20 transition-all duration-300 rounded-full cursor-pointer border border-white/20 px-2.5 py-1 sm:px-3.5 sm:py-1.5 xl:px-5 flex items-center justify-center gap-0 hover:gap-2"
         >
           Start now
           <HiArrowRight className="w-0 opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-300" />
