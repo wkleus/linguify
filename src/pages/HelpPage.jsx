@@ -212,6 +212,15 @@ export default function HelpPage() {
             translations and restore any entry back into the translator with one
             click.
           </p>
+          <p className="text-white/90 leading-6 mt-2 text-sm sm:text-base">
+            Use the <strong>search bar</strong> to find a past translation by
+            its text, or narrow the list with the <strong>language</strong> and{" "}
+            <strong>date filters</strong> (tap the filter toggle on mobile to
+            show them). Longer histories are split into <strong>pages</strong>,
+            with Previous/Next controls at the bottom of the list. Click{" "}
+            <strong>Delete</strong> on an entry to remove it — you'll be asked
+            to confirm first, so nothing is deleted by accident.
+          </p>
         </motion.section>
 
         {/* Support */}

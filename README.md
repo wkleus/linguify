@@ -121,6 +121,10 @@
 - Protected `/history` route — redirects to `/login` if not authenticated, without a flash of the login page for already-logged-in users
 - Every manual translation (and applied AI Studio refinement) is saved to a **Supabase Postgres** table (`translation_history`)
 - History page lists past translations with source/target language and timestamp, with a **"Restore to Translator"** action per entry
+- **Delete** — remove a single entry via a confirmation modal (prevents accidental data loss)
+- **Search bar** — find past translations by their source or target text (debounced)
+- **Filters** — narrow the list by source language, target language, and/or date range; collapsed behind a toggle on mobile to save space
+- **Pagination** — longer histories are split into pages (5 entries per page) with Previous/Next controls, always resetting to page 1 when a filter changes
 - **Row Level Security (RLS)** enforced in Postgres — each user can only ever read, insert, or delete their own history rows, verified at the database level (see `supabase/migrations/`)
 
 ### Synonym Finder
@@ -210,6 +214,7 @@ Browser (React SPA)
 
 - AI Studio is triggered manually from the output textarea button
 - All AI refinement happens on-demand via user interaction
+- **Cost-conscious by design**: the free MyMemory API handles all default/live translation; the paid DeepSeek API is only reached when the user explicitly opens AI Studio, so per-request AI costs stay proportional to actual demand for higher-quality output, not every translation
 - Live translation uses a debounced hook (`useDebounce`) to minimize API calls while typing
 - Routes are lazy-loaded (`React.lazy` + `Suspense`) except the entry page, so users only download the code for pages they actually visit
 - An app-wide `ErrorBoundary` catches render crashes and shows a fallback instead of a blank screen
@@ -229,7 +234,7 @@ Browser (React SPA)
   - `useSettings()` — SettingsContext consumer
   - `useImproveTranslation()` — calls the AI Studio improve endpoint, exposes `isImproving` loading state
 - **Context** — `SettingsContext` provides global settings state without prop drilling; auto-persisted via `useEffect`. `AuthContext` provides the current Supabase session/user, loading state, and `signOut()`, consumed via `useAuth()`
-- **Utils** — `supabaseClient.js` (Supabase client init), `historyService.js` (`saveTranslationToHistory`, `fetchHistory`)
+- **Utils** — `supabaseClient.js` (Supabase client init), `historyService.js` (`saveTranslationToHistory`, `fetchHistory`, `deleteHistoryEntry`)
 
 ---
 
@@ -431,4 +436,3 @@ DEEPSEEK_API_KEY=your_deepseek_api_key
 
 - Further AI Studio enhancements
 - More languages
-- Pagination / search within translation history

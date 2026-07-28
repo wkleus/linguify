@@ -85,6 +85,17 @@ export default function AboutAppPage() {
             reviewers. Linguify combines classic tools with modern AI to deliver
             higher quality results faster.
           </p>
+          <p className="text-white/90 leading-6 text-sm sm:text-base mt-3">
+            A core design goal is keeping <strong>costs low</strong>. Every
+            request to a paid AI provider costs money, so Linguify uses a{" "}
+            <strong>free translation API (MyMemory) by default</strong> for all
+            everyday translations. The paid{" "}
+            <strong>AI Post-Editing (DeepSeek)</strong> is only ever called when
+            the user explicitly opens <strong>AI Studio</strong> and requests a
+            refinement — never automatically. This keeps the app free to run at
+            scale instead of billing an AI provider for every single
+            translation.
+          </p>
         </motion.div>
 
         {/* Features */}
@@ -138,7 +149,9 @@ export default function AboutAppPage() {
               Sign up with email and password (or try the app instantly with the
               test account: <code>user@test.com</code> / <code>123456</code>) to
               automatically save every manual translation and revisit or restore
-              it later.
+              it later. Search by text, filter by language or date, browse
+              longer histories page by page, and delete entries you no longer
+              need.
             </li>
             <li>
               <span className="font-semibold">Contact Form — </span>
@@ -166,11 +179,15 @@ export default function AboutAppPage() {
             clean separation of logic and UI — including a custom{" "}
             <strong>useDebounce</strong> hook that powers live translation by
             delaying API calls until typing pauses. Translation and synonym data
-            come from external APIs (MyMemory, Datamuse). Text‑to‑speech uses
-            the browser's native Web Speech API. AI post-editing runs via
-            DeepSeek (OpenAI-compatible) through Vercel Serverless Functions.
-            All settings are persisted locally. Robust rate limiting protects
-            the AI quota.
+            come from external APIs (MyMemory, Datamuse) —{" "}
+            <strong>
+              MyMemory handles all default translations at no cost
+            </strong>
+            , while the paid DeepSeek API is only reached deliberately via AI
+            Studio. Text‑to‑speech uses the browser's native Web Speech API. AI
+            post-editing runs via DeepSeek (OpenAI-compatible) through Vercel
+            Serverless Functions. All settings are persisted locally. Robust
+            rate limiting protects the AI quota.
             <br />
             <br />
             The contact form uses{" "}
@@ -201,9 +218,8 @@ export default function AboutAppPage() {
             </h2>
           </div>
           <p className="text-white/90 leading-6 text-sm sm:text-base">
-            Upcoming updates may include further AI Studio enhancements,
-            extended language support, and pagination/search within translation
-            history.
+            Upcoming updates may include further AI Studio enhancements and
+            extended language support.
           </p>
         </motion.div>
 
